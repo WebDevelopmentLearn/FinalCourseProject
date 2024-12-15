@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10%;
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    padding: 0 24px;
+  }
+}
+
+/*# sourceMappingURL=Wrapper.module.css.map */

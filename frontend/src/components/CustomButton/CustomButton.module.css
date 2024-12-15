@@ -1,0 +1,15 @@
+.custom_button {
+  background-color: #0095F6;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #DBDBDB;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 0;
+  transition: background-color 0.5s;
+}
+.custom_button:hover {
+  background-color: #0077C0;
+}
+
+/*# sourceMappingURL=CustomButton.module.css.map */

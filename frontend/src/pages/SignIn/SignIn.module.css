@@ -1,0 +1,74 @@
+.signin {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.signin_image_container {
+  background-image: url("../../assets/signin/sign_in_phone_bg4.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 380px;
+  height: 581.15px;
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.slider_image {
+  width: 250px;
+  height: 538.84px;
+  position: absolute;
+  top: 26px;
+  right: 19px;
+  object-fit: cover;
+  transition: opacity 1s ease-in-out;
+  opacity: 0;
+  z-index: 1;
+}
+
+.slider_image.fade_in {
+  opacity: 1;
+  z-index: 2;
+}
+
+.signin_form_container {
+  flex-grow: 1;
+}
+
+.dont_have_account_container {
+  width: 100%;
+  border: 1px solid #DBDBDB;
+  margin-top: 10px;
+}
+
+.dont_have_account {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  margin: 20px;
+}
+.dont_have_account span {
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+.dont_have_account a {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0095F6;
+  text-decoration: none;
+}
+.dont_have_account a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 940px) {
+  .signin_image_container {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=SignIn.module.css.map */
