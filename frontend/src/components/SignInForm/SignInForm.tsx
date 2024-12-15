@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import ichgramLogo from "../../assets/logo.svg";
 import {CustomInput} from "../CustomInput/CustomInput.tsx";
 import {useForm} from "react-hook-form";
+import {Separator} from "../Separator/Separator.tsx";
 
 
 type SignInFormValues = {
@@ -41,14 +42,10 @@ export const SignInForm: FC = () => {
                 {errors.password && <p className={styles.error_message}>{errors.password.message}</p>}
 
                 <CustomButton className={styles.sign_in_button} type="submit" title={"Log in"}/>
-                <div className={styles.separator}>
-                    <hr/>
-                    <span>OR</span>
-                    <hr/>
-                </div>
+                <Separator />
 
                 <div className={styles.sign_in_form_forgot_password}>
-                    <Link to="/">Forgot password?</Link>
+                    <Link to="/forgot_password">Forgot password?</Link>
                 </div>
             </form>
         </div>
