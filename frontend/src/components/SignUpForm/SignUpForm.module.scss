@@ -61,6 +61,13 @@
   }
 }
 
+.error_message {
+  color: #FF0014;
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+  align-self: start;
+}
+
 
 @media screen and (max-width: 425px) {
   .sign_up_form_container {
