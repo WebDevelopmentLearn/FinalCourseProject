@@ -32,6 +32,7 @@ export const SignIn = () => {
                     <img
                         key={index}
                         src={image}
+                        loading={"lazy"}
                         alt={`Slide ${index}`}
                         className={`${styles.slider_image} ${
                             index === currentIndex ? styles.fade_in : styles.fade_out
