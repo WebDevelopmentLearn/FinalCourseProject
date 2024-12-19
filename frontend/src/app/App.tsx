@@ -16,7 +16,7 @@ function App() {
 
 
     return (
-        <div className="flex justify-center items-center">
+        <div className="app">
                 <Wrapper>
                     <MainRoute/>
                     {/*<button onClick={onButtonClick}>Toggle Theme</button>*/}

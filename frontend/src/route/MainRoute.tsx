@@ -1,6 +1,6 @@
 import {Route, Routes} from "react-router-dom";
 import {ReactElement} from "react";
-import {ForgotPassword, SignIn, SignUp} from "../pages";
+import {ForgotPassword, Home, SignIn, SignUp} from "../pages";
 
 type MainRoute = {
     (): ReactElement;
@@ -12,6 +12,7 @@ export const MainRoute: MainRoute = (): ReactElement => {
             <Route path="/signin" element={<SignIn/>}/>
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/forgot_password" element={<ForgotPassword/>}/>
+            <Route path="/" element={<Home/>}/>
         </Routes>
     )
 }

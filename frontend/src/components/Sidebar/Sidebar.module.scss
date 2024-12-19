@@ -1,0 +1,142 @@
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-right: 1px solid #d0d0d0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  gap: 30px;
+  height: 100vh;
+}
+
+//.sidebar_desktop_logo {
+//  opacity: 1;
+//  visibility: visible;
+//}
+
+.sidebar_mobile_logo {
+  display: none;
+  //opacity: 0;
+  //visibility: hidden;
+}
+
+
+
+.sidebar_links_list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+  button {
+    padding: 12px;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    span {
+      font-size: 1.6rem;
+    }
+
+    &:hover {
+      background-color: #8B8B8B;
+    }
+  }
+
+}
+
+
+.sidebar_profile {
+  margin-top: 45px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+
+    img {
+      border-radius: 50%;
+    }
+
+    span {
+      font-size: 1.6rem;
+      color: #000000;
+    }
+  }
+}
+
+
+@media screen and (max-width: 1024px) {
+
+  .sidebar_links_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar_desktop_logo {
+    //opacity: 0;
+    //visibility: hidden;
+    display: none;
+  }
+
+  .sidebar_mobile_content {
+    display: none;
+  }
+
+  .sidebar_content {
+    width: 100%;
+  }
+
+  .sidebar_mobile_logo {
+    //opacity: 1;
+    //visibility: visible;
+    display: initial;
+    width: 100%;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+  
+}
+
+
+
+@media screen and (max-width: 768px) {
+
+  .sidebar {
+    position: fixed;
+    top: initial;
+    bottom: 0;
+    left: 0;
+    height: fit-content;
+    width: 100%;
+    border-top: 1px solid #d0d0d0;
+  }
+
+  .sidebar_mobile_logo {
+    //opacity: 1;
+    //visibility: visible;
+    display: none;
+  }
+
+  .sidebar_links_list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+  }
+
+  .sidebar_profile {
+    display: none;
+  }
+
+}

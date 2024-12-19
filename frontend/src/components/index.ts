@@ -4,5 +4,6 @@ import {ForgotPasswordForm} from "./ForgotPasswordForm/ForgotPasswordForm.tsx";
 import {CustomButton} from "./CustomButton/CustomButton.tsx";
 import {CustomInput} from "./CustomInput/CustomInput.tsx";
 import {Separator} from "./Separator/Separator.tsx";
+import {Sidebar} from "./Sidebar/Sidebar.tsx";
 
-export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator};
+export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar};
