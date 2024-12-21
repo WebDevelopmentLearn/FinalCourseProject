@@ -4,6 +4,7 @@ import {MainRoute} from "../route/MainRoute.tsx";
 import {Wrapper} from "../wrapper/Wrapper.tsx";
 import {ThemeProvider, useTheme} from "../context/ThemeContext.tsx";
 import React, {useCallback} from "react";
+import {Footer, Sidebar, ThemeSwitcher} from "../components";
 
 
 function App() {
@@ -17,10 +18,15 @@ function App() {
 
     return (
         <div className="app">
+            {/*<div className="test">*/}
+                <Sidebar/>
                 <Wrapper>
+                    {/*<ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>*/}
                     <MainRoute/>
-                    {/*<button onClick={onButtonClick}>Toggle Theme</button>*/}
                 </Wrapper>
+                <Footer />
+            {/*</div>*/}
+            {/*<Footer />*/}
         </div>
     )
 }

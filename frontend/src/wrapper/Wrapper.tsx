@@ -9,6 +9,7 @@ export const Wrapper: FC<WrapperProps> = ({children}) => {
     return (
         <main className={styles.wrapper}>
             {children}
+
         </main>
     );
 };
