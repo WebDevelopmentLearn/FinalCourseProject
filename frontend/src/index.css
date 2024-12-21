@@ -13,11 +13,16 @@
 :root {
     --background-color: #ffffff;
     --text-color: #000000;
+
+    --gray-text-color: #737373;
+
+    --bgc-switcher: #452525;
 }
 
 .dark-theme {
-    --background-color: #727272;
-    --text-color: #080808;
+    --background-color: #151515;
+    --text-color: #cdcdcd;
+    --bgc-switcher: #c37474;
 }
 
 body {
