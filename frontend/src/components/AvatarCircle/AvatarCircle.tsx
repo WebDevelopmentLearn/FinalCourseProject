@@ -2,14 +2,30 @@ import {FC} from "react";
 
 type AvatarCircleProps = {
     avatar: string,
+    avatarSize?:  "small" | "medium" | "big"
     className?: string,
 }
 
 
-export const AvatarCircle: FC<AvatarCircleProps> = ({avatar, className}) => {
+export const AvatarCircle: FC<AvatarCircleProps> = ({avatar, className, avatarSize = "small"}) => {
+
+    const getSize = (): string => {
+        console.log("size: ", avatarSize);
+        switch (avatarSize) {
+            case "small":
+                return "30"
+            case "medium":
+                return "90"
+            case "big":
+                return "150"
+            default:
+                return "30"
+        }
+    }
+
 
     return (
-        <svg className={className} width="30" height="30" viewBox="0 0 200 200"
+        <svg className={className} width={getSize()} height={getSize()} viewBox="0 0 200 200"
              xmlns="http://www.w3.org/2000/svg">
 
             <defs>
@@ -32,7 +48,7 @@ export const AvatarCircle: FC<AvatarCircleProps> = ({avatar, className}) => {
             <image href={avatar}
 
                    x="0" y="0"
-                   width="90%" height="90%"
+                   width="100%" height="100%"
                    clipPath="url(#circleClip)"
             />
         </svg>
