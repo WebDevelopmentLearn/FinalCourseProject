@@ -1,0 +1,52 @@
+
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  //flex-wrap: wrap;
+  //gap: 40px;
+}
+//
+.home_posts__list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin: 70px;//16px
+}
+
+
+.home_end {
+  text-align: center;
+  margin-bottom: 72px;
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 400;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #737373;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .home_posts__list {
+    margin: 16px;
+  }
+  
+}
+
+
+@media screen and (max-width: 425px) {
+
+  .home_posts__list {
+    width: 80vw;
+  }
+  
+}
