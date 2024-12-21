@@ -4,4 +4,6 @@ import {ForgotPassword} from "./ForgotPassword/ForgotPassword.tsx";
 import {Home} from "./Home/Home.tsx";
 import {NotFound} from "./NotFound/NotFound.tsx";
 
-export {SignIn, SignUp, ForgotPassword, Home, NotFound};
+import {Profile} from "./Profile/Profile.tsx";
+
+export {SignIn, SignUp, ForgotPassword, Home, NotFound, Profile};

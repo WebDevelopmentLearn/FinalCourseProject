@@ -1,6 +1,6 @@
 import {Navigate, Route, Routes} from "react-router-dom";
 import {ReactElement} from "react";
-import {ForgotPassword, Home, NotFound, SignIn, SignUp} from "../pages";
+import {ForgotPassword, Home, NotFound, Profile, SignIn, SignUp} from "../pages";
 
 type MainRoute = {
     (): ReactElement;
@@ -13,6 +13,7 @@ export const MainRoute: MainRoute = (): ReactElement => {
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/forgot_password" element={<ForgotPassword/>}/>
             <Route path="/" element={<Home/>}/>
+            <Route path="/profile" element={<Profile />} />
             <Route path="/404" element={<NotFound />} />
             <Route path="*" element={<Navigate to="/404"/>} />
         </Routes>
