@@ -17,6 +17,10 @@
     --gray-text-color: #737373;
 
     --bgc-switcher: #452525;
+
+    --sidebar-small-width: 72px;
+    --sidebar-medium-width: 244px;
+    --sidebar-big-width: 335px;
 }
 
 .dark-theme {

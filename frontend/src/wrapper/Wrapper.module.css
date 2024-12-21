@@ -3,19 +3,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 10% 0 215px;
+  flex-grow: 1;
+  width: calc(100% - var(--sidebar-big-width));
 }
 
 @media screen and (max-width: 1024px) {
   .wrapper {
     padding: 0;
-    margin: 0 5%;
+    width: calc(100% - var(--sidebar-medium-width));
   }
 }
 @media screen and (max-width: 768px) {
   .wrapper {
     padding: 0;
-    margin: 0 5%;
+    width: calc(100% - var(--sidebar-small-width));
   }
 }
 
