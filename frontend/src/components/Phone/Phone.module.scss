@@ -1,0 +1,56 @@
+
+.signin_image_container {
+  background-image: url("../../assets/signin/sign_in_phone_bg4.png");
+  background-repeat: no-repeat;
+  background-size: contain;//468.32px 634.15px
+  //background-clip: border-box;
+  width: 380px;
+  height: 581.15px;
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+  //background-color: black;
+
+
+  //img {
+  //  width: 250px;
+  //  height: 538.84px;
+  //  position: absolute;
+  //  top: 26px;
+  //  right: 19px;
+  //  //transition-timing-function
+  //  transition-timing-function: ease-in-out;
+  //}
+}
+
+.slider_image {
+  width: 250px;
+  height: 538.84px;
+  position: absolute;
+  top: 26px;
+  right: 19px;
+
+  object-fit: cover;
+  transition: opacity 1s ease-in-out;
+  opacity: 0;
+  z-index: 1;
+}
+
+.slider_image.fade_in {
+  opacity: 1;
+  z-index: 2;
+}
+
+
+
+
+
+
+
+
+@media screen and (max-width: 940px) {
+  .signin_image_container {
+    display: none;
+  }
+
+}

@@ -5,6 +5,7 @@
   left: 0;
   background-color: var(--background-color);
   border-right: 1px solid #d0d0d0;
+  flex: 0 0 215px;
 
   display: flex;
   flex-direction: column;
@@ -84,6 +85,11 @@
 
 
 @media screen and (max-width: 1024px) {
+
+  .sidebar {
+    flex: 0;
+  }
+
 
   .sidebar_links_list {
     display: flex;

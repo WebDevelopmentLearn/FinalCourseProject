@@ -1,0 +1,49 @@
+.not_found {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  margin: 10%;
+  gap: 42px;
+  flex-grow: 1;
+
+}
+
+//.phone_container {
+//  width: 100%;
+//}
+
+
+.not_found_container__text {
+  //width: 100%;
+
+  h1 {
+    font-size: 3.6rem;
+    font-weight: 700;
+
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #737373;
+  }
+}
+
+@media screen and (max-width: 940px) {
+  .not_found {
+    //margin: 5% 0;
+    justify-content: center;
+    align-items: center;
+    //width: 100%;
+    text-align: center;
+  }
+
+  .phone_container {
+    display: none;
+  }
+
+  .not_found_container__text {
+    width: 100%;
+  }
+
+}

@@ -5,6 +5,7 @@ import {Wrapper} from "../wrapper/Wrapper.tsx";
 import {ThemeProvider, useTheme} from "../context/ThemeContext.tsx";
 import React, {useCallback} from "react";
 import {Footer, Sidebar, ThemeSwitcher} from "../components";
+import {useLocation} from "react-router-dom";
 
 
 function App() {
@@ -16,15 +17,20 @@ function App() {
     }, [theme, setTheme]);
 
 
+    const location = useLocation();
+    // Список маршрутов, где нужно отобразить элемент
+    const routesWithNavbar = ["/signin", "/signup", "/forgot_password"];
+
     return (
         <div className="app">
             {/*<div className="test">*/}
-                <Sidebar/>
+            {!routesWithNavbar.includes(location.pathname) && <Sidebar/>}
+
                 <Wrapper>
                     {/*<ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>*/}
                     <MainRoute/>
                 </Wrapper>
-                <Footer />
+            {!routesWithNavbar.includes(location.pathname) && <Footer/>}
             {/*</div>*/}
             {/*<Footer />*/}
         </div>
