@@ -40,3 +40,8 @@ button {
     cursor: pointer;
 }
 
+
+.active.activeLink {
+    color: #9c60e7;
+}
+

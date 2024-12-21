@@ -1,4 +1,4 @@
-import {Link, useNavigate} from "react-router-dom";
+import {Link, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import React, {useCallback} from "react";
 import styles from "./Sidebar.module.scss";
@@ -53,7 +53,9 @@ export const Sidebar = () => {
                     </path>
                 </svg>
                 <div className={styles.sidebar_links_list}>
-                    <button onClick={handleGoToHomeLink}>
+                    <NavLink
+                        className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : null}
+                        to={"/"} onClick={handleGoToHomeLink}>
                         <img src={homeIcon} alt="homeIcon"/>
                         {/*<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
                         {/*    <path*/}
@@ -61,40 +63,44 @@ export const Sidebar = () => {
                         {/*        stroke="black" stroke-width="2" stroke-linejoin="round"/>*/}
                         {/*</svg>*/}
                         <span className={styles.sidebar_mobile_content}>Home</span>
-                    </button>
+                    </NavLink>
 
-                    <button onClick={handleOpenSearch}>
+                    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/search"} onClick={handleOpenSearch}>
                         <img src={searchIcon} alt="searchIcon"/>
                         <span className={styles.sidebar_mobile_content}>Search</span>
-                    </button>
+                    </NavLink>
 
-                    <button onClick={handleGoToExplore}>
+                    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/explore"} onClick={handleGoToExplore}>
                         <img src={exploreIcon} alt="exploreIcon"/>
                         <span className={styles.sidebar_mobile_content}>Explore</span>
-                    </button>
+                    </NavLink>
 
-                    <button onClick={handleOpenMessages}>
+                    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/messages"} onClick={handleOpenMessages}>
                         <img src={messageIcon} alt="messageIcon"/>
                         <span className={styles.sidebar_mobile_content}>Messages</span>
-                    </button>
+                    </NavLink>
 
-                    <button onClick={handleOpenNotifications}>
+                    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/notifications"} onClick={handleOpenNotifications}>
                         <img src={notificationIcon} alt="notificationIcon"/>
                         <span className={styles.sidebar_mobile_content}>Notification</span>
-                    </button>
+                    </NavLink>
 
-                    <button onClick={handleOpenCreate}>
+                    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/create"} onClick={handleOpenCreate}>
                         <img src={createIcon} alt="createIcon"/>
                         <span className={styles.sidebar_mobile_content}>Create</span>
-                    </button>
+                    </NavLink>
                 </div>
 
-                <div className={styles.sidebar_profile}>
-                    <Link to={"/profile"}>
-                        <img src={profileAvatar} alt="profileAvatar"/>
-                        <span className={styles.sidebar_mobile_content}>Profile</span>
-                    </Link>
-                </div>
+                {/*<div className={styles.sidebar_profile}>*/}
+                {/*    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : null} to={"/profile"}>*/}
+                {/*        <img src={profileAvatar} alt="profileAvatar"/>*/}
+                {/*        <span className={styles.sidebar_mobile_content}>Profile</span>*/}
+                {/*    </NavLink>*/}
+                {/*</div>*/}
+                <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? `active activeLink ${styles.sidebar_profile}` : styles.sidebar_profile} to={"/profile"}>
+                    <img src={profileAvatar} alt="profileAvatar"/>
+                    <span className="text">Profile</span>
+                </NavLink>
             </div>
         </div>
     );
