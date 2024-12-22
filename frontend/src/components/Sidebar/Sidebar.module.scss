@@ -2,7 +2,8 @@
 .sidebar {
   position: fixed;
   top: 0;
-  left: 0;
+  left: -5px;
+  z-index: 1;
   background-color: var(--background-color);
   border-right: 1px solid #d0d0d0;
   flex: 0 0 215px;
@@ -13,6 +14,8 @@
   justify-content: space-between;
   gap: 30px;
   height: 100vh;
+  margin: 6px;
+
 }
 
 //.sidebar_content {
@@ -42,22 +45,27 @@
   gap: 4px;
 
 
+
+
   a {
-    padding: 12px;
+
+    padding: 8px;
     border: none;
     background-color: transparent;
     display: flex;
     align-items: center;
     gap: 6px;
-
+    border-radius: 8px;
     text-decoration: none;
     color: #000000;
+    transition: background-color 0.5s;
+
     span {
       font-size: 1.6rem;
     }
 
     &:hover {
-      background-color: #8B8B8B;
+      background-color: #f1f1f1;
     }
   }
 
@@ -66,12 +74,13 @@
 
 .sidebar_profile {
   margin-top: 45px;
-  padding: 12px;
+  padding: 12px 8px;
   display: flex;
   align-items: center;
 
   gap: 4px;
   text-decoration: none;
+  border-radius: 8px;
 
   img {
     border-radius: 50%;
@@ -80,6 +89,12 @@
   span {
     font-size: 1.6rem;
     color: #000000;
+  }
+
+  transition: background-color 0.5s;
+
+  &:hover {
+    background-color: #f1f1f1;
   }
 
 
@@ -137,6 +152,19 @@
     margin-top: 32px;
     margin-bottom: 32px;
   }
+
+
+  .sidebar_profile {
+    padding: 4px;
+  }
+
+  .sidebar_avatar {
+    width: 100%;
+  }
+
+  .text {
+    display: none;
+  }
   
 }
 
@@ -147,11 +175,12 @@
   .sidebar {
     position: fixed;
     top: initial;
-    bottom: 0;
+    bottom: -6px;
     left: 0;
     height: fit-content;
     width: 100%;
     border-top: 1px solid #d0d0d0;
+
   }
 
   .sidebar_mobile_logo {

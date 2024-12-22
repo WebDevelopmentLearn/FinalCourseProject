@@ -98,8 +98,8 @@ export const Sidebar = () => {
                 {/*    </NavLink>*/}
                 {/*</div>*/}
                 <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? `active activeLink ${styles.sidebar_profile}` : styles.sidebar_profile} to={"/profile"}>
-                    <img src={profileAvatar} alt="profileAvatar"/>
-                    <span className="text">Profile</span>
+                    <img className={styles.sidebar_avatar} src={profileAvatar} alt="profileAvatar"/>
+                    <span className={styles.text}>Profile</span>
                 </NavLink>
             </div>
         </div>

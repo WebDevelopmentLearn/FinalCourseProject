@@ -1,9 +1,9 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  flex-grow: 1;
+  flex: 1;
   width: calc(100% - var(--sidebar-big-width));
 }
 
