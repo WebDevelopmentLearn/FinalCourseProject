@@ -10,7 +10,7 @@ type AvatarCircleProps = {
 export const AvatarCircle: FC<AvatarCircleProps> = ({avatar, className, avatarSize = "small"}) => {
 
     const getSize = (): string => {
-        console.log("size: ", avatarSize);
+        // console.log("size: ", avatarSize);
         switch (avatarSize) {
             case "small":
                 return "30"
