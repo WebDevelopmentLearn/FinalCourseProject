@@ -1,6 +1,6 @@
-import {Link, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
+import {Link, NavigateFunction, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
 import logo from "../../assets/logo.svg";
-import React, {useCallback} from "react";
+import React, {FC, MutableRefObject, useCallback, useRef, useState} from "react";
 import styles from "./Sidebar.module.scss";
 
 import homeIcon from "../../assets/sidebar/home_icon.svg";
@@ -13,9 +13,15 @@ import createIcon from "../../assets/sidebar/create_icon.svg";
 import profileAvatar from "../../assets/ich_logo.png";
 
 
-export const Sidebar = () => {
+export const Sidebar: FC = () => {
 
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
+
+    const sidebarRef: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
+
+
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
+
 
     const handleGoToHomeLink = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/");
@@ -23,6 +29,18 @@ export const Sidebar = () => {
 
     const handleOpenSearch = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         // open search
+        if (sidebarRef.current) {
+            sidebarRef.current.classList.add(styles.small);
+            setIsSearchModalOpen(true);
+        }
+
+        console.log(event.target)
+
+        // setTimeout(() => {
+        //     event.target
+        // }, 500);
+
+        console.log("handleOpenSearch");
     }, []);
 
     const handleGoToExplore = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -40,10 +58,22 @@ export const Sidebar = () => {
     const handleOpenCreate = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         // open create
     }, []);
+    const handleCloseModal = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+
+
+        const target: EventTarget = event.target;
+
+        if (sidebarRef.current) {
+
+            sidebarRef.current.classList.remove(styles.small);
+            setIsSearchModalOpen(false);
+        }
+        console.log("handleCloseModal");
+    }, []);
 
 
     return (
-        <div className={styles.sidebar}>
+        <div ref={sidebarRef} className={`${styles.sidebar}`}>
             <div className={styles.sidebar_content}>
                 <img className={styles.sidebar_desktop_logo} src={logo} alt="logo"/>
                 <svg aria-label="Instagram" className={styles.sidebar_mobile_logo} fill="currentColor" height="24"
@@ -54,7 +84,7 @@ export const Sidebar = () => {
                 </svg>
                 <div className={styles.sidebar_links_list}>
                     <NavLink
-                        className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : null}
+                        className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""}
                         to={"/"} onClick={handleGoToHomeLink}>
                         <img src={homeIcon} alt="homeIcon"/>
                         {/*<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
@@ -65,10 +95,12 @@ export const Sidebar = () => {
                         <span className={styles.sidebar_mobile_content}>Home</span>
                     </NavLink>
 
-                    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/search"} onClick={handleOpenSearch}>
+                    <button
+                        // className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/search"}
+                        onClick={handleOpenSearch}>
                         <img src={searchIcon} alt="searchIcon"/>
                         <span className={styles.sidebar_mobile_content}>Search</span>
-                    </NavLink>
+                    </button>
 
                     <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""} to={"/explore"} onClick={handleGoToExplore}>
                         <img src={exploreIcon} alt="exploreIcon"/>
@@ -102,6 +134,14 @@ export const Sidebar = () => {
                     <span className={styles.text}>Profile</span>
                 </NavLink>
             </div>
+            {isSearchModalOpen && (
+                <div className={`${styles.modal_layout} ${isSearchModalOpen ? styles.active : ""}`} onClick={handleCloseModal}>
+                    <div className={styles.modal} onClick={(event) => event.stopPropagation()}>
+                        <h2>Search</h2>
+                        <input type="search" placeholder="Search"/>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
