@@ -1,18 +1,31 @@
 
 .sidebar {
-  @apply
-    fixed top-0 left-0 z-[3]
-    bg-white h-[100%] p-5
-    border-r-[1px] border-solid border-gray-200 border-t-0 border-b-0 border-l-0
-  ;
+  position: fixed;
+  top: 0;
+  left: -5px;
+  z-index: 3;
+  background-color: var(--background-color);
+  border-right: 1px solid #d0d0d0;
+  flex: 0 0 215px;
 
-  .sidebar_content {
-    @apply  flex items-start flex-col gap-12;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+  gap: 30px;
+  height: 100vh;
+  margin: 6px;
 
 }
 
 
+//.sidebar_content {
+//  display: flex;
+//  flex-direction: column;
+//  justify-content: center;
+//  align-items: start;
+//
+//}
 
 .sidebar_desktop_logo {
   width: 50%;
@@ -21,6 +34,42 @@
 
 .sidebar_mobile_logo {
   display: none;
+  //opacity: 0;
+  //visibility: hidden;
+}
+
+
+
+.sidebar_links_list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+
+
+
+  a, button {
+
+    padding: 8px;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #000000;
+    transition: background-color 0.5s;
+
+    span {
+      font-size: 1.6rem;
+    }
+
+    &:hover {
+      background-color: #f1f1f1;
+    }
+  }
+
 }
 
 
@@ -33,10 +82,9 @@
   gap: 4px;
   text-decoration: none;
   border-radius: 8px;
-  width: 100%;
+
   img {
     border-radius: 50%;
-
   }
 
   span {
@@ -51,8 +99,58 @@
   }
 
 
+  //a {
+  //  display: flex;
+  //  align-items: center;
+  //  gap: 4px;
+  //  text-decoration: none;
+  //
+  //  img {
+  //    border-radius: 50%;
+  //  }
+  //
+  //  span {
+  //    font-size: 1.6rem;
+  //    color: #000000;
+  //  }
+  //}
 }
 
+.small {
+
+  .sidebar_links_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar_desktop_logo {
+    display: none;
+  }
+
+
+  .sidebar_mobile_logo {
+    //opacity: 1;
+    //visibility: visible;
+    display: initial;
+    width: 100%;
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  .sidebar_mobile_content {
+    display: none;
+  }
+
+  .sidebar_content {
+    width: 100%;
+  }
+
+  .text {
+    display: none;
+  }
+}
 
 .modal_layout {
   position: fixed;
@@ -79,7 +177,8 @@
 .modal {
   height: 100vh;
   background-color: #ffffff;
-  width: 400px;
+  //width: max-content;
+  max-width: 400px;
   border-radius: 0 16px 16px 0;
   padding: 16px;
 
@@ -88,23 +187,53 @@
     font-weight: 600;
     margin: 8px;
   }
+
+  input {
+    width: 100%;
+    padding: 10px 16px;
+    border: 1px solid #d0d0d0;
+    background-color: #EFEFEF;
+    border-radius: 8px;
+
+    font-size: 1.6rem;
+    font-weight: 300;
+    margin-bottom: 46px;
+
+    &:focus {
+      outline: 1px solid #7838db;
+    }
+  }
 }
+
 
 
 @media screen and (max-width: 1024px) {
 
   .sidebar {
-    width: var(--sidebar-small-width);
+    flex: 0;
+  }
 
-    .sidebar_content {
-      @apply items-center;
-    }
+
+  .sidebar_links_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .sidebar_desktop_logo {
+    //opacity: 0;
+    //visibility: hidden;
     display: none;
   }
 
+  .sidebar_mobile_content {
+    display: none;
+  }
+
+  .sidebar_content {
+    width: 100%;
+  }
 
   .sidebar_mobile_logo {
     //opacity: 1;
@@ -127,7 +256,7 @@
   .text {
     display: none;
   }
-
+  
 }
 
 
@@ -135,19 +264,29 @@
 @media screen and (max-width: 768px) {
 
   .sidebar {
-    @apply fixed top-auto bottom-0 left-0 h-fit w-full
-    border-t-[1px] border-solid border-gray-200 border-l-0 border-b-0 border-r-0
-    ;
+    position: fixed;
+    top: initial;
+    bottom: -6px;
+    left: 0;
+    height: fit-content;
+    width: 100%;
+    border-top: 1px solid #d0d0d0;
 
-    .sidebar_content {
-      @apply flex-row gap-6;
-    }
   }
 
   .sidebar_mobile_logo {
+    //opacity: 1;
+    //visibility: visible;
     display: none;
   }
 
+  .sidebar_links_list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+  }
 
   .sidebar_profile {
     display: none;
