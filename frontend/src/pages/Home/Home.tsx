@@ -14,7 +14,6 @@ export const Home = () => {
                         <PostCard key={index}/>
                     ))}
 
-
                 </div>
                 <div className={styles.home_end}>
                     <img src={check} alt="check"/>
