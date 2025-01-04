@@ -1,0 +1,67 @@
+
+.messages {
+  display: flex;
+  flex: 1;
+
+  width: 100%;
+  height: 100%;
+  //width: calc(100% - var(--sidebar-big-width));
+}
+
+.interlocutors_container {
+  border-right: 1px solid #ccc;
+  width: 400px;
+
+
+  h1 {
+    font-size: 2.0rem;
+    padding: 24px;
+  }
+
+  .interlocutors_list {
+    display: flex;
+    flex-direction: column;
+
+
+  }
+}
+
+
+
+
+.current_interlocutor {
+  width: 100%;
+}
+
+.current_interlocutor_details {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  padding: 16px;
+  img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .messages {
+    flex-direction: column;
+
+  }
+
+  .interlocutors_container {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+  }
+
+}

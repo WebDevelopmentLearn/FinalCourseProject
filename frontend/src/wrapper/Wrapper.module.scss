@@ -9,15 +9,14 @@
   flex: 1;
   //margin-left: 215px;
   //padding: 0 10% 0 215px;
-  width: calc(100% - var(--sidebar-big-width));
-
+  width: calc(100% - var(--sidebar-medium-width));
 }
 
 @media screen and (max-width: 1024px) {
   .wrapper {
     padding: 0;
     //margin: 0 5%;
-    width: calc(100% - var(--sidebar-medium-width));
+    width: calc(100% - var(--sidebar-small-width));
   }
 
 }
@@ -26,7 +25,7 @@
   .wrapper {
     padding: 0;
     //margin: 0 5%;
-    width: calc(100% - var(--sidebar-small-width));
+    width: 100%;
   }
   
 }

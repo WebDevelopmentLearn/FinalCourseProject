@@ -2,19 +2,20 @@
 .sidebar {
   position: fixed;
   top: 0;
-  left: -5px;
+  left: 0;
   z-index: 3;
   background-color: var(--background-color);
   border-right: 1px solid #d0d0d0;
-  flex: 0 0 215px;
-
+  flex: 0 0 var(--sidebar-medium-width);
+  width: var(--sidebar-medium-width);
   display: flex;
   flex-direction: column;
   align-items: start;
   justify-content: space-between;
   gap: 30px;
   height: 100vh;
-  margin: 6px;
+  padding-left: 24px;
+
 
 }
 
@@ -211,6 +212,8 @@
 
   .sidebar {
     flex: 0;
+    padding-left: 0;
+    width: var(--sidebar-small-width);
   }
 
 
@@ -246,7 +249,8 @@
 
 
   .sidebar_profile {
-    padding: 4px;
+    padding: 16px;
+    //width: 100%;
   }
 
   .sidebar_avatar {

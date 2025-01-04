@@ -7,9 +7,12 @@ import {Separator} from "./Separator/Separator.tsx";
 import {Sidebar} from "./Sidebar/Sidebar.tsx";
 
 import {PostCard} from "./PostCard/PostCard.tsx";
+import {InterlocutorCard} from "./InterlocutorCard/InterlocutorCard.tsx";
+
 import {ThemeSwitcher} from "./ThemeSwitcher/ThemeSwitcher.tsx";
 import {AvatarCircle} from "./AvatarCircle/AvatarCircle.tsx";
 import {Phone} from "./Phone/Phone.tsx";
+
 import {Footer} from "./Footer/Footer.tsx";
 
-export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, ThemeSwitcher, AvatarCircle, Footer, Phone};
+export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, InterlocutorCard, ThemeSwitcher, AvatarCircle, Footer, Phone};
