@@ -197,7 +197,8 @@ export const Explore = () => {
             }}
         >
             {posts.map((post, index) => (
-                <div
+                <Link
+                    to={`/post/${post.id}`}
                     key={post.id}
                     className={styles.exploreItem}
                     style={{
@@ -205,7 +206,7 @@ export const Explore = () => {
                     }}
                 >
                     <img src={post.image} alt={`Post ${post.id}`} />
-                </div>
+                </Link>
             ))}
 
         </div>
