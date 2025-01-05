@@ -144,6 +144,8 @@
       padding: 8px 16px;
       margin: 8px 0;
       font-size: 1.2rem;
+      min-width: 250px;
+      max-width: 50%;
 
       color: var(--primary-text-color);
       //max-width: 50%;
@@ -169,7 +171,8 @@
       padding: 8px 16px;
       margin: 8px 0;
       font-size: 1.2rem;
-      //max-width: 50%;
+      min-width: 250px;
+      max-width: 50%;
     }
   }
 }
@@ -209,6 +212,11 @@
 
   .current_interlocutor_details {
     padding: 24px;
+  }
+
+  .chat_container {
+    padding-left: 4px;
+    padding-right: 4px;
   }
 
 }
