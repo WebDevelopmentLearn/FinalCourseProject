@@ -1,7 +1,19 @@
 import styles from "./Profile.module.scss";
 import {Link} from "react-router-dom";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {AvatarCircle} from "../../components";
+import {AvatarCircle, PostCardInProfile} from "../../components";
+
+import firstPost from "../../assets/profile/posts/1.png";
+import secondPost from "../../assets/profile/posts/2.png";
+import thirdPost from "../../assets/profile/posts/3.png";
+import fourthPost from "../../assets/profile/posts/4.png";
+import fifthPost from "../../assets/profile/posts/5.png";
+import sixthPost from "../../assets/profile/posts/6.png";
+
+interface Post {
+    postId: number;
+    image: string;
+}
 
 export const Profile = () => {
 
@@ -11,6 +23,33 @@ export const Profile = () => {
     const posts: number = 129;
     const followers: number = 9993;
     const following: number = 59;
+
+    const postsArr: Post[] = [
+        {
+            postId: 1,
+            image: firstPost
+        },
+        {
+            postId: 2,
+            image: secondPost
+        },
+        {
+            postId: 3,
+            image: thirdPost
+        },
+        {
+            postId: 4,
+            image: fourthPost
+        },
+        {
+            postId: 5,
+            image: fifthPost
+        },
+        {
+            postId: 6,
+            image: sixthPost
+        }
+    ]
 
     return (
         <div className={styles.profile}>
@@ -55,7 +94,11 @@ export const Profile = () => {
 
             </div>
 
-            <div className={styles.profile_posts}></div>
+            <div className={styles.profile_posts}>
+                {postsArr.map((post: Post) => (
+                    <PostCardInProfile key={post.postId} post={post} />
+                ))}
+            </div>
         </div>
     );
 };
