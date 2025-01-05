@@ -43,7 +43,9 @@ export const Messages = () => {
                         </div>
                         <button className={styles.view_profile_btn}>View Profile</button>
                     </div>
-                    <h4>Jun 26, 2024, 08:49 PM.</h4>
+                    <div className={styles.last_online}>
+                        <h4>Jun 26, 2024, 08:49 PM.</h4>
+                    </div>
 
                     <div className={styles.chat_history}>
                         <div className={styles.message_of_interlocutor}>
@@ -97,6 +99,69 @@ export const Messages = () => {
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                 <span>2 wek</span>
                             </div>
+                        </div>
+
+                        <div className={styles.my_message}>
+                            <div className={styles.my_message_text}>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <span>2 wek</span>
+                            </div>
+                            <img src={sasha_avatar} alt=""/>
+                        </div>
+
+                        <div className={styles.my_message}>
+                            <div className={styles.my_message_text}>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <span>2 wek</span>
+                            </div>
+                            <img src={sasha_avatar} alt=""/>
+                        </div>
+
+                        <div className={styles.my_message}>
+                            <div className={styles.my_message_text}>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <span>2 wek</span>
+                            </div>
+                            <img src={sasha_avatar} alt=""/>
+                        </div>
+
+                        <div className={styles.my_message}>
+                            <div className={styles.my_message_text}>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <span>2 wek</span>
+                            </div>
+                            <img src={sasha_avatar} alt=""/>
+                        </div>
+
+                        <div className={styles.my_message}>
+                            <div className={styles.my_message_text}>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <span>2 wek</span>
+                            </div>
+                            <img src={sasha_avatar} alt=""/>
+                        </div>
+
+                        <div className={styles.my_message}>
+                            <div className={styles.my_message_text}>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <span>2 wek</span>
+                            </div>
+                            <img src={sasha_avatar} alt=""/>
+                        </div>
+
+                        <div className={styles.my_message}>
+                            <div className={styles.my_message_text}>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
+                                <span>2 wek</span>
+                            </div>
+                            <img src={sasha_avatar} alt=""/>
                         </div>
 
                         <div className={styles.my_message}>

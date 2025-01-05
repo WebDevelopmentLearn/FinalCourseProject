@@ -12,27 +12,40 @@
 
 
 :root {
-    --background-color: #ffffff;
-    --text-color: #000000;
-
-    --gray-text-color: #737373;
 
     --bgc-switcher: #452525;
 
     --sidebar-small-width: 72px;
     --sidebar-medium-width: 244px;
     --sidebar-big-width: 335px;
+
+
+    /*Colors*/
+    --bgc-input: #EFEFEF;
+    --bgc: #ffffff;
+    --secondary-bgc: #EFEFEF;
+    --primary-text-color: #000000;
+    --secondary-text-color: #737373;
+    --primary-icon-color: #000000;
+    --border-color: #d0d0d0;
+    --hover-color: #f1f1f1;
 }
 
 .dark-theme {
-    --background-color: #151515;
-    --text-color: #cdcdcd;
-    --bgc-switcher: #c37474;
+    /*Colors*/
+    --bgc: #151515;
+    --secondary-bgc: #8a8a8a;
+    --bgc-input: #2e2e2e;
+    --primary-text-color: #cdcdcd;
+    --secondary-text-color: #989898;
+    --primary-icon-color: #cdcdcd;
+    --border-color: #3f3f3f;
+    --hover-color: #565656;
 }
 
 body {
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--bgc);
+    color: var(--primary-text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
 
 }

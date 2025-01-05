@@ -9,7 +9,7 @@
 }
 
 .interlocutors_container {
-  border-right: 1px solid #ccc;
+  border-right: 1px solid var(--border-color);
   width: 400px;
 
 
@@ -38,7 +38,7 @@
   justify-content: start;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border-color);
   width: 100%;
   padding: 16px;
   img {
@@ -86,7 +86,7 @@
       margin-bottom: 16px;
       span {
         font-size: 1.4rem;
-        color: #737373;
+        color: var(--primary-text-color);
       }
 
     }
@@ -102,10 +102,18 @@
 
       transition: background-color 0.5s;
       &:hover {
-        background-color: #ccc;
+        background-color: #aaaaaa;
       }
     }
   }
+}
+
+.last_online {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  margin-bottom: 4px;
 }
 
 
@@ -115,7 +123,8 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
+  overflow-x: scroll;
+  max-height: 500px;
 
   .message_of_interlocutor {
     justify-self: start;
@@ -130,11 +139,13 @@
 
 
     .message_of_interlocutor_text {
-      background-color: #EFEFEF;
+      background-color: var(--secondary-bgc);
       border-radius: 8px;
       padding: 8px 16px;
       margin: 8px 0;
       font-size: 1.2rem;
+
+      color: var(--primary-text-color);
       //max-width: 50%;
     }
   }
@@ -169,7 +180,7 @@
 
   .chat_input {
     width: 100%;
-    color: #8E8E8E;
+    color: var(--secondary-text-color);
     font-size: 1.6rem;
     padding: 13px 52px;
     border-radius: 22px;
@@ -193,7 +204,7 @@
 
   .interlocutors_container {
     width: 100%;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid var(--border-color);
   }
 
   .current_interlocutor_details {
