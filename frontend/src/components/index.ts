@@ -13,7 +13,7 @@ import {InterlocutorCard} from "./InterlocutorCard/InterlocutorCard.tsx";
 import {ThemeSwitcher} from "./ThemeSwitcher/ThemeSwitcher.tsx";
 import {AvatarCircle} from "./AvatarCircle/AvatarCircle.tsx";
 import {Phone} from "./Phone/Phone.tsx";
-
+import {ExpandableText} from "./ExpandableText/ExpandableText.tsx";
 import {Footer} from "./Footer/Footer.tsx";
 
-export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, ThemeSwitcher, AvatarCircle, Footer, Phone};
+export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText};

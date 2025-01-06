@@ -31,6 +31,28 @@
 
 }
 
+.profile_stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  span {
+    font-size: 1.6rem;
+  }
+}
+
+.profile_about {
+  p {
+    font-size: 1.4rem;
+  }
+
+  .profile_desc {
+    line-height: 26px;
+    overflow: hidden;
+  }
+}
+
 
 .profile_follow_and_message_btn_container {
   display: flex;
@@ -110,6 +132,12 @@
   .profile_info__first {
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .profile_posts {
+    display: flex;
+    justify-content: center;
+
   }
   
 }

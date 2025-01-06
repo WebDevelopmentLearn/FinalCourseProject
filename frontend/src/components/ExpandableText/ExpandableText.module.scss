@@ -1,0 +1,26 @@
+
+.expandableTextContainer {
+  //position: relative;
+  //margin-bottom: 20px;
+  //height: 100%;
+}
+
+.expandableText {
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  line-height: 1.6;
+}
+
+.expandBtn {
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+  color: var(--primary-text-color);
+
+  transition: color 0.5s ease;
+  margin-bottom: 16px;
+}
+
+.expandBtn:hover {
+  color: #007bff;
+}
