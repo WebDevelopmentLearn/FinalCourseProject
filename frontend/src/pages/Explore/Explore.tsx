@@ -23,7 +23,7 @@ export const Explore = () => {
     const posts: Post[] = [
         {
             id: 1,
-            image: firstImage
+            image: thirdImage
         },
         {
             id: 2,
@@ -147,67 +147,15 @@ export const Explore = () => {
     ];
 
 
-    /**
-     * Генерация шаблона `grid-template-areas` для блоков с изображениями
-     * @param count Количество блоков
-     * @returns Строка с шаблоном `grid-template-areas`
-     * @author ChatGPT
-     */
-    const generateGridTemplateAreas = (count: number) => {
-        const baseTemplate = [
-            `"item-1 item-2 item-3"`,
-            `"item-4 item-5 item-3"`,
-            `"item-6 item-7 item-8"`,
-            `"item-6 item-9 item-10"`,
-        ];// Шаблон, по которому будут генерироваться блоки с изображениями
-
-        let fullTemplate: string[] = [];//
-
-        // Генерация полных блоков по 10 элементов
-        for (let i = 0; i < Math.floor(count / 10); i++) {
-            const adjustedTemplate = baseTemplate.map(row =>
-                row.replace(/item-(\d+)/g, (_, num) => `item-${Number(num) + i * 10}`)
-            );
-            fullTemplate = [...fullTemplate, ...adjustedTemplate];
-        }
-
-        // Обработка оставшихся элементов (менее 10)
-        const remaining = count % 10;
-        if (remaining > 0) {
-            const remainingTemplate: string[] = [];
-            for (let i = 1; i <= remaining; i++) {
-                const row = Math.ceil(i / 3); // Рассчитываем строку
-                if (!remainingTemplate[row - 1]) remainingTemplate[row - 1] = `"`;
-                remainingTemplate[row - 1] += `item-${i + Math.floor(count / 10) * 10} `;
-            }
-            fullTemplate = [...fullTemplate, ...remainingTemplate.map(row => row.trim() + `"`)];
-        }
-
-        return fullTemplate.join(" ");
-    };
-
-    const gridTemplateAreas = generateGridTemplateAreas(posts.length);
-
-
     return (
-        <div
-            className={styles.exploreContainer}
-            style={{
-                gridTemplateAreas: gridTemplateAreas
-            }}
-        >
-            {posts.map((post, index) => (
-                <Link
-                    to={`/post/${post.id}`}
-                    key={post.id}
-                    className={styles.exploreItem}
-                    style={{
-                        gridArea: `item-${index + 1}`,
-                    }}
-                >
-                    <img src={post.image} alt={`Post ${post.id}`} />
-                </Link>
-            ))}
+        <div className={styles.exploreContainer}>
+            {posts.map((post) => {
+                return (
+                    <Link to={`/post/${post.id}`} key={post.id} className={styles.exploreItem}>
+                        <img src={post.image} alt={`Post ${post.id}`} />
+                    </Link>
+                )
+            })}
 
         </div>
     );

@@ -7,9 +7,12 @@
   align-items: center;
   //margin: 0 10% 0 215px;
   flex: 1;
-  //margin-left: 215px;
-  //padding: 0 10% 0 215px;
-  width: calc(100% - var(--sidebar-medium-width));
+
+  width: 100%;
+}
+
+.wrapper_with_sidebar {
+  //width: calc(100% - var(--sidebar-medium-width));
 }
 
 @media screen and (max-width: 1024px) {

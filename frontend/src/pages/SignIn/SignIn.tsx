@@ -2,14 +2,11 @@ import {Link} from "react-router-dom";
 
 import {Phone, SignInForm} from "../../components";
 import styles from "./SignIn.module.scss";
-import {useEffect, useState} from "react";
 
 
 export const SignIn = () => {
 
 
-    
-    
     return (
         <div className={styles.signin}>
 

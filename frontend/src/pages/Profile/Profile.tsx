@@ -1,7 +1,7 @@
 import styles from "./Profile.module.scss";
 import {Link} from "react-router-dom";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {AvatarCircle, ExpandableText, PostCardInProfile} from "../../components";
+import {AvatarCircle, ExpandableText, PostCardInProfile, ProfilePostModal} from "../../components";
 
 import firstPost from "../../assets/profile/posts/1.png";
 import secondPost from "../../assets/profile/posts/2.png";
@@ -9,6 +9,7 @@ import thirdPost from "../../assets/profile/posts/3.png";
 import fourthPost from "../../assets/profile/posts/4.png";
 import fifthPost from "../../assets/profile/posts/5.png";
 import sixthPost from "../../assets/profile/posts/6.png";
+import {useState} from "react";
 
 interface Post {
     postId: number;
@@ -16,6 +17,8 @@ interface Post {
 }
 
 export const Profile = () => {
+
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const profileName: string = "itcareerhub";
     const isMyProfile = false;
@@ -65,6 +68,14 @@ export const Profile = () => {
         "• Выпускники зарабатывают от 45к евро\n" +
         "БЕСПЛАТНАЯ...";
 
+    const handleOpenModal = (postId: number) => {
+        setIsModalOpen(true);
+    }
+
+    const handleClose = (e) => {
+        setIsModalOpen(false);
+    }
+
     return (
         <div className={styles.profile}>
             <div className={styles.profile_main}>
@@ -113,7 +124,7 @@ export const Profile = () => {
                                 <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="8.471" x2="15.529" y1="15.529" y2="8.471"></line>
                             </svg>
                         </span>
-                        <a href="http://bit.ly/3rpiIbh" target="_blank">
+                        <a href="https://bit.ly/3rpiIbh" target="_blank">
                             bit.ly/3rpiIbh
                         </a>
 
@@ -124,9 +135,13 @@ export const Profile = () => {
 
             <div className={styles.profile_posts}>
                 {postsArr.map((post: Post) => (
-                    <PostCardInProfile key={post.postId} post={post}/>
+                    <PostCardInProfile onClick={() => handleOpenModal(post.postId)} key={post.postId} post={post}/>
                 ))}
             </div>
+
+            {isModalOpen && (
+                <ProfilePostModal handleClose={handleClose} post={postsArr[0]} />
+            )}
         </div>
     );
 };

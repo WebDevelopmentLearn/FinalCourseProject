@@ -5,19 +5,20 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: end;
 
     min-height: 100vh;
 }
 
 .sidebar_and_wrapper {
     display: flex;
+    justify-content: center;
 
 }
 
 .wrapper_and_footer {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .test {
