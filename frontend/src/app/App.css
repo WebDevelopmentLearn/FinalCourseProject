@@ -10,6 +10,16 @@
     min-height: 100vh;
 }
 
+.sidebar_and_wrapper {
+    display: flex;
+
+}
+
+.wrapper_and_footer {
+    display: flex;
+    flex-direction: column;
+}
+
 .test {
     display: flex;
 

@@ -19,13 +19,18 @@ function App() {
     return (
         <div className="app">
             {/*<div className="test">*/}
-            {!routesWithNavbar.includes(location.pathname) && <Sidebar/>}
+            <div className="sidebar_and_wrapper">
+                {!routesWithNavbar.includes(location.pathname) && <Sidebar/>}
 
-                <Wrapper>
-                    {/*<ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>*/}
-                    <MainRoute/>
-                </Wrapper>
-            {!routesWithNavbar.includes(location.pathname) && <Footer/>}
+                <div className="wrapper_and_footer">
+                    <Wrapper routesWithNavbar={routesWithNavbar}>
+                        {/*<ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>*/}
+                        <MainRoute/>
+                    </Wrapper>
+                    {!routesWithNavbar.includes(location.pathname) && <Footer/>}
+                </div>
+            </div>
+
             {/*</div>*/}
             {/*<Footer />*/}
         </div>
