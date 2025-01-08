@@ -5,34 +5,6 @@ import {FC} from "react";
 import {Link} from "react-router-dom";
 
 
-interface Author {
-    id: number;
-    username: string;
-    avatar: string;
-}
-
-interface Post {
-    id: number;
-    author: Author;
-    title: string;
-    description: string;
-    image: string;
-    url: string;
-    // likes: number;
-    // comments: number;
-    // tags: string[];
-    // date: string;
-}
-
-interface Notification {
-    id: number;
-    author: Author;
-    notificationType: "like" | "comment" | "follow";
-    date: string;
-    post: Post;
-    url: Post["url"];
-}
-
 export const NotificationModal: FC = () => {
     const notifications: Notification[] = [];
 

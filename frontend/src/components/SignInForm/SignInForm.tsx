@@ -6,12 +6,8 @@ import ichgramLogo from "../../assets/logo.svg";
 import {CustomInput} from "../CustomInput/CustomInput.tsx";
 import {useForm} from "react-hook-form";
 import {Separator} from "../Separator/Separator.tsx";
+import {SignInFormValues} from "../../utils/Entitys.ts";
 
-
-type SignInFormValues = {
-    usernameOrEmail: string;
-    password: string;
-}
 
 export const SignInForm: FC = () => {
 
@@ -25,12 +21,6 @@ export const SignInForm: FC = () => {
         <div className={styles.sign_in_form_container}>
             <img src={ichgramLogo} alt="logo"/>
             <form name="sign_in_form" action="" className={styles.sign_in_form} onSubmit={handleSubmit(onFormSubmit)}>
-                {/*<input type="text" placeholder="Username, or email" value={usernameOrEmail} onChange={(event) => {*/}
-                {/*    setUsernameOrEmail(event.target.value);*/}
-                {/*}}/>*/}
-                {/*<input type="text" placeholder="Password" value={password} onChange={(event) => {*/}
-                {/*    setPassword(event.target.value);*/}
-                {/*}}/>*/}
                 <CustomInput {...register("usernameOrEmail", {
                     required: "Username or email is required"
                 })} placeholder="Username, or email" type="text" />

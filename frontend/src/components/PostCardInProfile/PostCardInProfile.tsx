@@ -1,14 +1,5 @@
-import {Link} from "react-router-dom";
-
 import styles from "./PostCardInProfile.module.scss";
-
-type PostCardInProfileProps = {
-    post: {
-        postId: number;
-        image: string;
-    },
-    onClick?: () => void;
-}
+import {PostCardInProfileProps} from "../../utils/Entitys.ts";
 
 
 export const PostCardInProfile = ({post, onClick}: PostCardInProfileProps) => {

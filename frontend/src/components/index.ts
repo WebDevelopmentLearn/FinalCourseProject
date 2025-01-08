@@ -14,7 +14,7 @@ import {ThemeSwitcher} from "./ThemeSwitcher/ThemeSwitcher.tsx";
 import {AvatarCircle} from "./AvatarCircle/AvatarCircle.tsx";
 import {Phone} from "./Phone/Phone.tsx";
 import {ExpandableText} from "./ExpandableText/ExpandableText.tsx";
-import {ProfilePostModal} from "./ProfilePostModal/ProfilePostModal.tsx";
+import {PostModal} from "./PostModal/PostModal.tsx";
 import {Footer} from "./Footer/Footer.tsx";
 
-export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, ProfilePostModal};
+export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, PostModal};

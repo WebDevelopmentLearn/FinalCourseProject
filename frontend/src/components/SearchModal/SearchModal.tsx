@@ -1,6 +1,4 @@
-import styles from "./SearchModal.module.scss";
-import React, {FC, useState} from "react";
-import {Link} from "react-router-dom";
+import {FC, useState} from "react";
 
 export const SearchModal: FC = () => {
     const [searchInput, setSearchInput] = useState<string>("");

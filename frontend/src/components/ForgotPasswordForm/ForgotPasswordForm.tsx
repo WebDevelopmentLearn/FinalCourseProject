@@ -5,10 +5,7 @@ import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {Separator} from "../Separator/Separator.tsx";
 import {Link} from "react-router-dom";
 import lock_icon from "../../assets/forgot_password/lock_icon.svg";
-
-type ForgotPasswordFormValues = {
-    emailOrUsername: string;
-}
+import {ForgotPasswordFormValues} from "../../utils/Entitys.ts";
 
 
 export const ForgotPasswordForm = () => {

@@ -1,20 +1,12 @@
 import styles from "./Profile.module.scss";
-import {Link} from "react-router-dom";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {AvatarCircle, ExpandableText, PostCardInProfile, ProfilePostModal} from "../../components";
+import {AvatarCircle, ExpandableText, PostCardInProfile, PostModal} from "../../components";
 
-import firstPost from "../../assets/profile/posts/1.png";
-import secondPost from "../../assets/profile/posts/2.png";
-import thirdPost from "../../assets/profile/posts/3.png";
-import fourthPost from "../../assets/profile/posts/4.png";
-import fifthPost from "../../assets/profile/posts/5.png";
-import sixthPost from "../../assets/profile/posts/6.png";
 import {useState} from "react";
+import {Post} from "../../utils/Entitys.ts";
+import {postsArr} from "../../utils/DebugUtils.ts";
 
-interface Post {
-    postId: number;
-    image: string;
-}
+
 
 export const Profile = () => {
 
@@ -27,32 +19,7 @@ export const Profile = () => {
     const followers: number = 9993;
     const following: number = 59;
 
-    const postsArr: Post[] = [
-        {
-            postId: 1,
-            image: firstPost
-        },
-        {
-            postId: 2,
-            image: secondPost
-        },
-        {
-            postId: 3,
-            image: thirdPost
-        },
-        {
-            postId: 4,
-            image: fourthPost
-        },
-        {
-            postId: 5,
-            image: fifthPost
-        },
-        {
-            postId: 6,
-            image: sixthPost
-        }
-    ]
+
 
     const text: string =
         "• Гарантия помощи с трудоустройством в ведущие IT-компании\n" +
@@ -68,12 +35,16 @@ export const Profile = () => {
         "• Выпускники зарабатывают от 45к евро\n" +
         "БЕСПЛАТНАЯ...";
 
-    const handleOpenModal = (postId: number) => {
+    const [currentPost, setCurrentPost] = useState({});
+
+    const handleOpenModal = (post: Post) => {
         setIsModalOpen(true);
+        setCurrentPost(post);
     }
 
     const handleClose = (e) => {
         setIsModalOpen(false);
+        setCurrentPost({});
     }
 
     return (
@@ -135,12 +106,12 @@ export const Profile = () => {
 
             <div className={styles.profile_posts}>
                 {postsArr.map((post: Post) => (
-                    <PostCardInProfile onClick={() => handleOpenModal(post.postId)} key={post.postId} post={post}/>
+                    <PostCardInProfile onClick={() => handleOpenModal(post)} key={post.id} post={post}/>
                 ))}
             </div>
 
             {isModalOpen && (
-                <ProfilePostModal handleClose={handleClose} post={postsArr[0]} />
+                <PostModal handleClose={handleClose} post={currentPost} />
             )}
         </div>
     );

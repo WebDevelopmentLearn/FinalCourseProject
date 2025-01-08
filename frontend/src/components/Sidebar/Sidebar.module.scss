@@ -84,7 +84,7 @@
 
 .sidebar_profile {
   margin-top: 45px;
-  padding: 12px 8px;
+  padding: 8px;
   display: flex;
   align-items: center;
 
@@ -107,22 +107,6 @@
     background-color: var(--hover-color);
   }
 
-
-  //a {
-  //  display: flex;
-  //  align-items: center;
-  //  gap: 4px;
-  //  text-decoration: none;
-  //
-  //  img {
-  //    border-radius: 50%;
-  //  }
-  //
-  //  span {
-  //    font-size: 1.6rem;
-  //    color: #000000;
-  //  }
-  //}
 }
 
 .small {
@@ -257,8 +241,8 @@
 
 
   .sidebar_profile {
-    padding: 16px;
-    //width: 100%;
+
+    width: 100%;
   }
 
   .sidebar_avatar {

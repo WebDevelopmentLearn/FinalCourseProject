@@ -6,7 +6,7 @@ import screenshot2 from "../../assets/signin/screenshot2-2x.png"
 import screenshot3 from "../../assets/signin/screenshot3-2x.png"
 import screenshot4 from "../../assets/signin/screenshot4-2x.png"
 
-const imageArray = [screenshot1, screenshot2, screenshot3, screenshot4];
+const imageArray: string[] = [screenshot1, screenshot2, screenshot3, screenshot4];
 
 
 export const Phone = () => {

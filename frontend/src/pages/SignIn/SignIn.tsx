@@ -12,6 +12,7 @@ export const SignIn = () => {
 
             <Phone />
 
+
             <div className={styles.signin_form_container}>
                 <SignInForm/>
                 <div className={styles.dont_have_account_container}>

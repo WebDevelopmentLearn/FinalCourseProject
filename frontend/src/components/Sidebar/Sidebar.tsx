@@ -1,21 +1,14 @@
-import {Link, NavigateFunction, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
+import {NavigateFunction, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import logo_dark from "../../assets/logo_dark.svg";
 import React, {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} from "react";
 import styles from "./Sidebar.module.scss";
 
-import homeIcon from "../../assets/sidebar/home_icon.svg";
-import searchIcon from "../../assets/sidebar/search_icon.svg";
-import exploreIcon from "../../assets/sidebar/explore_icon.svg";
-import messageIcon from "../../assets/sidebar/message_icon.svg";
-import notificationIcon from "../../assets/sidebar/notification_icon.svg";
-import createIcon from "../../assets/sidebar/create_icon.svg";
-
 import profileAvatar from "../../assets/ich_logo.png";
 import {SearchModal} from "../SearchModal/SearchModal.tsx";
 import {NotificationModal} from "../NotificationModal/NotificationModal.tsx";
 import {useTheme} from "../../context/ThemeContext.tsx";
-import {ThemeSwitcher} from "../ThemeSwitcher/ThemeSwitcher.tsx";
+// import {ThemeSwitcher} from "../ThemeSwitcher/ThemeSwitcher.tsx";
 
 
 export const Sidebar: FC = () => {
@@ -192,7 +185,7 @@ export const Sidebar: FC = () => {
                     <span className={styles.text}>Profile</span>
                 </NavLink>
 
-                <ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>
+                {/*<ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>*/}
             </div>
             {isModalOpen && (
                 <div className={`${styles.modal_layout} ${isModalOpen ? styles.active : styles.close}`}
