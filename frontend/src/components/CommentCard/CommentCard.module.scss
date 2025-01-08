@@ -1,0 +1,44 @@
+.post_comment {
+  display: flex;
+  //flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  margin-right: 6px;
+}
+
+.post_comment_details {
+  display: flex;
+  gap: 12px;
+}
+
+.comment_desc_and_stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comment_desc {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  gap: 4px;
+
+  span {
+    font-size: 1.2rem;
+  }
+}
+
+.comment_stats {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 4px;
+}
+
+.comment_like {
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}

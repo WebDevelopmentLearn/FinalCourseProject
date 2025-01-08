@@ -95,3 +95,12 @@ export interface Notification {
     url: Post["url"];
 }
 
+
+export interface ICommentCard {
+    avatar: string;
+    author: string;
+    commentDesc: string;
+    date: string;
+    likesCount: number;
+}
+
