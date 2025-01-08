@@ -7,5 +7,6 @@ import {Messages} from "./Messages/Messages.tsx";
 import {NotFound} from "./NotFound/NotFound.tsx";
 
 import {Profile} from "./Profile/Profile.tsx";
+import {EditProfile} from "./EditProfile/EditProfile.tsx";
 
-export {SignIn, SignUp, ForgotPassword, Home, Explore, Messages, NotFound, Profile};
+export {SignIn, SignUp, ForgotPassword, Home, Explore, Messages, NotFound, Profile, EditProfile};
