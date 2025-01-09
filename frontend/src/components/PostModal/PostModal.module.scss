@@ -270,18 +270,13 @@
 .add_comment_input {
     background-color: transparent;
     border: none;
-
     text-wrap: wrap;
     resize: none;
-
     height: 18px;
     max-height: 80px;
-
-    //overflow-y: scroll;
     width: 100%;
     margin-right: 8px;
     margin-left: 8px;
-
     font-size: 1.4rem;
 
     &:focus {
@@ -335,14 +330,7 @@
 
 @media screen and (max-width: 768px) {
 
-    .profile_post_modal_overlay {
-
-    }
-
-
     .profile_post_modal {
-        //width: 60vw;
-        //height: 70vh;
         width: 80vw;
         height: 80vh;
         max-width: none;

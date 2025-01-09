@@ -31,7 +31,7 @@ export const PostCard = () => {
     const commentsCount: number = 442;
 
     return (
-        <div className={styles.post_card}>
+        <div className={`${styles.post_card}`}>
             <div className={styles.post_card__author}>
                 <div className={styles.post_card__avatar}>
                     <AvatarCircle avatar={testAvatar} className={styles.post_card__avatar__circle}/>
