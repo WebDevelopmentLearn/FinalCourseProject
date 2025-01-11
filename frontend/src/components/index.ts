@@ -10,6 +10,7 @@ import {PostCard} from "./PostCard/PostCard.tsx";
 import {PostCardInProfile} from "./PostCardInProfile/PostCardInProfile.tsx";
 import {InterlocutorCard} from "./InterlocutorCard/InterlocutorCard.tsx";
 import {CommentCard} from "./CommentCard/CommentCard.tsx";
+import {CreatePostModal} from "./CreatePostModal/CreatePostModal.tsx";
 
 import {ThemeSwitcher} from "./ThemeSwitcher/ThemeSwitcher.tsx";
 import {AvatarCircle} from "./AvatarCircle/AvatarCircle.tsx";
@@ -18,4 +19,4 @@ import {ExpandableText} from "./ExpandableText/ExpandableText.tsx";
 import {PostModal} from "./PostModal/PostModal.tsx";
 import {Footer} from "./Footer/Footer.tsx";
 
-export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, CommentCard, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, PostModal};
+export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, CommentCard, CreatePostModal, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, PostModal};

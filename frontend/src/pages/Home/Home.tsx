@@ -12,8 +12,8 @@ export const Home = () => {
             <div className={styles.home}>
                 <div className={styles.home_posts__list}>
                     {posts.map((_el, index) => (
-                        <LazyLoad height={200} offset={100}>
-                            <PostCard key={index}/>
+                        <LazyLoad key={index} height={200} offset={100}>
+                            <PostCard/>
                         </LazyLoad>
                     ))}
 
