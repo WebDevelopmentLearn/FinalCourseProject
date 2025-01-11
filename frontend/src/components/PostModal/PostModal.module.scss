@@ -360,6 +360,12 @@
     .post_more_modal {
         width: 50vw;
     }
+
+    .comment_control {
+        button {
+            display: none;
+        }
+    }
 }
 
 @media screen and (orientation: landscape) and (max-width: 1024px) {

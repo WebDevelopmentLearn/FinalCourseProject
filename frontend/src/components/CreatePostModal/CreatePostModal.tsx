@@ -8,6 +8,7 @@ import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "@reduxjs/toolkit/query";
 import {closeCreatePostModal} from "../../store/reducers/modalSlice.ts";
+import {useTheme} from "../../context/ThemeContext.tsx";
 
 type CreatePostFormInputs = {
     photo: FileList;
@@ -59,6 +60,7 @@ export const CreatePostModal = () => {
         setValue("content", newContent); // Update content using setValue
     };
 
+    const {theme} = useTheme();
 
     return (
         <div className={styles.create_post_modal_overlay} onClick={handleCloseModal}>
@@ -132,7 +134,7 @@ export const CreatePostModal = () => {
                                     //     -right-50 md:right-60 lg:right-80 xl:right-96"
 
                                 >
-                                    <Picker lazyLoadEmojis={true} width={"100%"} onEmojiClick={onEmojiClick}/>
+                                    <Picker theme={theme} lazyLoadEmojis={true} width={"100%"} onEmojiClick={onEmojiClick}/>
                                 </div>}
                             <span>{currentContent?.length}/{2200}</span>
                         </div>
