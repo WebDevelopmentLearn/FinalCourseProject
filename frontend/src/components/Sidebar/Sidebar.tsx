@@ -71,12 +71,7 @@ export const Sidebar: FC = () => {
         console.log("handleCloseModal");
     }, []);
 
-    const { theme, setTheme } = useTheme();
-    const onButtonClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-        theme === 'light' ? setTheme('dark') : setTheme('light');
-        console.log('theme', theme);
-        document.documentElement.className = theme === 'light' ? 'dark-theme' : '';
-    }, [theme, setTheme]);
+    const {theme} = useTheme();
 
     return (
         <div ref={sidebarRef} className={`${styles.sidebar}`}>
@@ -189,7 +184,6 @@ export const Sidebar: FC = () => {
                     <span className={styles.text}>Profile</span>
                 </NavLink>
 
-                {/*<ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>*/}
             </div>
             {isModalOpen && (
                 <div className={`${styles.modal_layout} ${isModalOpen ? styles.active : styles.close}`}

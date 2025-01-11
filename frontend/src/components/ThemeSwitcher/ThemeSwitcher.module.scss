@@ -1,12 +1,45 @@
-
 .theme_switcher {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  position: relative;
+  width: 50px;
+  height: 28px;
 
-  //position: fixed;
-  //right: 6px;
-  //bottom: 60px;
-  border: none;
-  background-color: var(--bgc-switcher);
+  .theme_switcher_input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+  }
+
+  label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 28px;
+    transition: 0.4s;
+
+    &:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .theme_switcher_input:checked + label {
+    background-color: #4cd964;
+
+    &:before {
+      transform: translateX(22px);
+    }
+  }
 }

@@ -1,7 +1,8 @@
 import styles from "./EditProfile.module.scss";
-import {AvatarCircle, CustomButton, CustomInput} from "../../components";
+import {AvatarCircle, CustomButton, CustomInput, ThemeSwitcher} from "../../components";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {ChangeEvent, useState} from "react";
+import React, {ChangeEvent, useCallback, useState} from "react";
+import {useTheme} from "../../context/ThemeContext.tsx";
 
 export const EditProfile = () => {
 
@@ -19,13 +20,20 @@ export const EditProfile = () => {
 
     }
 
+    const { theme, setTheme } = useTheme();
+    const onButtonClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+        theme === 'light' ? setTheme('dark') : setTheme('light');
+        console.log('theme', theme);
+        document.documentElement.className = theme === 'light' ? 'dark-theme' : '';
+    }, [theme, setTheme]);
+
     return (
         <div className={styles.edit_profile_page}>
             <h1>Edit Profile</h1>
 
             <div className={styles.profile_details}>
                 <div className={styles.profile_avatar_and_desc}>
-                    <AvatarCircle avatarSize="56px" avatar={testAvatar} />
+                    <AvatarCircle avatarSize="56px" avatar={testAvatar}/>
                     <div className={styles.profile_username_and_desc}>
                         <h3>itcareerhub</h3>
                         <p>
@@ -35,14 +43,20 @@ export const EditProfile = () => {
                 </div>
 
                 <div>
-                    <CustomButton title="New Photo" className={styles.new_photo_btn} />
+                    <CustomButton title="New Photo" className={styles.new_photo_btn}/>
                 </div>
+            </div>
+
+            <div>
+                <label htmlFor="theme_switcher">Switch theme</label>
+                <ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>
             </div>
 
             <form action="" className={styles.edit_profile_form}>
                 <div>
                     <label htmlFor="username_input">Username</label>
-                    <CustomInput value={"itcareerhub"} className={styles.edit_profile_input} id="username_input" type="text"/>
+                    <CustomInput value={"itcareerhub"} className={styles.edit_profile_input} id="username_input"
+                                 type="text"/>
                 </div>
 
                 <div>
@@ -72,7 +86,9 @@ export const EditProfile = () => {
                 <div className={styles.about_input_container}>
                     <label htmlFor="about_input">About</label>
                     {/*<CustomInput className={styles.edit_profile_input} id="about_input" type="textarea"/>*/}
-                    <textarea value={aboutText} onChange={handleInput} className={`${styles.edit_profile_input} ${styles.about_input}`} name="about_input" id="about_input" />
+                    <textarea value={aboutText} onChange={handleInput}
+                              className={`${styles.edit_profile_input} ${styles.about_input}`} name="about_input"
+                              id="about_input"/>
 
                     <span>{symbolsLeft}/{maxSymbols}</span>
                 </div>

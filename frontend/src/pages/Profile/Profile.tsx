@@ -1,10 +1,11 @@
 import styles from "./Profile.module.scss";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {AvatarCircle, ExpandableText, PostCardInProfile, PostModal} from "../../components";
+import {AvatarCircle, CustomButton, ExpandableText, PostCardInProfile, PostModal} from "../../components";
 
 import {useState} from "react";
 import {Post} from "../../utils/Entitys.ts";
 import {postsArr} from "../../utils/DebugUtils.ts";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
 
 
@@ -13,7 +14,7 @@ export const Profile = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const profileName: string = "itcareerhub";
-    const isMyProfile = false;
+    const isMyProfile = true;
 
     const posts: number = 129;
     const followers: number = 9993;
@@ -47,6 +48,11 @@ export const Profile = () => {
         setCurrentPost({});
     }
 
+    const navigate: NavigateFunction = useNavigate();
+    const handleRedirect = () => {
+        navigate("/edit_profile");
+    }
+
     return (
         <div className={styles.profile}>
             <div className={styles.profile_main}>
@@ -59,7 +65,7 @@ export const Profile = () => {
                         <span>{profileName}</span>
                         {isMyProfile ? (
                             <div>
-                                <button className={styles.profile_edit_profile_btn}>Edit Profile</button>
+                                <CustomButton onClick={handleRedirect} title="Edit Profile" className={styles.profile_edit_profile_btn} />
                             </div>
                         ) : (
                             <div className={styles.profile_follow_and_message_btn_container}>
