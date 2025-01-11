@@ -6,17 +6,21 @@ import {BrowserRouter} from "react-router-dom";
 import {DevSupport} from "@react-buddy/ide-toolbox";
 import {ComponentPreviews, useInitial} from "./dev";
 import {ThemeProvider} from "./context/ThemeContext.tsx";
+import {Provider} from "react-redux";
+import ichgramStore from "./store/ichgramStore.ts";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-        <ThemeProvider>
-        <DevSupport ComponentPreviews={ComponentPreviews}
-                    useInitialHook={useInitial}
-        >
-            <App/>
-        </DevSupport>
-            </ThemeProvider>
-    </BrowserRouter>
+      <Provider store={ichgramStore}>
+          <BrowserRouter>
+              <ThemeProvider>
+                  <DevSupport ComponentPreviews={ComponentPreviews}
+                              useInitialHook={useInitial}
+                  >
+                      <App/>
+                  </DevSupport>
+              </ThemeProvider>
+          </BrowserRouter>
+      </Provider>
   </StrictMode>
 )

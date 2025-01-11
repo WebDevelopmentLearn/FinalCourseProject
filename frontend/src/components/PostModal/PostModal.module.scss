@@ -14,7 +14,7 @@
 
 .profile_post_modal {
     width: 100%;
-    max-width: calc(100% - 64px - 64px);
+    max-width: 90%;
     max-height: calc(100% - 40px);
     //max-width: 600px;
     background-color: var(--bgc);
@@ -37,7 +37,7 @@
     img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: fill;
         aspect-ratio: 1/1;
     }
 }

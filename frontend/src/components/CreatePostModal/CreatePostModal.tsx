@@ -5,6 +5,9 @@ import testAvatar from "../../assets/profile/default_avatar.jpg";
 import {ChangeEvent, useState} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@reduxjs/toolkit/query";
+import {closeCreatePostModal} from "../../store/reducers/modalSlice.ts";
 
 type CreatePostFormInputs = {
     photo: FileList;
@@ -14,6 +17,12 @@ type CreatePostFormInputs = {
 export const CreatePostModal = () => {
 
     const [preview, setPreview] = useState(null);
+    const dispatch = useDispatch();
+    const {createPostModalIsOpen} = useSelector((state: RootState) => state.modalReducer);
+
+    const handleCloseModal = () => {
+        dispatch(closeCreatePostModal());
+    }
 
     // Обработчик выбора файла
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,14 +61,14 @@ export const CreatePostModal = () => {
 
 
     return (
-        <div className={styles.create_post_modal_overlay}>
+        <div className={styles.create_post_modal_overlay} onClick={handleCloseModal}>
             <form className={styles.create_post_modal} onSubmit={handleSubmit((data) => console.log(data))}
-            //       onClick={(e) => {
-            //     e.stopPropagation();
-            //     if (emojiPickerIsOpen) {
-            //         setEmojiPickerIsOpen(false);
-            //     }
-            // }}
+                  onClick={(e) => {
+                e.stopPropagation();
+                // if (emojiPickerIsOpen) {
+                //     setEmojiPickerIsOpen(false);
+                // }
+            }}
             >
                 <header className={styles.create_post_modal_header}>
                     <div className={styles.header}>

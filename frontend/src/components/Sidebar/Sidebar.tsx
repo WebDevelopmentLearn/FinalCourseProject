@@ -8,6 +8,9 @@ import profileAvatar from "../../assets/ich_logo.png";
 import {SearchModal} from "../SearchModal/SearchModal.tsx";
 import {NotificationModal} from "../NotificationModal/NotificationModal.tsx";
 import {useTheme} from "../../context/ThemeContext.tsx";
+import {useDispatch, useSelector} from "react-redux";
+import {openCreatePostModal} from "../../store/reducers/modalSlice.ts";
+import {RootState} from "@reduxjs/toolkit/query";
 // import {ThemeSwitcher} from "../ThemeSwitcher/ThemeSwitcher.tsx";
 
 
@@ -15,8 +18,8 @@ export const Sidebar: FC = () => {
     const navigate: NavigateFunction = useNavigate();
     const sidebarRef: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-
+    const dispatch = useDispatch();
+    const {createPostModalIsOpen} = useSelector((state: RootState) => state.modalReducer);
     const [modalContent, setModalContent] = useState<ReactNode>(null);
 
     const handleGoToHomeLink = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -53,7 +56,8 @@ export const Sidebar: FC = () => {
 
     const handleOpenCreate = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         // open create
-    }, []);
+        dispatch(openCreatePostModal());
+    }, [dispatch]);
 
 
     const handleCloseModal = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
@@ -155,8 +159,8 @@ export const Sidebar: FC = () => {
                         <span className={styles.sidebar_mobile_content}>Notification</span>
                     </button>
 
-                    <NavLink className={({isActive}: NavLinkRenderProps) => isActive ? "active activeLink" : ""}
-                             to={"/create"} onClick={handleOpenCreate}>
+                    <button className={createPostModalIsOpen ? "active activeLink" : ""}
+                              onClick={handleOpenCreate}>
                         {/*<img src={createIcon} alt="createIcon"/>*/}
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -169,7 +173,7 @@ export const Sidebar: FC = () => {
                         </svg>
 
                         <span className={styles.sidebar_mobile_content}>Create</span>
-                    </NavLink>
+                    </button>
                 </div>
 
                 {/*<div className={styles.sidebar_profile}>*/}
