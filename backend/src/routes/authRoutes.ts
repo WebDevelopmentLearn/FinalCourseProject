@@ -1,22 +1,16 @@
 import {NextFunction, Router, Request, Response} from "express";
 import {checkEmail, checkUsername} from "../middleware/checkData";
-import {register} from "../controllers/authController";
+import {login, logout, refreshAccessToken, register} from "../controllers/authController";
 
 const router: Router = Router();
 
 router.post("/register", checkUsername, checkEmail, register);
 
-router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
-    try {
+router.post("/login", login);
 
-    } catch (error) {
-        next(error);
-    }
-})
+router.post("/logout",  logout);
 
-router.post("/logout",  (req: Request, res: Response) => {
-    res.clearCookie("token").json({message: "Logged out successfully"});
-})
+router.post("/refresh-access-token", refreshAccessToken);
 
 
 export default router;

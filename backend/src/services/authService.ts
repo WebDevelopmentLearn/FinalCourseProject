@@ -1,11 +1,17 @@
 import {NextFunction, Request, Response} from "express";
 import User from "../models/User";
-import {IUser} from "../entitys/interfaces";
+import {IRefreshToken, IUser} from "../entitys/interfaces";
 import {Model, Types} from "mongoose";
 import {logErrorWithObj} from "../utils/Logger";
+import RefreshToken from "../models/RefreshToken";
+import {hashToken} from "../utils/utils";
 
-const getAdditionalData = async (user: any, getPosts?: boolean, getFollowers?: boolean, getFollowing?: boolean, getNotifications?: boolean) => {
+const getAdditionalData = async (user: IUser | null, getPosts?: boolean, getFollowers?: boolean, getFollowing?: boolean, getNotifications?: boolean) => {
     try {
+        if (user === null) {
+            return;
+        }
+
         if (getPosts) {
             await user.populate("posts");
         }
@@ -81,5 +87,23 @@ export const createUser = async (email: string, full_name: string, username: str
     } catch (error: any) {
         await logErrorWithObj("createUser", error);
         return null;
+    }
+}
+
+export const saveRefreshToken = async (userId: Types.ObjectId, refreshToken: string): Promise<void> => {
+    try {
+        const hashedToken = await hashToken(refreshToken);
+
+        const refreshTokenExpireTime = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+       await RefreshToken.create({
+            user: userId,
+            token: hashedToken,
+            expires: refreshTokenExpireTime
+        });
+
+    } catch (error: any) {
+        await logErrorWithObj("createRefreshToken", error);
+
     }
 }

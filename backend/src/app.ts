@@ -6,6 +6,7 @@ import {connectToDatabase} from "./config/db";
 import ErrorHandler from "./utils/ErrorHandler";
 
 import authRoutes from "./routes/authRoutes";
+import userRoutes from "./routes/userRoutes";
 
 const app: Application = express();
 
@@ -37,6 +38,7 @@ const start = async () => {
         // @ts-ignore
         app.use(ErrorHandler);
         app.use("/api/auth", authRoutes);
+        app.use("/api/user", userRoutes);
 
         app.listen(PORT, () => {
             logInfo(`Server is running at: ${URL}:${PORT}`);

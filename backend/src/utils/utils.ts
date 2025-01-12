@@ -26,3 +26,16 @@ export const hashPassword = async (password: string): Promise<string> => {
     return await bcrypt.hash(password, salt);
 }
 
+export const comparePasswords = async (password: string, hashedPassword: string): Promise<boolean> => {
+    return await bcrypt.compare(password, hashedPassword);
+}
+
+
+export const hashToken = async (token: string): Promise<string> => {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(token, salt);
+};
+
+export const compareToken = async (token: string, hashedToken: string): Promise<boolean> => {
+    return bcrypt.compare(token, hashedToken);
+};

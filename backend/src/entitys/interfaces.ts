@@ -47,3 +47,9 @@ export interface ILike extends Document {
 export interface IMessage extends Document {
 
 }
+
+export interface IRefreshToken extends Document {
+    token: string;
+    user: Types.ObjectId | string;
+    expires: Date;
+}
