@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import bcrypt from "bcrypt";
 
 export const defaultAvatarPath = path.join(__dirname, '../public/default_avatar.png');
 
@@ -19,3 +20,9 @@ export const getFormattedDateTime = (date: Date, locale: string = 'ru-RU'): stri
         second: '2-digit'
     })
 };
+
+export const hashPassword = async (password: string): Promise<string> => {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+}
+

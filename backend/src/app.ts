@@ -4,11 +4,22 @@ import "dotenv/config";
 import {logErrorWithObj, logInfo} from "./utils/Logger";
 import {connectToDatabase} from "./config/db";
 import ErrorHandler from "./utils/ErrorHandler";
+
+import authRoutes from "./routes/authRoutes";
+
 const app: Application = express();
 
 const PORT = process.env.BACK_PORT || 3333;
 const URL = process.env.BACK_URL || "http://localhost";
 
+
+declare global {
+    namespace Express {
+        interface Request {
+            user?: any;
+        }
+    }
+}
 
 const start = async () => {
     try {
@@ -25,6 +36,7 @@ const start = async () => {
         //TODO: Fix the error handler
         // @ts-ignore
         app.use(ErrorHandler);
+        app.use("/api/auth", authRoutes);
 
         app.listen(PORT, () => {
             logInfo(`Server is running at: ${URL}:${PORT}`);

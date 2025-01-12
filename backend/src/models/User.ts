@@ -1,10 +1,10 @@
-import {Schema, Document, Types, model} from 'mongoose'
-import {defaultAvatarBase64} from "../utils/utils";
+import {Schema, Document, Types, model, CallbackWithoutResultAndOptionalError, Model} from 'mongoose'
+import {defaultAvatarBase64, hashPassword} from "../utils/utils";
 import {IUser} from "../entitys/interfaces";
 
 
 
-const UserSchema: Schema = new Schema({
+const userSchema: Schema = new Schema({
     username: {
         type: String,
         required: true
@@ -64,6 +64,20 @@ const UserSchema: Schema = new Schema({
 
 });
 
-const User = model<IUser>('User', UserSchema);
+/**
+ * Hashes the password before saving the user
+ */
+userSchema.pre('save', async function (next: CallbackWithoutResultAndOptionalError): Promise<void> {
+    try {
+        if (!this.isModified("password")) return next();//if the password is not modified, we don't need to hash it again
+
+        this.password = await hashPassword(this.password as string);//hash the password + cast this.password to string
+        next();
+    } catch (error: any) {
+        next(error);
+    }
+});
+
+const User: Model<IUser> = model<IUser>('User', userSchema);
 
 export default User;
