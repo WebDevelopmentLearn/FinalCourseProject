@@ -1,5 +1,6 @@
 import express, {Application, NextFunction, Request, Response} from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import "dotenv/config";
 import {logErrorWithObj, logInfo} from "./utils/Logger";
 import {connectToDatabase} from "./config/db";
@@ -7,6 +8,8 @@ import ErrorHandler from "./utils/ErrorHandler";
 
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
+import {IUser} from "./entitys/interfaces";
+import {JwtPayload} from "jsonwebtoken";
 
 const app: Application = express();
 
@@ -31,7 +34,11 @@ const start = async () => {
 
         app.use(express.json());
         app.use(express.urlencoded({extended: true}));
-        app.use(cors());
+        app.use(cors({
+            origin: process.env.FRONT_URL,
+            credentials: true
+        }));
+        app.use(cookieParser());
 
 
         //TODO: Fix the error handler

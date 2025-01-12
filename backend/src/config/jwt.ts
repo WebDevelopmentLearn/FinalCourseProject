@@ -16,14 +16,14 @@ export const generateRefreshToken = (payload: object): string => {
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction, token: string): void => {
     // return jwt.verify(token, process.env.JWT_SECRET as string);
-    jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
+    jwt.verify(token, process.env.JWT_SECRET as string, (err, user: any) => {
         if (err) {
             res.status(403).json({
                 message: "Forbidden: Invalid or expired token"
             });
             return
         }
-        req.user = user;  // Сохраняем данные пользователя в запросе
+        req.user = user as any;
         next();  // Передаем управление дальше
     });
 }

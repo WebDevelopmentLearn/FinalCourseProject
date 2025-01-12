@@ -5,6 +5,7 @@ import {comparePasswords} from "../utils/utils";
 import {Model, Types} from "mongoose";
 import {generateAccessToken, generateRefreshToken} from "../config/jwt";
 import {validateRefreshToken} from "../middleware/authMiddleware";
+import {logInfo} from "../utils/Logger";
 
 
 export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -37,12 +38,17 @@ export const register = async (req: Request, res: Response, next: NextFunction):
 export const login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const { email, username, password } = req.body;
-        if (!email && !username || !password) res.status(400).json({ message: "All fields are required" });
+        if (!email && !username || !password) {
+            res.status(400).json({ message: "All fields are required" });
+            await logInfo(`[login] All fields are required`);
+            return;
+        }
         
         const user: IUser | null = await getUserByEmail(email) || await getUserByUsername(username);
 
         if (user === null) {
             res.status(400).json({ message: "User not found" });
+            await logInfo(`[login] User not found`);
             return;
         }
 
@@ -50,22 +56,28 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
 
         if (!isPasswordCorrect) {
             res.status(401).json({ message: "Incorrect username or password" });
+            await logInfo(`[login] Incorrect username or password`);
             return;
         }
 
         const accessToken: string = generateAccessToken({
             id: user._id
         });
+        await logInfo(`[login] Access token generated successfully: ${accessToken}`);
 
         const refreshToken: string = generateRefreshToken({
             id: user._id
         });
+        await logInfo(`[login] Refresh token generated successfully: ${refreshToken}`);
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict"
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60 // 1 hour
         });
+        await logInfo(`[login] Access token saved in cookie`);
+
 
         //TODO: Don't forget to remove it
         const saveRefreshTokenInCookie = false;
@@ -76,9 +88,11 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict"
             });
+            await logInfo(`[login] Refresh token saved in cookie`);
         }
 
         await saveRefreshToken(user._id as Types.ObjectId, refreshToken);
+        await logInfo(`[login] Refresh token saved in database`);
 
         res.status(200).json({ message: "Logged in successfully",
             user: {
@@ -87,6 +101,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
                 username: user.username,
             }
         });
+        await logInfo(`[login] User logged in successfully`);
 
     } catch (error) {
         next(error);
