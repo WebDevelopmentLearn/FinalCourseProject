@@ -7,6 +7,7 @@ export type AvatarCircleProps = {
     avatar: string,
     avatarSize?:  "small" | "medium" | "big" | string,
     className?: string,
+    hasLink?: boolean,
 }
 
 export type CustomButtonProps = {
@@ -65,20 +66,29 @@ export type PostCardInProfileProps = {
 //Interfaces
 //================================================
 
-export interface User {
-    id: number;
+export interface IUser {
+    _id:  string;
     username: string;
-    avatar: string;
+    email: string;
+    full_name: string;
+    password: string;
+    bio: string;
+    avatar: string;//Base64
+    website: string;
+    notifications: object[];
+    posts: object[];
+    followers: object[];
+    following: object[];
 }
 
 export interface Post {
     id: number;
-    author: User;
+    author: IUser;
     title: string;
     description: string;
     image: string;
     url: string;
-    comments: User[];
+    comments: IUser[];
     // likes: number;
     // comments: number;
     // tags: string[];
@@ -88,7 +98,7 @@ export interface Post {
 
 export interface Notification {
     id: number;
-    author: User;
+    author: IUser;
     notificationType: "like" | "comment" | "follow";
     date: string;
     post: Post;
@@ -104,3 +114,15 @@ export interface ICommentCard {
     likesCount: number;
 }
 
+export interface IRegisterData {
+    email: string;
+    full_name: string;
+    username: string;
+    password: string;
+}
+
+export interface ILoginData {
+    email?: string;
+    username?: string;
+    password: string;
+}

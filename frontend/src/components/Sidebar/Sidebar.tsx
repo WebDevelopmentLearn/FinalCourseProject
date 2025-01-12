@@ -11,6 +11,7 @@ import {useTheme} from "../../context/ThemeContext.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {openCreatePostModal} from "../../store/reducers/modalSlice.ts";
 import {RootState} from "@reduxjs/toolkit/query";
+import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 // import {ThemeSwitcher} from "../ThemeSwitcher/ThemeSwitcher.tsx";
 
 
@@ -21,6 +22,7 @@ export const Sidebar: FC = () => {
     const dispatch = useDispatch();
     const {createPostModalIsOpen} = useSelector((state: RootState) => state.modalReducer);
     const [modalContent, setModalContent] = useState<ReactNode>(null);
+    const {user} = useSelector((state: RootState) => state.userReducer);
 
     const handleGoToHomeLink = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/");
@@ -180,7 +182,8 @@ export const Sidebar: FC = () => {
                 <NavLink
                     className={({isActive}: NavLinkRenderProps) => isActive ? `active activeLink ${styles.sidebar_profile}` : styles.sidebar_profile}
                     to={"/profile"}>
-                    <img className={styles.sidebar_avatar} src={profileAvatar} alt="profileAvatar"/>
+                    {/*<img className={styles.sidebar_avatar} src={user?.user?.avatar} alt="profileAvatar"/>*/}
+                    <AvatarCircle avatar={user?.user?.avatar} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
                     <span className={styles.text}>Profile</span>
                 </NavLink>
 

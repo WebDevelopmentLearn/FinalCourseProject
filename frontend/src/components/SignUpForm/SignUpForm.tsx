@@ -3,13 +3,17 @@ import ichgramLogo from "../../assets/logo.svg";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 
 import {FC} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {CustomInput} from "../CustomInput/CustomInput.tsx";
 import {SubmitHandler, useForm} from "react-hook-form";
+import {useDispatch} from "react-redux";
+import {registerUser} from "../../store/api/actionCreators.ts";
+import {AppDispatch} from "../../store/ichgramStore.ts";
+import {IRegisterData} from "../../utils/Entitys.ts";
 
 type SignUpFormValues = {
     email: string;
-    fullName: string;
+    full_name: string;
     username: string;
     password: string;
 }
@@ -18,13 +22,36 @@ type SignUpFormValues = {
 
 export const SignUpForm: FC = () => {
 
+    const {register, handleSubmit, formState: {errors}} = useForm<SignUpFormValues>({
+        defaultValues: {
+            email: "",
+            full_name: "",
+            username: "",
+            password: ""
+        }
+    });
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
 
 
-    const {register, handleSubmit, formState: {errors}} = useForm<SignUpFormValues>();
+    const onFormSubmit: SubmitHandler<SignUpFormValues> = async(data) => {
+        try {
+            const registerData: IRegisterData = {
+                email: data.email,
+                full_name: data.full_name,
+                username: data.username,
+                password: data.password
+            }
 
-
-    const onFormSubmit: SubmitHandler<SignUpFormValues> = (data) => {
-        console.log("Form Data:", data);
+            console.log(registerData);
+            const result = await dispatch(registerUser(registerData));
+            if (result.type !== "auth/registerUser/rejected") {
+                console.log("User registered successfully");
+                navigate('/signin');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
 
@@ -33,19 +60,6 @@ export const SignUpForm: FC = () => {
             <img src={ichgramLogo} alt="logo"/>
             <h2>Sign up to see photos and videos from your friends.</h2>
             <form name="sign_up_form" action="" className={styles.sign_up_form} onSubmit={handleSubmit(onFormSubmit)}>
-                {/*<input type="text" placeholder="Email" value={email} onChange={(event) => {*/}
-                {/*    setEmail(event.target.value);*/}
-                {/*}}/>*/}
-                {/*<input type="text" placeholder="Full Name" value={fullName} onChange={(event) => {*/}
-                {/*    setFullName(event.target.value);*/}
-                {/*}}/>*/}
-                {/*<input type="text" placeholder="Username" value={username} onChange={(event) => {*/}
-                {/*    setUsername(event.target.value);*/}
-                {/*}}/>*/}
-                {/*<input type="text" placeholder="Password" value={password} onChange={(event) => {*/}
-                {/*    setPassword(event.target.value);*/}
-                {/*}}/>*/}
-
                 <CustomInput {...register("email", {
                     required: "Email is required",
                     pattern: {
@@ -56,7 +70,7 @@ export const SignUpForm: FC = () => {
 
                 {errors.email && <p className={styles.error_message}>{errors.email.message}</p>}
 
-                <CustomInput {...register("fullName", {
+                <CustomInput {...register("full_name", {
                     required: "Full Name is required",
                     minLength: {
                         value: 3,
@@ -68,7 +82,7 @@ export const SignUpForm: FC = () => {
                     }
                 })} placeholder="Full Name" type="text" />
 
-                {errors.fullName && <p className={styles.error_message}>{errors.fullName.message}</p>}
+                {errors.full_name && <p className={styles.error_message}>{errors.full_name.message}</p>}
 
                 <CustomInput {...register("username", {
                     required: "Username is required",

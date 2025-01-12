@@ -6,12 +6,15 @@ import {useState} from "react";
 import {Post} from "../../utils/Entitys.ts";
 import {postsArr} from "../../utils/DebugUtils.ts";
 import {NavigateFunction, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {RootState} from "@reduxjs/toolkit/query";
 
 
 
 export const Profile = () => {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const {user} = useSelector((state: RootState) => state.userReducer);
 
     const profileName: string = "itcareerhub";
     const isMyProfile = true;
@@ -57,12 +60,12 @@ export const Profile = () => {
         <div className={styles.profile}>
             <div className={styles.profile_main}>
                 <div>
-                    <AvatarCircle avatar={testAvatar} avatarSize={"big"} />
+                    <AvatarCircle avatar={user?.user?.avatar} avatarSize={"big"} />
                 </div>
 
                 <div className={styles.profile_info}>
                     <div className={styles.profile_info__first}>
-                        <span>{profileName}</span>
+                        <span>{user?.user?.username}</span>
                         {isMyProfile ? (
                             <div>
                                 <CustomButton onClick={handleRedirect} title="Edit Profile" className={styles.profile_edit_profile_btn} />
