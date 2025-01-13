@@ -14,7 +14,7 @@ export const getUserProfile = async (req: Request, res: Response, next: NextFunc
             return;
         }
 
-        res.status(200).json({user: userProfile});
+        res.status(200).json(userProfile);
 
         await logDebug(`[getUserProfile] User profile for ${userProfile.username} was sent`);
 
