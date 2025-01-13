@@ -1,13 +1,14 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {ILoginData, IRegisterData} from "../../utils/Entitys.ts";
+import API from "../../api/API.ts";
 
 axios.defaults.withCredentials = true;
 export const BACKEND_URL: string = "http://localhost:3400/api";
 
 export const registerUser = createAsyncThunk("auth/registerUser", async (data: IRegisterData) => {
     try {
-        const response = await axios.post(`${BACKEND_URL}/auth/register`, data);
+        const response = await API.post(`/auth/register`, data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -17,12 +18,7 @@ export const registerUser = createAsyncThunk("auth/registerUser", async (data: I
 export const loginUser = createAsyncThunk("auth/loginUser", async (data: ILoginData, { rejectWithValue }) => {
     try {
         // configure header's Content-Type as JSON
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        }
-        const response = await axios.post(`${BACKEND_URL}/auth/login`, data, config);
+        const response = await API.post(`/auth/login`, data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -37,7 +33,7 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (data: ILoginD
 
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
     try {
-        const response = await axios.post(`${BACKEND_URL}/auth/logout`);
+        const response = await API.post(`/auth/logout`);
         console.log("User logged out successfully");
         return response.data;
     } catch (error) {
@@ -47,9 +43,7 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
 
 export const getUser = createAsyncThunk("auth/getUser", async () => {
     try {
-        const response = await axios.get(`${BACKEND_URL}/user/profile`, {
-            withCredentials: true
-        });
+        const response = await API.get(`/user/profile`);
         return response.data;
     } catch (error) {
         console.log(error);

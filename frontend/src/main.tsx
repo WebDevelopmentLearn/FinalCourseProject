@@ -10,17 +10,15 @@ import {Provider} from "react-redux";
 import ichgramStore from "./store/ichgramStore.ts";
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-      <Provider store={ichgramStore}>
-          <BrowserRouter>
-              <ThemeProvider>
-                  <DevSupport ComponentPreviews={ComponentPreviews}
-                              useInitialHook={useInitial}
-                  >
-                      <App/>
-                  </DevSupport>
-              </ThemeProvider>
-          </BrowserRouter>
-      </Provider>
-  </StrictMode>
+    <Provider store={ichgramStore}>
+        <BrowserRouter>
+            <ThemeProvider>
+                <DevSupport ComponentPreviews={ComponentPreviews}
+                            useInitialHook={useInitial}
+                >
+                    <App/>
+                </DevSupport>
+            </ThemeProvider>
+        </BrowserRouter>
+    </Provider>
 )

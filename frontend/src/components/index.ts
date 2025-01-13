@@ -19,4 +19,6 @@ import {ExpandableText} from "./ExpandableText/ExpandableText.tsx";
 import {PostModal} from "./PostModal/PostModal.tsx";
 import {Footer} from "./Footer/Footer.tsx";
 
-export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, CommentCard, CreatePostModal, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, PostModal};
+import {ProtectedRoute} from "./ProtectedRoute/ProtectedRoute.tsx";
+
+export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, CommentCard, CreatePostModal, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, PostModal, ProtectedRoute};

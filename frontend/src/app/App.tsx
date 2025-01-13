@@ -3,11 +3,13 @@ import './App.css'
 import {MainRoute} from "../route/MainRoute.tsx";
 import {Wrapper} from "../wrapper/Wrapper.tsx";
 import {CreatePostModal, Footer, Sidebar} from "../components";
-import {useLocation} from "react-router-dom";
-import {useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {RootState} from "@reduxjs/toolkit/query";
 import {useSelector} from "react-redux";
 import {useAppSelector} from "../utils/CustomHooks.ts";
+import API, {setupInterceptors} from "../api/API.ts";
+import {AxiosError} from "axios";
 
 function App() {
 
@@ -16,6 +18,12 @@ function App() {
     const routesWithNavbar = ["/signin", "/signup", "/forgot_password"];
 
     const {createPostModalIsOpen} = useSelector((state: RootState) => state.modalReducer);
+
+    const {user} = useAppSelector((state: RootState) => state.userReducer);
+    const navigate = useNavigate();
+    useEffect(() => {
+        setupInterceptors(navigate); // Передаём navigate в интерсептор
+    }, [navigate]);
 
     return (
         <div className="app">
