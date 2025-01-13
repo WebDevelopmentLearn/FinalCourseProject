@@ -3,7 +3,7 @@
   //padding: 0 20px;
   padding: 24px 40px;
   width: 100%;
-  border: 1px solid #DBDBDB;
+  border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
 }
@@ -15,11 +15,11 @@
 
   input {
     padding: 11px 8px;
-    border: 1px solid #DBDBDB;
+    border: 1px solid var(--border-color);
     width: 100%;
     min-width: 258px;
     font-size: 1.2rem;
-    color: #737373;
+    color: var(--secondary-text-color);
     margin-bottom: 6px;
 
     &:focus {

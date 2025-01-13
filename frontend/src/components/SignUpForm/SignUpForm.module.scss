@@ -9,7 +9,7 @@
 
   h2 {
     font-size: 1.6rem;
-    color: #737373;
+    color: var(--secondary-text-color);
     margin-bottom: 38px;
     max-width: 288px;
     padding: 10px;
@@ -27,7 +27,7 @@
     width: 100%;
     min-width: 258px;
     font-size: 1.2rem;
-    color: #737373;
+    color: var(--secondary-text-color);
     margin-bottom: 6px;
 
     &:focus {
@@ -47,7 +47,7 @@
 
   p, span {
     font-size: 1.2rem;
-    color: #737373;
+    color: var(--secondary-text-color);
   }
 
   a {

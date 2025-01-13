@@ -19,7 +19,7 @@ export const AvatarCircle: FC<AvatarCircleProps> = ({avatar, className, avatarSi
         }
     }
 
-    console.log("avatar: ", avatar);
+    // console.log("avatar: ", avatar);
 
     if (hasLink) {
         return (

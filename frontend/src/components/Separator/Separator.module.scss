@@ -10,12 +10,12 @@
   hr {
     width: 100%;
     height: 1px;
-    border: 1px solid #DBDBDB;
+    border: 1px solid var(--border-color);
   }
 
   span {
     font-weight: 600;
     font-size: 1.3rem;
-    color: #737373;
+    color: var(--secondary-text-color);
   }
 }

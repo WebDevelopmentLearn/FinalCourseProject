@@ -4,7 +4,7 @@ import logo_dark from "../../assets/logo_dark.svg";
 import React, {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} from "react";
 import styles from "./Sidebar.module.scss";
 
-import profileAvatar from "../../assets/ich_logo.png";
+
 import {SearchModal} from "../SearchModal/SearchModal.tsx";
 import {NotificationModal} from "../NotificationModal/NotificationModal.tsx";
 import {useTheme} from "../../context/ThemeContext.tsx";

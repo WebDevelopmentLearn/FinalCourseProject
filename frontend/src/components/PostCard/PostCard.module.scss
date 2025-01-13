@@ -62,7 +62,7 @@
 
 .post_card__author__date {
   font-size: 1.2rem;
-  color: #737373;
+  color: var(--secondary-text-color);
   position: relative;
   padding-right: 5px;
   &:after {

@@ -57,6 +57,9 @@ button {
     cursor: pointer;
 }
 
+input, textarea {
+    background-color: var(--bgc-input);
+}
 
 .active.activeLink {
     color: #9c60e7;

@@ -3,6 +3,7 @@ import styles from "./SignInForm.module.scss";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {Link, useNavigate} from "react-router-dom";
 import ichgramLogo from "../../assets/logo.svg";
+import logo_dark from "../../assets/logo_dark.svg";
 import {CustomInput} from "../CustomInput/CustomInput.tsx";
 import {useForm} from "react-hook-form";
 import {Separator} from "../Separator/Separator.tsx";
@@ -10,11 +11,12 @@ import {ILoginData, SignInFormValues} from "../../utils/Entitys.ts";
 import {AppDispatch} from "../../store/ichgramStore.ts";
 import {useDispatch} from "react-redux";
 import {loginUser} from "../../store/api/actionCreators.ts";
+import {useTheme} from "../../context/ThemeContext.tsx";
 
 
 
 export const SignInForm: FC = () => {
-
+    const {theme} = useTheme();
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const {register, handleSubmit, formState: {errors}} = useForm<SignInFormValues>({
@@ -47,7 +49,7 @@ export const SignInForm: FC = () => {
 
     return (
         <div className={styles.sign_in_form_container}>
-            <img src={ichgramLogo} alt="logo"/>
+            {theme === "light" ? <img src={ichgramLogo} alt="logo"/> : <img src={logo_dark} alt="logo"/>}
             <form name="sign_in_form" action="" className={styles.sign_in_form} onSubmit={handleSubmit(onFormSubmit)}>
                 <CustomInput {...register("usernameOrEmail", {
                     required: "Username or email is required"

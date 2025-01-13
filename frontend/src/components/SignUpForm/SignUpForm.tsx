@@ -1,5 +1,6 @@
 import styles from "./SignUpForm.module.scss";
 import ichgramLogo from "../../assets/logo.svg";
+import logo_dark from "../../assets/logo_dark.svg";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 
 import {FC} from "react";
@@ -10,6 +11,7 @@ import {useDispatch} from "react-redux";
 import {registerUser} from "../../store/api/actionCreators.ts";
 import {AppDispatch} from "../../store/ichgramStore.ts";
 import {IRegisterData} from "../../utils/Entitys.ts";
+import {useTheme} from "../../context/ThemeContext.tsx";
 
 type SignUpFormValues = {
     email: string;
@@ -32,6 +34,7 @@ export const SignUpForm: FC = () => {
     });
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const {theme} = useTheme();
 
 
     const onFormSubmit: SubmitHandler<SignUpFormValues> = async(data) => {
@@ -57,7 +60,7 @@ export const SignUpForm: FC = () => {
 
     return (
         <div className={styles.sign_up_form_container}>
-            <img src={ichgramLogo} alt="logo"/>
+            {theme === "light" ? <img src={ichgramLogo} alt="ichgram logo" /> : <img src={logo_dark} alt="ichgram logo" />}
             <h2>Sign up to see photos and videos from your friends.</h2>
             <form name="sign_up_form" action="" className={styles.sign_up_form} onSubmit={handleSubmit(onFormSubmit)}>
                 <CustomInput {...register("email", {
