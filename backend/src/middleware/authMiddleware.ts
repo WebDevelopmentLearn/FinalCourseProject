@@ -24,15 +24,6 @@ export const validateRefreshToken = async (userId: string, refreshToken: string)
 
 export const checkAccessToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // const authHeader = req.headers.authorization;
-        //
-        // if (!authHeader) {
-        //     res.status(401).json({message: "Authorization header is required"});
-        //     logInfo("[checkAccessToken] Authorization header is required");
-        //     return;
-        // }
-        //
-        // const accessToken = authHeader.split(' ')[1];
         const accessToken = req.cookies.accessToken;
 
         if (!accessToken) {
@@ -45,7 +36,7 @@ export const checkAccessToken = async (req: Request, res: Response, next: NextFu
         // verifyToken(accessToken, req, res, next);
         jwt.verify(accessToken, process.env.JWT_SECRET as string, async (err: VerifyErrors | null, decoded: any) => {
             if (err) {
-                res.status(403).json({
+                res.status(401).json({
                     message: "Forbidden: Invalid or expired token"
                 });
                 await logInfo("[checkAccessToken] Forbidden: Invalid or expired token");

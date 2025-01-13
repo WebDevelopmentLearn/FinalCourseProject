@@ -5,7 +5,8 @@ import {comparePasswords} from "../utils/utils";
 import {Model, Types} from "mongoose";
 import {generateAccessToken, generateRefreshToken} from "../config/jwt";
 import {validateRefreshToken} from "../middleware/authMiddleware";
-import {logInfo} from "../utils/Logger";
+import {logErrorWithObj, logInfo} from "../utils/Logger";
+import jwt, {VerifyErrors} from "jsonwebtoken";
 
 
 export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -124,12 +125,14 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
         const { id } = req.body;
         if (!id && !refreshToken) {
             res.status(401).json({ message: "Refresh token is required" });
+            await logInfo("[refreshAccessToken] Refresh token is required");
             return;
         }
 
         const validRefreshToken: boolean = await validateRefreshToken(id, refreshToken);
         if (!validRefreshToken) {
             res.status(401).json({ message: "Invalid refresh token" });
+            await logInfo("[refreshAccessToken] Invalid refresh token");
             return;
         }
 
@@ -146,7 +149,60 @@ export const refreshAccessToken = async (req: Request, res: Response, next: Next
         console.log("Access token refreshed successfully: ", accessToken);
 
         res.status(200).json({ message: "Access token refreshed successfully" });
+        await logInfo("[refreshAccessToken] Access token refreshed successfully");
     } catch (error) {
         next(error);
     }
+}
+
+
+export const checkAccessToken = async (req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> => {
+    const accessToken = req.cookies.accessToken; // Или из заголовков Authorization
+
+    if (!accessToken) {
+        return res.status(401).json({ message: 'Access token is required' });
+    }
+
+    try {
+        const decoded = jwt.verify(accessToken, process.env.JWT_SECRET as string);
+        console.log('Decoded token:', decoded);
+        await logInfo(`[checkAccessToken] Decoded token: ${decoded}`);
+        return res.status(200).json({ message: 'Token is valid' });
+    } catch (err) {
+        console.error('Token validation error:', err);
+        await logErrorWithObj('[checkAccessToken] Token validation error', err);
+        return res.status(403).json({ message: 'Invalid or expired token' });
+    }
+
+    /*
+    console.log("checkAccessToken");
+    try {
+        const accessToken = req.cookies.accessToken;
+
+        if (!accessToken) {
+            res.status(401).json({message: "Access token is required"});
+            await logInfo("[checkAccessToken] Access token is required");
+            return;
+        }
+
+        await logInfo(`[checkAccessToken] Access token: ${accessToken}`);
+        // verifyToken(accessToken, req, res, next);
+        // jwt.verify(accessToken, process.env.JWT_SECRET as string, async (err: VerifyErrors | null, decoded: any) => {
+        //     if (err) {
+        //         res.status(403).json({
+        //             message: "Forbidden: Invalid or expired token"
+        //         });
+        //         await logInfo("[checkAccessToken] Forbidden: Invalid or expired token");
+        //         return
+        //     }
+        //     req.user = decoded;
+        //     next();
+        // });
+
+        // next();
+    } catch (error: any) {
+        await logErrorWithObj("checkAccessToken", error);
+        res.status(500).json({message: "Internal server error"});
+    }
+    */
 }
