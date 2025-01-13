@@ -16,7 +16,7 @@ export const MainRoute: MainRoute = (): ReactElement => {
             <Route path="/" element={<ProtectedRoute>
                 <Home/>
             </ProtectedRoute>}/>
-            <Route path="/profile" element={
+            <Route path="/profile/:_id" element={
                 <ProtectedRoute>
                     <Profile/>
                 </ProtectedRoute>

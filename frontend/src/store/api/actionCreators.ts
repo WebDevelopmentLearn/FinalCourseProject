@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import {ILoginData, IRegisterData} from "../../utils/Entitys.ts";
 import API from "../../api/API.ts";
 
@@ -21,10 +21,13 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (data: ILoginD
         const response = await API.post(`/auth/login`, data);
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error)) {
+        console.log(error);
+        if (error instanceof AxiosError) {
             if (error.response && error.response.data.message) {
+                console.log("Error message1:", error.response.data.message);
                 return rejectWithValue(error.response.data.message)
             } else {
+                console.log("Error message2:", error.message);
                 return rejectWithValue(error.message)
             }
         }
@@ -44,6 +47,7 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
 export const getUser = createAsyncThunk("auth/getUser", async () => {
     try {
         const response = await API.get(`/user/profile`);
+        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);

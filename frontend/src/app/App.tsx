@@ -10,6 +10,7 @@ import {useSelector} from "react-redux";
 import {useAppSelector} from "../utils/CustomHooks.ts";
 import API, {setupInterceptors} from "../api/API.ts";
 import {AxiosError} from "axios";
+import {userData} from "../store/selectors.ts";
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
 
     const {createPostModalIsOpen} = useSelector((state: RootState) => state.modalReducer);
 
-    const {user} = useAppSelector((state: RootState) => state.userReducer);
+    const user = useSelector(userData);
     const navigate = useNavigate();
     useEffect(() => {
         setupInterceptors(navigate); // Передаём navigate в интерсептор

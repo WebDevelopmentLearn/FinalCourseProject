@@ -26,6 +26,7 @@ export type CustomInputProps = {
     className?: string;
     style?: React.CSSProperties;
     value?: string;
+    defaultValue?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     min?: number | string;
     max?: number | string;
@@ -119,6 +120,13 @@ export interface IRegisterData {
     full_name: string;
     username: string;
     password: string;
+}
+
+
+export interface IUserState {
+    user: IUser | null;
+    userStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    userError: any;
 }
 
 export interface ILoginData {

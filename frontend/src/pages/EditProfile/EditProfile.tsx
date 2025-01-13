@@ -3,12 +3,16 @@ import {AvatarCircle, CustomButton, CustomInput, ThemeSwitcher} from "../../comp
 import testAvatar from "../../assets/profile/default_avatar.jpg";
 import React, {ChangeEvent, useCallback, useState} from "react";
 import {useTheme} from "../../context/ThemeContext.tsx";
+import {useSelector} from "react-redux";
+import {userData} from "../../store/selectors.ts";
+import {IUser} from "../../utils/Entitys.ts";
 
 export const EditProfile = () => {
 
     const maxSymbols: number = 150;
     const [symbolsLeft, setSymbolsLeft] = useState<number>(maxSymbols);
     const [aboutText, setAboutText] = useState<string>("");
+    const user: IUser | null = useSelector(userData);
 
     const handleInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const inputText = e.target.value;
@@ -33,9 +37,9 @@ export const EditProfile = () => {
 
             <div className={styles.profile_details}>
                 <div className={styles.profile_avatar_and_desc}>
-                    <AvatarCircle avatarSize="56px" avatar={testAvatar}/>
+                    <AvatarCircle avatarSize="56px" avatar={user?.avatar}/>
                     <div className={styles.profile_username_and_desc}>
-                        <h3>itcareerhub</h3>
+                        <h3>{user?.username}</h3>
                         <p>
                             • Гарантия помощи с трудоустройством в ведущие IT-компании
                         </p>
@@ -55,7 +59,7 @@ export const EditProfile = () => {
             <form action="" className={styles.edit_profile_form}>
                 <div>
                     <label htmlFor="username_input">Username</label>
-                    <CustomInput value={"itcareerhub"} className={styles.edit_profile_input} id="username_input"
+                    <CustomInput defaultValue={user?.username} className={styles.edit_profile_input} id="username_input"
                                  type="text"/>
                 </div>
 

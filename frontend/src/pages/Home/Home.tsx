@@ -14,7 +14,6 @@ import {RootState} from "@reduxjs/toolkit/query";
 export const Home = () => {
     const posts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     const navigate = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
 
     // const [userData, setUserData] = useState<IUser>({
     //     _id: "",
@@ -33,19 +32,6 @@ export const Home = () => {
 
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await dispatch(getUser());
-                if (getUser.fulfilled.match(result)) {
-                    console.log("getUser.fulfilled");
-                }
-            } catch (error) {
-                console.log("getUser.rejected");
-            }
-        }
-        fetchData();
-    }, []);
 
     return (
         <div>

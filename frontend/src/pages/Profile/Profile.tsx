@@ -2,26 +2,28 @@ import styles from "./Profile.module.scss";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
 import {AvatarCircle, CustomButton, ExpandableText, PostCardInProfile, PostModal} from "../../components";
 
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {Post} from "../../utils/Entitys.ts";
 import {postsArr} from "../../utils/DebugUtils.ts";
-import {NavigateFunction, useNavigate} from "react-router-dom";
+import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "@reduxjs/toolkit/query";
+import {userData} from "../../store/selectors.ts";
 
 
 
 export const Profile = () => {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const {user} = useSelector((state: RootState) => state.userReducer);
+    const user = useSelector(userData);
 
-    const profileName: string = "itcareerhub";
-    const isMyProfile = true;
+    const {_id} = useParams();
 
-    const posts: number = 129;
-    const followers: number = 9993;
-    const following: number = 59;
+    const isMyProfile: boolean = _id == user?._id;
+
+    const posts: number = user?.posts ? user?.posts.length as number : 0;
+    const followers: number = user?.followers ? user?.followers.length as number : 0;
+    const following: number = user?.following ? user?.following.length as number : 0;
 
 
 
@@ -60,12 +62,12 @@ export const Profile = () => {
         <div className={styles.profile}>
             <div className={styles.profile_main}>
                 <div>
-                    <AvatarCircle avatar={user?.user?.avatar} avatarSize={"big"} />
+                    <AvatarCircle avatar={user?.avatar as string} avatarSize={"big"} />
                 </div>
 
                 <div className={styles.profile_info}>
                     <div className={styles.profile_info__first}>
-                        <span>{user?.user?.username}</span>
+                        <span>{user?.username}</span>
                         {isMyProfile ? (
                             <div>
                                 <CustomButton onClick={handleRedirect} title="Edit Profile" className={styles.profile_edit_profile_btn} />

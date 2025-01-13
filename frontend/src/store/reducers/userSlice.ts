@@ -1,12 +1,7 @@
-import {IUser} from "../../utils/Entitys.ts";
+import {IUserState} from "../../utils/Entitys.ts";
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
 import {getUser} from "../api/actionCreators.ts";
 
-interface IUserState {
-    user: IUser | null;
-    userStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
-    userError: any;
-}
 
 const initialState: IUserState = {
     user: null,
