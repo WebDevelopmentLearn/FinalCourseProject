@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import bcrypt from "bcrypt";
+import {logDebug} from "./Logger";
 
 export const defaultAvatarPath = path.join(__dirname, '../public/default_avatar.png');
 
@@ -37,5 +38,9 @@ export const hashToken = async (token: string): Promise<string> => {
 };
 
 export const compareToken = async (token: string, hashedToken: string): Promise<boolean> => {
-    return bcrypt.compare(token, hashedToken);
+    console.log("Comparing tokens");
+    console.log("Token:", token);
+    console.log("Hashed token:", hashedToken);
+    // bcrypt.compare(token, hashedToken);
+    return await bcrypt.compare(token, hashedToken);
 };

@@ -10,14 +10,29 @@ import {Request, Response, NextFunction} from "express";
 
 export const validateRefreshToken = async (userId: string, refreshToken: string): Promise<boolean> => {
     try {
-        const refreshTokenDoc: IRefreshToken | null = await RefreshToken.findOne({userId});
-        if (refreshTokenDoc === null) {
+        const refreshTokenDoc: IRefreshToken | null = await RefreshToken.findOne({ user: userId });
+
+        if (!refreshTokenDoc) {
+            await logInfo(`[validateRefreshToken] Refresh token not found for userId: ${userId}`);
             return false;
         }
 
-        return compareToken(refreshToken, refreshTokenDoc.token);
+        // Проверяем срок действия токена
+        if (refreshTokenDoc.expires < new Date()) {
+            await logInfo(`[validateRefreshToken] Refresh token expired for userId: ${userId}`);
+            return false;
+        }
+
+        // Сравниваем токен с хэшированным токеном
+        const isTokenValid = await compareToken(refreshToken, refreshTokenDoc.token);
+
+        if (!isTokenValid) {
+            await logInfo(`[validateRefreshToken] Invalid refresh token for userId: ${userId}`);
+        }
+
+        return isTokenValid;
     } catch (error: any) {
-        await logErrorWithObj("validateRefreshToken", error);
+        await logErrorWithObj("validateRefreshToken", { userId, error });
         return false;
     }
 }

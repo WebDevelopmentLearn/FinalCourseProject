@@ -15,13 +15,13 @@ export interface IUser extends Document {
     email: string;
     full_name: string;
     password: string;
-    bio: string;
-    avatar: string;//Base64
-    website: string;
-    notifications: Types.ObjectId[];
-    posts: Types.ObjectId[];
-    followers: Types.ObjectId[];
-    following: Types.ObjectId[];
+    bio?: string;
+    avatar?: string;//Base64
+    website?: string;
+    notifications?: Types.ObjectId[];
+    posts?: Types.ObjectId[];
+    followers?: Types.ObjectId[];
+    following?: Types.ObjectId[];
 }
 
 export interface IComment extends Document {
