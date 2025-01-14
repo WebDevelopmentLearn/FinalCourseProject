@@ -6,9 +6,9 @@ import {ChangeEvent, useState} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@reduxjs/toolkit/query";
 import {closeCreatePostModal} from "../../store/reducers/modalSlice.ts";
 import {useTheme} from "../../context/ThemeContext.tsx";
+import {RootState} from "../../store/ichgramStore.ts";
 
 type CreatePostFormInputs = {
     photo: FileList;

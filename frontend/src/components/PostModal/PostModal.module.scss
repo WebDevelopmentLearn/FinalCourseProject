@@ -26,10 +26,6 @@
 }
 
 .profile_post_modal_image {
-    //max-width: 580px;
-    //max-width: 988px;
-    //max-height: 988px;
-    //flex-basis: 967px;
     width: 100%;
     aspect-ratio: 1/1;
     flex: 3;
@@ -37,7 +33,7 @@
     img {
         width: 100%;
         height: 100%;
-        object-fit: fill;
+        object-fit: contain;
         aspect-ratio: 1/1;
     }
 }

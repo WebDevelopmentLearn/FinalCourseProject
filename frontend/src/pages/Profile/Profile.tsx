@@ -7,7 +7,6 @@ import {Post} from "../../utils/Entitys.ts";
 import {postsArr} from "../../utils/DebugUtils.ts";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {RootState} from "@reduxjs/toolkit/query";
 import {userData} from "../../store/selectors.ts";
 
 

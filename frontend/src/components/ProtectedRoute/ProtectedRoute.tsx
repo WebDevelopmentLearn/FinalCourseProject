@@ -33,18 +33,21 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({children}: ProtectedRou
         const checkAuth = async () => {
             try {
                 console.log("Checking access token");
-                await API.get("/auth/check-access-token"); // Проверка токена на сервере
+                await API.get("/auth/check-access-token"); // Проверяем актуальность токена
             } catch (error) {
-                if (error instanceof AxiosError) {
-                   // console.log("Error during token check:", error.response?.status);
-                    if (error.response?.status === 401 || error.response?.status === 403) {
-                        navigate("/signin", {
-                            state: {message: "You need to sign in to access this page"}
-                        }); // Перенаправление на страницу логина
-                    }
-                } else {
-                    console.log(error);
-                }
+               if (error instanceof AxiosError && error.response?.status === 401) {
+                   try {
+                       console.log("Refreshing access token");
+                       await API.post("/auth/refresh-access-token"); // Обновляем токен
+                   } catch (refreshError) {
+                       console.error("Failed to refresh access token");
+                       navigate("/signin", {
+                           state: { message: "Session expired. Please log in again." },
+                       });
+                   }
+               } else {
+                   console.error("Error during auth check:", error);
+               }
             }
         };
 

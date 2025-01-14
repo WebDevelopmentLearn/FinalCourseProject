@@ -5,12 +5,12 @@ import {Wrapper} from "../wrapper/Wrapper.tsx";
 import {CreatePostModal, Footer, Sidebar} from "../components";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {RootState} from "@reduxjs/toolkit/query";
 import {useSelector} from "react-redux";
 import {useAppSelector} from "../utils/CustomHooks.ts";
 import API, {setupInterceptors} from "../api/API.ts";
 import {AxiosError} from "axios";
 import {userData} from "../store/selectors.ts";
+import {RootState} from "../store/ichgramStore.ts";
 
 function App() {
 

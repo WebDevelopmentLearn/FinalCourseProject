@@ -3,35 +3,10 @@ import styles from "./Home.module.scss";
 
 import check from "../../assets/home/check_in_circle.svg";
 import LazyLoad from "react-lazyload";
-import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch} from "../../store/ichgramStore.ts";
-import {useEffect, useState} from "react";
-import {IUser} from "../../utils/Entitys.ts";
-import {getUser} from "../../store/api/actionCreators.ts";
-import {RootState} from "@reduxjs/toolkit/query";
+
 
 export const Home = () => {
     const posts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
-    const navigate = useNavigate();
-
-    // const [userData, setUserData] = useState<IUser>({
-    //     _id: "",
-    //     avatar: "",
-    //     bio: "",
-    //     email: "",
-    //     followers: [],
-    //     following: [],
-    //     full_name: "",
-    //     notifications: [],
-    //     password: "",
-    //     posts: [],
-    //     username: "",
-    //     website: ""
-    // });
-
-
-
 
     return (
         <div>

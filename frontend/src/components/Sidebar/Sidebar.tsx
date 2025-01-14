@@ -10,9 +10,9 @@ import {NotificationModal} from "../NotificationModal/NotificationModal.tsx";
 import {useTheme} from "../../context/ThemeContext.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {openCreatePostModal} from "../../store/reducers/modalSlice.ts";
-import {RootState} from "@reduxjs/toolkit/query";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import {userData} from "../../store/selectors.ts";
+import {RootState} from "../../store/ichgramStore.ts";
 // import {ThemeSwitcher} from "../ThemeSwitcher/ThemeSwitcher.tsx";
 
 

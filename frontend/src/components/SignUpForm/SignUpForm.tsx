@@ -7,9 +7,9 @@ import {FC} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {CustomInput} from "../CustomInput/CustomInput.tsx";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {registerUser} from "../../store/api/actionCreators.ts";
-import {AppDispatch} from "../../store/ichgramStore.ts";
+import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {IRegisterData} from "../../utils/Entitys.ts";
 import {useTheme} from "../../context/ThemeContext.tsx";
 
@@ -35,7 +35,7 @@ export const SignUpForm: FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const {theme} = useTheme();
-
+    const {registerError} = useSelector((state: RootState) => state.authReducer);
 
     const onFormSubmit: SubmitHandler<SignUpFormValues> = async(data) => {
         try {
@@ -106,7 +106,7 @@ export const SignUpForm: FC = () => {
                 })} placeholder="Password" type="password"  />
 
                 {errors.password && <p className={styles.error_message}>{errors.password.message}</p>}
-
+                {registerError && <p className={styles.error_message}>{registerError}</p>}
                 <div className={styles.sign_up_text_block}>
                     <p>
                         People who use our service may have uploaded
