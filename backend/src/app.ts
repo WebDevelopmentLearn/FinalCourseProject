@@ -8,8 +8,7 @@ import ErrorHandler from "./utils/ErrorHandler";
 
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
-import {IUser} from "./entitys/interfaces";
-import {JwtPayload} from "jsonwebtoken";
+import postRoutes from "./routes/postRoutes";
 
 const app: Application = express();
 
@@ -46,6 +45,7 @@ const start = async () => {
         app.use(ErrorHandler);
         app.use("/api/auth", authRoutes);
         app.use("/api/user", userRoutes);
+        app.use("/api/posts", postRoutes);
 
         app.listen(PORT, () => {
             logInfo(`Server is running at: ${URL}:${PORT}`);

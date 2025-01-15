@@ -1,21 +1,21 @@
-import {Schema, Document, Types, model} from 'mongoose'
-import {IPost} from "../entitys/interfaces";
+import {Schema, Document, Types, model, Model} from 'mongoose'
+import {IPostDoc} from "../entitys/interfaces";
 
 
 
-const PostSchema: Schema = new Schema({
+const postSchema: Schema = new Schema({
    author: {
        type: Types.ObjectId,
          ref: 'User',
    },
-    image: {
+    photo: {
          type: String,
          required: true
     },
-    description: {
+    content: {
        type: String,
         required: true,
-        maxlength: 2000
+        maxlength: 2200
     },
     likes: [{
         type: Types.ObjectId,
@@ -25,10 +25,13 @@ const PostSchema: Schema = new Schema({
         type: Types.ObjectId,
         ref: 'Comment',
     }],
-
-
+    createdAt: {
+       type: Date,
+        default: Date.now
+    },
 });
 
-const Post = model<IPost>('Post', PostSchema);
+
+const Post: Model<IPostDoc> = model<IPostDoc>('Post', postSchema);
 
 export default Post;

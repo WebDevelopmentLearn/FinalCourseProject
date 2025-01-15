@@ -1,11 +1,13 @@
 import {Document, Types} from "mongoose";
 
-export interface IPost extends Document {
+export interface IPostDoc extends Document {
+    _id: Types.ObjectId | string;
     author: Types.ObjectId | string;
     image: string;
     description: string;
     likes: Types.ObjectId[];
     comments: Types.ObjectId[];
+    createdAt: Date;
 
 }
 

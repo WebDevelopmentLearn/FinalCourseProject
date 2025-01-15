@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import bcrypt from "bcrypt";
 import {logDebug} from "./Logger";
+import jwt from "jsonwebtoken";
 
 export const defaultAvatarPath = path.join(__dirname, '../public/default_avatar.png');
 
@@ -44,3 +45,13 @@ export const compareToken = async (token: string, hashedToken: string): Promise<
     // bcrypt.compare(token, hashedToken);
     return await bcrypt.compare(token, hashedToken);
 };
+
+
+export const getUserIdFromToken = (accessToken: string): string => {
+    const decoded: any = jwt.verify(accessToken, process.env.JWT_SECRET as string);
+    console.log("[getUserIdFromToken] Decoded:", decoded);
+    if (decoded) {
+        return decoded.id;
+    }
+    return "";
+}

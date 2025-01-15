@@ -4,13 +4,13 @@ import {logErrorWithObj} from "../utils/Logger";
 
 class AuthRepository {
 
-    public static async createUser(userData: any) {
+    public static async createUserDoc(userData: any) {
         try {
             const user: IUser = new User(userData);
             await user.save();
             return user;
         } catch (error: any) {
-            await logErrorWithObj("createUser", error);
+            await logErrorWithObj("createUserDoc", error);
             throw new Error("Error while creating user");
         }
     }

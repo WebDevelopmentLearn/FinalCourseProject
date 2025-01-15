@@ -115,47 +115,13 @@ const getAdditionalData = async (user: IUser | null, getPosts?: boolean, getFoll
 
 class AuthService {
 
-    public static async getUserByEmail(email: string) {
-        try {
-            const user = await User
-                .findOne({email})
-                .exec();
-
-            if (!user) {
-                return null;
-            }
-
-            return user;
-        } catch (error: any) {
-            await logErrorWithObj("getUser", error);
-            throw new Error("Error while getting user by email");
-        }
-    }
-
-    public static async getUserByUsername(username: string) {
-        try {
-            const user = await User
-                .findOne({username})
-                .exec();
-
-            if (!user) {
-                return null;
-            }
-
-            return user;
-        } catch (error: any) {
-            await logErrorWithObj("getUser", error);
-            throw new Error("Error while getting user by username");
-        }
-    }
-
     public static async registerUser(userData: any) {
         const existingUser = await AuthRepository.getUserByEmailOrUsername(userData.email, userData.username);
         if (existingUser) {
             return null
         }
 
-        const newUser = await AuthRepository.createUser(userData);
+        const newUser: IUser = await AuthRepository.createUserDoc(userData);
 
         return newUser;
     }

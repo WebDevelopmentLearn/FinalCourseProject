@@ -152,7 +152,7 @@ class AuthController {
 
 
             const accessToken: string = generateAccessToken({
-                id: decoded._id
+                id: decoded.id
             });
 
             res.cookie("accessToken", accessToken, {
