@@ -3,20 +3,42 @@ import styles from "./Home.module.scss";
 
 import check from "../../assets/home/check_in_circle.svg";
 import LazyLoad from "react-lazyload";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../store/ichgramStore.ts";
+import {useEffect} from "react";
+import {getAllPosts} from "../../store/api/actionCreators.ts";
+import {posts} from "../../store/selectors.ts";
 
 
 export const Home = () => {
-    const posts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
+
+
+    const dispatch = useDispatch<AppDispatch>();
+    const postsArr = useSelector(posts);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+               const result = await dispatch(getAllPosts());
+                if (getAllPosts.fulfilled.match(result)) {
+                    console.log("getAllPosts.fulfilled");
+                }
+            } catch (error) {
+                console.log("getUser.rejected");
+            }
+        }
+        fetchData();
+    }, [dispatch]);
 
     return (
         <div>
             <div className={styles.home}>
                 <div className={styles.home_posts__list}>
-                    {posts.map((_el, index) => (
+                    {(postsArr && postsArr.length > 0) ? postsArr.map((post, index) => (
                         <LazyLoad key={index} height={200} offset={100}>
-                            <PostCard/>
+                            <PostCard post={post}/>
                         </LazyLoad>
-                    ))}
+                    )) : <h1>No posts</h1>}
 
                 </div>
                 <div className={styles.home_end}>

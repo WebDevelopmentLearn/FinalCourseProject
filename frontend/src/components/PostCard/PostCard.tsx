@@ -6,7 +6,8 @@ import testAvatar from "../../assets/post/test_avatar.png";
 
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import {useCallback, useState} from "react";
-export const PostCard = () => {
+import {getTimeAgo} from "../../utils/Utils.ts";
+export const PostCard = ({post}) => {
 
     //let isLiked = true;//#FF3040
     const [isLiked, setIsLiked] = useState(false);
@@ -34,20 +35,21 @@ export const PostCard = () => {
         <div className={`${styles.post_card}`}>
             <div className={styles.post_card__author}>
                 <div className={styles.post_card__avatar}>
-                    <AvatarCircle avatar={testAvatar} className={styles.post_card__avatar__circle}/>
+                    <AvatarCircle avatar={post?.author?.avatar} className={styles.post_card__avatar__circle}/>
                     {/*<img src={testAvatar} alt=""/>*/}
                 </div>
 
                 <div className={styles.post_card__author__right_block}>
-                    <span className={styles.post_card__author__name}>sashaa</span>
-                    <span className={styles.post_card__author__date}>2 wek</span>
+                    <span className={styles.post_card__author__name}>{post?.author?.username}</span>
+                    <span className={styles.post_card__author__date}>{getTimeAgo(post?.createdAt)}</span>
                     {/*<Link to="/">follow</Link>*/}
                     <button className={styles.post_card__author__follow}>follow</button>
                 </div>
             </div>
 
             <div className={styles.post_card__image}>
-                <img src={testPostImage} alt="testPostImage"/>
+                <img src={post?.photo} alt="testPostImage"/>
+                {/*<img src={testPostImage} alt="testPostImage"/>*/}
             </div>
 
             <div className={styles.post_card__content}>
@@ -75,8 +77,9 @@ export const PostCard = () => {
                 </div>
                 <div>
                     <p>
-                        Sashaa 𝘐𝘵’𝘴 𝒈𝒐𝒍𝒅𝒆𝒏, 𝘗𝘰𝘯𝘺𝘣𝘰𝘺!
-                        heyyyyy | M... more
+                        {post?.content}
+                        {/*Sashaa 𝘐𝘵’𝘴 𝒈𝒐𝒍𝒅𝒆𝒏, 𝘗𝘰𝘯𝘺𝘣𝘰𝘺!*/}
+                        {/*heyyyyy | M... more*/}
                     </p>
                 </div>
                 <div className={styles.post_card__comments}>

@@ -63,3 +63,46 @@ export const getUser = createAsyncThunk("auth/getUser", async () => {
         console.log(error);
     }
 });
+
+export type CreatePost = {
+    photo: FileList,
+    content: string,
+}
+
+export const createPost = createAsyncThunk("post/createPost", async ({photo, content}: CreatePost, {rejectWithValue}) => {
+    try {
+        const formData = new FormData();
+        formData.append('photo', photo[0]);
+        formData.append('content', content);
+        for (const [key, value] of formData.entries()) {
+            console.log(`[createPost] ${key}:`, value);
+        }
+        const response = await API.post(`/posts/create-post`, formData, {
+            headers: {'Content-Type': 'multipart/form-data'},
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        if (error instanceof AxiosError) {
+            if (error.response && error.response.data.message) {
+                console.log("Error message1:", error.response.data.message);
+                return rejectWithValue(error.response.data.message)
+            } else {
+                console.log("Error message2:", error.message);
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+
+});
+
+export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
+    try {
+        const response = await API.get(`/posts/all-posts`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+});

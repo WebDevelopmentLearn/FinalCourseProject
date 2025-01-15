@@ -2,12 +2,13 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import modalReducer from "./reducers/modalSlice";
 import authReducer from "./reducers/authSlice.ts";
 import userReducer from "./reducers/userSlice.ts";
-
+import postReducer from "./reducers/postSlice.ts";
 
 const rootReducer = combineReducers({
     modalReducer,
     authReducer,
-    userReducer
+    userReducer,
+    postReducer
 });
 
 const ichgramStore = configureStore({

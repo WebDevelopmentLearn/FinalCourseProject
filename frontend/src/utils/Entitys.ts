@@ -91,7 +91,6 @@ export interface Post {
     url: string;
     comments: IUser[];
     // likes: number;
-    // comments: number;
     // tags: string[];
     // date: string;
 }
@@ -133,4 +132,10 @@ export interface ILoginData {
     email?: string;
     username?: string;
     password: string;
+}
+
+export interface IPostState {
+    posts: Post[];
+    postsStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    postsError: any;
 }
