@@ -48,7 +48,7 @@ export const PostCard = ({onClick, post}) => {
             </div>
 
             <div className={styles.post_card__image}>
-                <img src={post?.photo} alt="testPostImage"/>
+                <img src={post?.photo.length > 1 ? post?.photo[0] : post?.photo[0]} alt="testPostImage"/>
                 {/*<img src={testPostImage} alt="testPostImage"/>*/}
             </div>
 

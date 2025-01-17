@@ -9,8 +9,7 @@ const rootReducer = combineReducers({
     modalReducer,
     authReducer,
     userReducer,
-    postReducer,
-    imagesReducer
+    postReducer
 });
 
 const ichgramStore = configureStore({

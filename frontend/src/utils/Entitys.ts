@@ -77,6 +77,7 @@ export interface IPostState {
 
 export interface IImagesState {
     images: any[];
+    imagesUrls: any[];
 }
 
 

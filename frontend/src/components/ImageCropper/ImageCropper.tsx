@@ -5,7 +5,8 @@ import Cropper from "react-easy-crop";
 import styles from "./ImageCropper.module.scss";
 import {getCroppedImg} from "../../utils/Utils.ts";
 import {ImageCropperProps} from "../../utils/Entitys.ts";
-import {updateImage} from "../../store/reducers/imagesSlice.ts";
+import {updateImageBlob, updateImageUrl} from "../../store/reducers/imagesSlice.ts";
+import {useImages} from "../../context/ImageContext.tsx";
 
 
 export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
@@ -13,6 +14,7 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
     const [zoom, setZoom] = useState<number>(1);
     const [aspect, setAspect] = useState<number>(1); // Соотношение сторон по умолчанию 1:1
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const { saveCroppedImage } = useImages();
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -38,10 +40,16 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
     };
 
     const handleCrop = async () => {
-        const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
-        console.log("Cropped Image:", croppedImage);
-        dispatch(updateImage({oldImage: imageSrc, newImage: croppedImage}))
-        handleClose();
+        try {
+            const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels, true);
+            // const croppedImageUrl = await getCroppedImg(imageSrc, croppedAreaPixels, false);
+            console.log("Cropped Image:", croppedImage);
+            // console.log("Cropped ImageUrl:", croppedImageUrl);
+            saveCroppedImage(croppedImage); // Сохраняем Blob через контекст
+            handleClose();
+        } catch (error) {
+            console.error("Error with handleCrop: ", error);
+        }
     };
 
     return (

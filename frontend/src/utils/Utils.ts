@@ -48,8 +48,7 @@ export function getEnumTheme(userTheme: string): Theme | undefined {
 }
 
 
-
-export const getCroppedImg = async (imageSrc, pixelCrop) => {
+export const getCroppedImg = async (imageSrc, pixelCrop, isBlob) => {
     const image = await createImage(imageSrc);
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -75,7 +74,9 @@ export const getCroppedImg = async (imageSrc, pixelCrop) => {
                 console.error("Canvas is empty");
                 return;
             }
-            resolve(URL.createObjectURL(blob));
+            resolve(blob);
         }, "image/jpeg");
     });
+
 };
+

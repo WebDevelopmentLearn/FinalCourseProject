@@ -11,6 +11,7 @@ import API, {setupInterceptors} from "../api/API.ts";
 import {AxiosError} from "axios";
 import {userData} from "../store/selectors.ts";
 import {RootState} from "../store/ichgramStore.ts";
+import {ImageProvider} from "../context/ImageContext.tsx";
 
 function App() {
 
@@ -33,7 +34,11 @@ function App() {
                 {!routesWithNavbar.includes(location.pathname) ? (<div className="wrapper_and_footer">
                     <Wrapper>
                         <MainRoute/>
-                        {createPostModalIsOpen && <CreatePostModal />}
+                        {createPostModalIsOpen && (
+                            <ImageProvider>
+                                <CreatePostModal />
+                            </ImageProvider>
+                        )}
                     </Wrapper>
                     <Footer/>
                 </div>) : (

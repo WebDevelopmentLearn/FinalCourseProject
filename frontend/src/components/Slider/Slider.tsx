@@ -4,13 +4,15 @@ import {useDispatch, useSelector} from "react-redux";
 import {SliderProps} from "../../utils/Entitys.ts";
 import styles from "./Slider.module.scss";
 import {UploadImageIcon} from "../../assets/icons/UploadImageIcon.tsx";
-import {addImage, removeImage} from "../../store/reducers/imagesSlice.ts";
 import {ImageCropperModal} from "../ImageCropperModal/ImageCropperModal.tsx";
+import {useImages} from "../../context/ImageContext.tsx";
 
 export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: SliderProps) => {
     const [currentImg, setCurrentImg] = useState<number>(0);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const {images} = useSelector((state: RootState) => state.imagesReducer);
+    // const {imagesUrls} = useSelector((state: RootState) => state.imagesReducer);
+    const {currentImage, images, addImageForEditing, removeImage } = useImages();
+
     const dispatch = useDispatch<AppDispatch>();
 
     const handleClose = () => {
@@ -33,34 +35,21 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
     }, [handleNext, handlePrevious]);
 
     const handleFileChange = (event) => {
-        const files = event.target.files;
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const blob = new Blob([file], { type: file.type });
+            const fileUrl = URL.createObjectURL(file); // Создаем временный URL для отображения изображения
+            // dispatch(addImageUrl(fileUrl));
+            // dispatch(addImageBlob(blob));
+            addImageForEditing(blob);
 
-        // Проверка на наличие файлов
-        if (files && files[0]) {
-            const file = files[0];
-
-            // Проверяем, что это действительно файл (Blob)
-            if (file instanceof Blob) {
-                const fileUrl = URL.createObjectURL(file); // Создаем временный URL для отображения изображения
-
-                // Добавляем файл в состояние
-                dispatch(addImage(fileUrl));
-
-                // Открываем модальное окно
-                setIsOpen(true);
-            } else {
-                console.error("Selected item is not a valid file.");
-            }
-        } else {
-            console.error("No file selected.");
+            setIsOpen(true);
         }
-
-        // Сбрасываем значение input после обработки
         event.target.value = "";
     };
 
-    const handleDelete = (image) => {
-        dispatch(removeImage(image))
+    const handleDelete = (imageUrl) => {
+        removeImage(imageUrl)
     }
 
     useEffect(() => {
@@ -74,8 +63,8 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
         <div style={style} className={`${styles.slider} ${className}`}>
             <div className={styles.cards} style={{transform: `translateX(${-currentImg * maxWidth}px)`, width: maxWidth * images.length}}>
                 {images.map((image, index) => (
-                    <div key={index} className={styles.card} style={{backgroundImage: `url(${image})`, maxWidth: `${maxWidth}px`,}}>
-                        <button className={styles.card__delete_btn} onClick={() => handleDelete(image)}>X</button>
+                    <div key={index} className={styles.card} style={{backgroundImage: `url(${image.url})`, maxWidth: `${maxWidth}px`,}}>
+                        <button className={styles.card__delete_btn} onClick={() => handleDelete(image.url)}>X</button>
                     </div>
                 ))}
 
@@ -111,7 +100,7 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
                 </div>
             )}
             {isOpen && (
-                <ImageCropperModal handleClose={handleClose} imageSrc={images[images.length - 1]}/>
+                <ImageCropperModal handleClose={handleClose} imageSrc={currentImage.url}/>
             )}
         </div>
     );

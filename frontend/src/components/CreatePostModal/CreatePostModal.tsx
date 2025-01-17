@@ -12,6 +12,7 @@ import {createPost} from "../../store/api/actionCreators.ts";
 import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {getEnumTheme} from "../../utils/Utils.ts";
 import {Slider} from "../Slider/Slider.tsx";
+import {useImages} from "../../context/ImageContext.tsx";
 
 type CreatePostFormInputs = {
     photo: FileList | null;
@@ -23,8 +24,8 @@ export const CreatePostModal = () => {
     const [previews, setPreviews] = useState<string[]>([]);
     const dispatch = useDispatch<AppDispatch>();
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
-    const {images} = useSelector((state: RootState) => state.imagesReducer);
 
+    const { images, addImage, removeImage } = useImages();
     const {theme} = useTheme();
     const {
         register,
@@ -61,7 +62,7 @@ export const CreatePostModal = () => {
                     }
                 };
 
-                reader.readAsDataURL(file); // Читаем файл как Data URL
+                reader.readAsDataURL(file.blob); // Читаем файл как Data URL
             });
         }
     };
@@ -86,12 +87,14 @@ export const CreatePostModal = () => {
                     }
                 };
 
-                reader.readAsDataURL(file); // Читаем файл как Data URL
+                reader.readAsDataURL(file.blob); // Читаем файл как Data URL
             });
         }
     }, [images]);
 
-
+    useEffect(() => {
+        setValue("photo", images.map((image) => image.blob)); // Сохраняем только Blob
+    }, [images, setValue]);
 
     const handleOpenEmojiPicker = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();

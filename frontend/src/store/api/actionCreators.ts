@@ -72,7 +72,10 @@ export type CreatePost = {
 export const createPost = createAsyncThunk("post/createPost", async ({photo, content}: CreatePost, {rejectWithValue}) => {
     try {
         const formData = new FormData();
-        formData.append('photo', photo[0]);
+        const files = Array.from(photo);
+        files.forEach((el) => {
+            formData.append("photo", el);
+        });
         formData.append('content', content);
         for (const [key, value] of formData.entries()) {
             console.log(`[createPost] ${key}:`, value);
