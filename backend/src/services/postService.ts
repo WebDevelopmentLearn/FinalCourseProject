@@ -16,6 +16,17 @@ class PostService {
         const allPosts: IPostDoc[] = await PostRepository.getAllPosts();
         return allPosts;
     }
+
+    static async getPostById(postId: string): Promise<IPostDoc | null> {
+        const post: IPostDoc | null = await PostRepository.getPostById(postId);
+
+        if (post === null) {
+            return null;
+        }
+
+        return post;
+
+    }
 }
 
 export default PostService;

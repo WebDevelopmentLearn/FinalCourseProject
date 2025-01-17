@@ -3,14 +3,16 @@ import {IPostDoc} from "../entitys/interfaces";
 
 
 
+
 const postSchema: Schema = new Schema({
    author: {
        type: Types.ObjectId,
          ref: 'User',
    },
     photo: {
-         type: String,
-         required: true
+       type: [String],
+        max: 5,
+        required: true
     },
     content: {
        type: String,

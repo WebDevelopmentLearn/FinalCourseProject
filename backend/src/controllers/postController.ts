@@ -27,11 +27,14 @@ class PostController {
                 return;
             }
 
-            console.log(req.file);
-            if (req.file && targetUser) {
-                const imageBase64 = req.file.buffer.toString("base64");
 
-                const encodedImageBase64 = `data:${req.file.mimetype};base64,${imageBase64}`;
+            if (req.files && Array.isArray(req.files) && targetUser) {
+                const imageBase64Arr: string[] = req.files.map((file: Express.Multer.File) => file.buffer.toString("base64"));
+
+                // const encodedImageBase64 = `data:${req.file.mimetype};base64,${imageBase64}`;
+                const encodedImageBase64Arr = imageBase64Arr.map((imageBase64: string) => `data:image/png;base64,${imageBase64}`);
+
+
 
                 // const post: IPost | null = await Post.create({
                 //     photo: encodedImageBase64,
@@ -42,7 +45,7 @@ class PostController {
                 // });
 
                 const postData = {
-                    photo: encodedImageBase64,
+                    photo: encodedImageBase64Arr,
                     content: content,
                     author: {
                         _id: userId
@@ -74,6 +77,32 @@ class PostController {
             // } else {
             //     res.status(500).send('Error creating post');
             // }
+        }
+    }
+
+    public static async updatePost(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {postId} = req.params;
+            const {content} = req.body;
+
+            if (!postId || !content) {
+                res.status(400).json({message: "All fields are required"});
+                return;
+            }
+
+            const post: IPostDoc | null = await PostService.getPostById(postId);
+
+            if (post === null) {
+                res.status(404).json({message: "Post not found"});
+                return;
+            }
+
+            post.content = content;
+            await post.save();
+
+            res.status(200).json({message: "Post updated successfully", post});
+        } catch (error) {
+            next(error);
         }
     }
 

@@ -4,7 +4,7 @@ export interface IPostDoc extends Document {
     _id: Types.ObjectId | string;
     author: Types.ObjectId | string;
     image: string;
-    description: string;
+    content: string;
     likes: Types.ObjectId[];
     comments: Types.ObjectId[];
     createdAt: Date;

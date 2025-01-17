@@ -24,6 +24,19 @@ class PostRepository {
             throw new Error("Error while creating post");
         }
     }
+
+    static async getPostById(postId: string): Promise<IPostDoc | null> {
+        try {
+            const post: IPostDoc | null = await Post
+                .findById(postId)
+                .populate("author");
+
+            return post;
+        } catch (error: any) {
+            console.error("Error in getPostById:", error);
+            throw new Error("Error while getting post by id");
+        }
+    }
 }
 
 export default PostRepository;
