@@ -7,23 +7,26 @@ import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {ChangeEvent, MutableRefObject, useCallback, useEffect, useRef, useState} from "react";
 import {CommentCard} from "../CommentCard/CommentCard.tsx";
 import {CustomInput} from "../CustomInput/CustomInput.tsx";
-import Picker, {EmojiClickData} from "emoji-picker-react";
+import Picker, {EmojiClickData, Theme} from "emoji-picker-react";
 import {useForm} from "react-hook-form";
 import {useTheme} from "../../context/ThemeContext.tsx";
+import {getEnumTheme} from "../../utils/Utils.ts";
+import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
 
 interface PostModalInputProps {
-
-
+    content: string;
 }
 
 export const PostModal = ({post, handleClose}) => {
     const {theme} = useTheme();
+
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
     const [moreOptionModalIsOpen, setMoreOptionModalIsOpen] = useState<boolean>(false);
     const [isLiked, setIsLiked] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [text, setText] = useState('');
     const textareaRef: MutableRefObject<HTMLTextAreaElement> = useRef(null);
+    const [editPostModalIsOpen, setEditPostModalIsOpen] = useState<boolean>(false);
 
 
     const {
@@ -101,14 +104,14 @@ export const PostModal = ({post, handleClose}) => {
             <div className={styles.profile_post_modal} onClick={(event) => event.stopPropagation()}>
 
                 <div className={styles.profile_post_modal_image}>
-                    <img src={post.image} alt=""/>
+                    <img src={post.photo} alt=""/>
                 </div>
 
 
                 <div className={styles.profile_post_modal_details}>
                     <div className={styles.author}>
                         <div>
-                            <AvatarCircle avatar={testAvatar} avatarSize="small" />
+                            <AvatarCircle avatar={post?.author?.avatar} avatarSize="small" />
                             <span>{post.author.username}</span>
                             <span>•</span>
                             <CustomButton className={styles.subscribe_btn} title={"Subscribe"}/>
@@ -136,10 +139,10 @@ export const PostModal = ({post, handleClose}) => {
                         <ul>
                             <div className={styles.post}>
                                 <div>
-                                    <AvatarCircle avatar={testAvatar} avatarSize="small"/>
+                                    <AvatarCircle avatar={post?.author?.avatar} avatarSize="small"/>
                                 </div>
                                 <div className={styles.post_details}>
-                                    <p><Link to={"/"}>itcareerhub</Link> Потрясающие новости пришли к нам из Черногории!
+                                    <p><Link to={`/profile/${post?.author?._id}`}>{post?.author?.username}</Link> Потрясающие новости пришли к нам из Черногории!
                                         Проект по поддержке бездомных животных
                                         TailBook, в разработке которого участвуют сразу 9 наших
                                         стажёров, будет представлен на Web Summit 2024 в
@@ -264,7 +267,7 @@ export const PostModal = ({post, handleClose}) => {
                                 //     -right-50 md:right-60 lg:right-80 xl:right-96"
 
                             >
-                                <Picker theme={theme} lazyLoadEmojis={true} width={"100%"}
+                                <Picker theme={getEnumTheme(theme)} lazyLoadEmojis={true} width={"100%"}
                                         onEmojiClick={onEmojiClick}/>
                             </div>}
                         <textarea
@@ -285,7 +288,10 @@ export const PostModal = ({post, handleClose}) => {
                     <div className={styles.post_more_modal_overlay} onClick={handleCloseMoreOptionModal}>
                         <div className={styles.post_more_modal} onClick={(event) => event.stopPropagation()}>
                             <CustomButton title={"Delete"} className={`${styles.more_btn} ${styles.delete_btn}`}/>
-                            <CustomButton title={"Edit"} className={`${styles.more_btn} ${styles.edit_btn}`}/>
+                            <CustomButton onClick={() => {
+                                setEditPostModalIsOpen(true);
+                                handleCloseMoreOptionModal();
+                            }} title={"Edit"} className={`${styles.more_btn} ${styles.edit_btn}`}/>
                             <CustomButton title={"Go to Post"}
                                           className={`${styles.more_btn} ${styles.go_to_post_btn}`}/>
                             <CustomButton title={"Copy Link"} className={`${styles.more_btn} ${styles.copy_link_btn}`}/>
@@ -296,6 +302,8 @@ export const PostModal = ({post, handleClose}) => {
                     </div>
                 )}
             </div>
+
+            {editPostModalIsOpen && <EditPostModal post={post} />}
 
         </div>
     );

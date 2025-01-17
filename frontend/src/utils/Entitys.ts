@@ -1,72 +1,7 @@
 import React, {CSSProperties} from "react";
 
-//Types
-//================================================
-
-export type AvatarCircleProps = {
-    avatar: string,
-    avatarSize?:  "small" | "medium" | "big" | string,
-    className?: string,
-    hasLink?: boolean,
-}
-
-export type CustomButtonProps = {
-    title?: string;
-    type?: "button" | "submit" | "reset";
-    styles?: CSSProperties;
-    onClick?: () => void;
-    className?: string;
-}
-
-type CustomInputType = "text" | "password" | "email" | "number" | "tel" | "url" | "search" | "date" | "time" | "datetime-local" | "month" | "week" | "color";
-
-export type CustomInputProps = {
-    type: CustomInputType;
-    placeholder?: string;
-    className?: string;
-    style?: React.CSSProperties;
-    value?: string;
-    defaultValue?: string;
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    min?: number | string;
-    max?: number | string;
-    id?: string;
-}
-
-export type ExpandableTextProps = {
-    textClass?: string;
-    text: string;
-    maxHeight?: number;
-}
-
-export type SignInFormValues = {
-    usernameOrEmail: string;
-    password: string;
-}
-
-export type ForgotPasswordFormValues = {
-    emailOrUsername: string;
-}
-
-export type InterlocutorCardProps = {
-    name: string;
-    message: string;
-    time: string;
-    avatar: string;
-}
-
-export type PostCardInProfileProps = {
-    post: {
-        postId: number;
-        image: string;
-    },
-    onClick?: () => void;
-}
-
-
 //Interfaces
 //================================================
-
 export interface IUser {
     _id:  string;
     username: string;
@@ -83,7 +18,7 @@ export interface IUser {
 }
 
 export interface Post {
-    id: number;
+    _id: number;
     author: IUser;
     title: string;
     description: string;
@@ -138,4 +73,95 @@ export interface IPostState {
     posts: Post[];
     postsStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     postsError: any;
+}
+
+export interface IImagesState {
+    images: any[];
+}
+
+
+//PROPS
+export type ImageCropperModalProps = {
+    handleClose: () => void;
+    imageSrc: any;
+}
+
+export type UploadImageIconProps = {
+    className: string;
+}
+
+export type SliderProps = {
+    style?: CSSProperties;
+    className?: string;
+    maxWidth?: number;
+    maxImages?: number;
+    // onHandleFiles: () => void;
+}
+
+export type ImageCropperProps = {
+    handleClose: () => void;
+    imageSrc: any;
+}
+
+export type InterlocutorCardProps = {
+    name: string;
+    message: string;
+    time: string;
+    avatar: string;
+}
+
+export type PostCardInProfileProps = {
+    post: {
+        postId: number;
+        image: string;
+    },
+    onClick?: () => void;
+}
+
+
+export type AvatarCircleProps = {
+    avatar: string,
+    avatarSize?:  "small" | "medium" | "big" | string,
+    className?: string,
+    hasLink?: boolean,
+}
+
+export type CustomButtonProps = {
+    title?: string;
+    type?: "button" | "submit" | "reset";
+    styles?: CSSProperties;
+    onClick?: () => void;
+    className?: string;
+}
+
+type CustomInputType = "text" | "password" | "email" | "number" | "tel" | "url" | "search" | "date" | "time" | "datetime-local" | "month" | "week" | "color";
+
+export type CustomInputProps = {
+    type: CustomInputType;
+    placeholder?: string;
+    className?: string;
+    style?: React.CSSProperties;
+    value?: string;
+    defaultValue?: string;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    min?: number | string;
+    max?: number | string;
+    id?: string;
+}
+
+export type ExpandableTextProps = {
+    textClass?: string;
+    text: string;
+    maxHeight?: number;
+}
+
+
+//FORM VALUES
+export type SignInFormValues = {
+    usernameOrEmail: string;
+    password: string;
+}
+
+export type ForgotPasswordFormValues = {
+    emailOrUsername: string;
 }

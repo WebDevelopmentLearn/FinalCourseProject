@@ -97,6 +97,28 @@ export const createPost = createAsyncThunk("post/createPost", async ({photo, con
 
 });
 
+export const updatePost = createAsyncThunk("post/updatePost", async ({postId, photo, content}: {postId: string, photo: FileList, content: string}, {rejectWithValue}) => {
+    try {
+        const formData = new FormData();
+        formData.append('photo', photo[0]);
+        formData.append('content', content);
+        const response = await API.put(`/posts/update-post/${postId}`, formData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        if (error instanceof AxiosError) {
+            if (error.response && error.response.data.message) {
+                console.log("Error message1:", error.response.data.message);
+                return rejectWithValue(error.response.data.message)
+            } else {
+                console.log("Error message2:", error.message);
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+});
+
 export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
     try {
         const response = await API.get(`/posts/all-posts`);

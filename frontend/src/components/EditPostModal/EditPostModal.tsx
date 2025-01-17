@@ -1,29 +1,26 @@
-import styles from "./CreatePostModal.module.scss";
+import {ChangeEvent, MouseEvent, useState} from "react";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../store/ichgramStore.ts";
+import {useTheme} from "../../context/ThemeContext.tsx";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {closeCreatePostModal} from "../../store/reducers/modalSlice.ts";
+import Picker, {EmojiClickData} from "emoji-picker-react";
+import {createPost, updatePost} from "../../store/api/actionCreators.ts";
+import styles from "../CreatePostModal/CreatePostModal.module.scss";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {MouseEvent, ChangeEvent, useState, useEffect} from "react";
-import Picker, {EmojiClickData} from "emoji-picker-react";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
-import {closeCreatePostModal} from "../../store/reducers/modalSlice.ts";
-import {useTheme} from "../../context/ThemeContext.tsx";
-import {createPost} from "../../store/api/actionCreators.ts";
-import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {getEnumTheme} from "../../utils/Utils.ts";
-import {Slider} from "../Slider/Slider.tsx";
 
-type CreatePostFormInputs = {
-    photo: FileList | null;
+interface EditPostFormInputs {
     content: string;
-};
+    photo: FileList | null;
+}
 
-export const CreatePostModal = () => {
-
-    const [previews, setPreviews] = useState<string[]>([]);
+export const EditPostModal = ({post}) => {
+    const [preview, setPreview] = useState<string | null>(null);
     const dispatch = useDispatch<AppDispatch>();
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
-    const {images} = useSelector((state: RootState) => state.imagesReducer);
 
     const {theme} = useTheme();
     const {
@@ -32,64 +29,24 @@ export const CreatePostModal = () => {
         watch,
         formState: { errors },
         setValue,
-    } = useForm<CreatePostFormInputs>({defaultValues: {content: "", photo: null}});
+    } = useForm<EditPostFormInputs>({defaultValues: {content: post?.content, photo: post?.photo}});
     const currentContent = watch("content") || ""; // Get current content value
 
     const handleCloseModal = () => {
         dispatch(closeCreatePostModal());
     }
 
-    // Обработчик выбора файла
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files; // Получаем список файлов
+        const file = e.target.files?.[0];
 
-        if (files) {
-            const filePreviews: string[] = []; // Массив для превью
-
-            // Итерация по всем выбранным файлам
-            Array.from(files).forEach((file) => {
-                const reader = new FileReader();
-
-                reader.onloadend = () => {
-                    if (reader.result) {
-                        filePreviews.push(reader.result as string); // Добавляем превью в массив
-                    }
-
-                    // Если это последний файл, обновляем состояние
-                    if (filePreviews.length === files.length) {
-                        setPreviews(filePreviews);
-                    }
-                };
-
-                reader.readAsDataURL(file); // Читаем файл как Data URL
-            });
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
         }
     };
-
-    useEffect(() => {
-        if (images) {
-            const filePreviews: string[] = []; // Массив для превью
-
-            // Итерация по всем выбранным файлам
-            Array.from(images).forEach((file) => {
-
-                const reader = new FileReader();
-
-                reader.onloadend = () => {
-                    if (reader.result) {
-                        filePreviews.push(reader.result as string); // Добавляем превью в массив
-                    }
-
-                    // Если это последний файл, обновляем состояние
-                    if (filePreviews.length === images.length) {
-                        setPreviews(filePreviews);
-                    }
-                };
-
-                reader.readAsDataURL(file); // Читаем файл как Data URL
-            });
-        }
-    }, [images]);
 
 
 
@@ -107,17 +64,21 @@ export const CreatePostModal = () => {
     const allValues = watch();
     console.log("All values:", allValues);
 
-    const handleSubmitCreatePost: SubmitHandler<CreatePostFormInputs> = async(data: CreatePostFormInputs) => {
+    const handleSubmitCreatePost: SubmitHandler<EditPostFormInputs> = async(data: EditPostFormInputs) => {
         try {
-           if (data) {
-               console.log("Create post data:", data);
+            if (data) {
+                console.log("Create post data:", data);
 
-               const result = await dispatch(createPost({ photo: data.photo, content: data.content }));
-               if (createPost.fulfilled.match(result)) {
-                   console.log("Post created");
-                   handleCloseModal();
-               }
-           }
+                const result = await dispatch(updatePost({
+                    postId: post._id,
+                    content: data.content,
+                    photo: data.photo
+                }));
+                if (createPost.fulfilled.match(result)) {
+                    console.log("Post created");
+                    handleCloseModal();
+                }
+            }
         } catch (error) {
             console.error("Error creating post:", error);
         }
@@ -139,18 +100,46 @@ export const CreatePostModal = () => {
                         <CustomButton className={styles.share_post_btn} title="Share" type="submit"/>
                     </header>
                     <main className={styles.create_post_modal_content}>
-                        <div className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>
-                            <Slider style={{
-                                height: emojiPickerIsOpen ? "70vh" : "50vh"
-                            }} maxImages={5} />
+                        <div className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${preview ? styles.test3 : styles.test4}`}>
+                            {preview ? (
+                                <img
+                                    src={preview}
+                                    alt="Preview"
+                                    className="absolute top-0 left-0 right-0 bottom-0 w-full h-full object-cover"
+                                />
+                            ) : (
+                                <svg
+                                    style={{display: preview ? "none" : "initial",
+                                        position: "absolute",
+                                        top: "50%",
+                                        left: "50%",
+                                        transform: "translateY(-50%) translateX(-50%)"}}
+                                    fill="#000000"
+                                    width="40px"
+                                    height="40px"
+                                    viewBox="0 0 36 36"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <title>upload-cloud-line</title>
+                                    <path
+                                        d="M30.31,13c0-.1,0-.21,0-.32a10.26,10.26,0,0,0-10.45-10,10.47,10.47,0,0,0-9.6,6.1A9.74,9.74,0,0,0,1.6,18.4,9.62,9.62,0,0,0,11.25,28H15V26H11.25A7.65,7.65,0,0,1,11,10.74l.67,0,.23-.63a8.43,8.43,0,0,1,8-5.4,8.26,8.26,0,0,1,8.45,8,7.75,7.75,0,0,1,0,.8l-.08.72.65.3A6,6,0,0,1,26.38,26H21v2h5.38a8,8,0,0,0,3.93-15Z"></path>
+                                    <path
+                                        d="M22.28,21.85A1,1,0,0,0,23,20.14l-5-5-5,5a1,1,0,0,0,1.41,1.41L17,19V31.25a1,1,0,1,0,2,0V19l2.57,2.57A1,1,0,0,0,22.28,21.85Z"></path>
+                                    <rect x="0" y="0" width="36" height="36" fillOpacity="0"/>
+                                </svg>
+                            )}
+                            <input type="file"
+                                   {...register("photo", {required: "Photo is required"})}
+
+                                   onChange={handleFileChange}/>
                         </div>
 
                         <div className={styles.create_post_modal_form} style={{
                             minWidth: emojiPickerIsOpen ? "auto" : "240px"
                         }}>
                             <div className={styles.personal_info}>
-                                <AvatarCircle avatar={testAvatar}/>
-                                <p>itcareerhub</p>
+                                <AvatarCircle avatar={post?.author?.avatar}/>
+                                <p>{post?.author?.username}</p>
                                 {errors && errors.photo && <span>{errors.photo.message}</span>}
                                 {errors && errors.content && <span>{errors.content.message}</span>}
 

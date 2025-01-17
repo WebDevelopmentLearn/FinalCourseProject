@@ -1,0 +1,142 @@
+.slider {
+  position: relative;
+  max-width: 500px;
+  width: 500px;
+  height: 100%;
+  overflow: hidden;
+  background: #f0f0f0;
+  margin: 20px auto;
+  border-radius: 8px;
+}
+
+.cards {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.card {
+  max-width: 500px;
+  min-width: 500px;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  &__delete_btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    cursor: pointer;
+
+    &:hover {
+      background: #b24343;
+    }
+  }
+}
+
+.card__input_container {
+  @extend .card;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .card_input__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  input[type="file"] {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+  }
+}
+
+.card__input_container.hidden_input {
+  display: none;
+}
+
+.previousImageBtn,
+.nextImageBtn {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.previousImageBtn {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.nextImageBtn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.nextImageBtn.hidden_input {
+  display: none;
+}
+
+
+.rounds {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+
+  .round {
+    width: 20px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &.active {
+      background: #ffffff;
+    }
+
+    &.hidden_input {
+      display: none;
+    }
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .slider {
+    max-width: 500px;
+    width: 100%;
+  }
+}

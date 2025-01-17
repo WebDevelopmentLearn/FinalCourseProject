@@ -12,6 +12,7 @@ import {InterlocutorCard} from "./InterlocutorCard/InterlocutorCard.tsx";
 import {CommentCard} from "./CommentCard/CommentCard.tsx";
 import {CreatePostModal} from "./CreatePostModal/CreatePostModal.tsx";
 import {ImageUpload} from "./ImageUpload/ImageUpload.tsx";
+import {Slider} from "./Slider/Slider.tsx";
 
 import {ThemeSwitcher} from "./ThemeSwitcher/ThemeSwitcher.tsx";
 import {AvatarCircle} from "./AvatarCircle/AvatarCircle.tsx";
@@ -22,4 +23,4 @@ import {Footer} from "./Footer/Footer.tsx";
 
 import {ProtectedRoute} from "./ProtectedRoute/ProtectedRoute.tsx";
 
-export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, CommentCard, CreatePostModal, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, PostModal, ProtectedRoute, ImageUpload};
+export {SignInForm, SignUpForm, ForgotPasswordForm, CustomButton, CustomInput, Separator, Sidebar, PostCard, PostCardInProfile, InterlocutorCard, CommentCard, CreatePostModal, ThemeSwitcher, AvatarCircle, Footer, Phone, ExpandableText, PostModal, ProtectedRoute, ImageUpload, Slider};

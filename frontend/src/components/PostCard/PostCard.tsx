@@ -7,7 +7,7 @@ import testAvatar from "../../assets/post/test_avatar.png";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import {useCallback, useState} from "react";
 import {getTimeAgo} from "../../utils/Utils.ts";
-export const PostCard = ({post}) => {
+export const PostCard = ({onClick, post}) => {
 
     //let isLiked = true;//#FF3040
     const [isLiked, setIsLiked] = useState(false);
@@ -32,7 +32,7 @@ export const PostCard = ({post}) => {
     const commentsCount: number = 442;
 
     return (
-        <div className={`${styles.post_card}`}>
+        <div className={`${styles.post_card}`} onClick={onClick}>
             <div className={styles.post_card__author}>
                 <div className={styles.post_card__avatar}>
                     <AvatarCircle avatar={post?.author?.avatar} className={styles.post_card__avatar__circle}/>

@@ -1,0 +1,21 @@
+.cropper {
+  position: relative;
+  width: 100%;
+  height: 400px;
+}
+
+.cropper_control {
+
+  &__aspect_select {
+    margin-top: 20px;
+  }
+
+  &__zoom_range {
+    margin-top: 10px;
+  }
+
+  &__crop_btn {
+    margin-top: 5px;
+  }
+
+}
