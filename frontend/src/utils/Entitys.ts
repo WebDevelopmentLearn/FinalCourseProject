@@ -96,6 +96,7 @@ export type SliderProps = {
     className?: string;
     maxWidth?: number;
     maxImages?: number;
+    postImages?: string[];
     // onHandleFiles: () => void;
 }
 

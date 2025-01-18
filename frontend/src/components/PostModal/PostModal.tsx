@@ -12,6 +12,7 @@ import {useForm} from "react-hook-form";
 import {useTheme} from "../../context/ThemeContext.tsx";
 import {getEnumTheme} from "../../utils/Utils.ts";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
+import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
 
 interface PostModalInputProps {
     content: string;
@@ -19,7 +20,8 @@ interface PostModalInputProps {
 
 export const PostModal = ({post, handleClose}) => {
     const {theme} = useTheme();
-
+    const elementRef = useRef(null);
+    const [size, setSize] = useState({ width: 0, height: 0 });
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
     const [moreOptionModalIsOpen, setMoreOptionModalIsOpen] = useState<boolean>(false);
     const [isLiked, setIsLiked] = useState(false);
@@ -98,13 +100,58 @@ export const PostModal = ({post, handleClose}) => {
         autoResize();
     }, [text]);
 
+    useEffect(() => {
+        const updateSize = () => {
+            if (elementRef.current) {
+                const { width, height } = elementRef.current.getBoundingClientRect();
+                setSize({ width, height });
+            }
+        };
+
+        // Используем MutationObserver для отслеживания изменений DOM
+        const observer = new MutationObserver(() => {
+            updateSize();
+        });
+
+        // Следим за элементом, если он существует
+        if (elementRef.current) {
+            observer.observe(elementRef.current, {
+                attributes: true,
+                childList: true,
+                subtree: true,
+            });
+        }
+
+        // Принудительно вызываем расчет размеров после полной загрузки страницы
+        const handleLoad = () => updateSize();
+        if (document.readyState === "complete") {
+            handleLoad();
+        } else {
+            window.addEventListener("load", handleLoad);
+        }
+
+        // Подписка на изменения размера окна
+        window.addEventListener("resize", updateSize);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener("resize", updateSize);
+            window.removeEventListener("load", handleLoad);
+        };
+    }, []);
 
     return (
         <div className={styles.profile_post_modal_overlay} onClick={handleClose}>
             <div className={styles.profile_post_modal} onClick={(event) => event.stopPropagation()}>
 
-                <div className={styles.profile_post_modal_image}>
-                    <img src={post.photo} alt=""/>
+                <div ref={elementRef} className={styles.profile_post_modal_image}>
+                    {/*<img src={post.photo} alt=""/>*/}
+                    {/*{post?.photo?.length > 1 ? (*/}
+                    {/*    <SimpleSlider maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} />*/}
+                    {/*) : (*/}
+                    {/*    <img src={post?.photo} alt=""/>*/}
+                    {/*)}*/}
+                    <SimpleSlider maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} />
                 </div>
 
 

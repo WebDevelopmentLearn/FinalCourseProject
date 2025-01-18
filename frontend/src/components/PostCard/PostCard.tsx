@@ -5,13 +5,20 @@ import testPostImage from "../../assets/post/test_post.png";
 import testAvatar from "../../assets/post/test_avatar.png";
 
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {getTimeAgo} from "../../utils/Utils.ts";
-export const PostCard = ({onClick, post}) => {
 
+
+import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../store/ichgramStore.ts";
+export const PostCard = ({onClick, post}) => {
+    const elementRef = useRef<HTMLDivElement | null>(null);
+    const [size, setSize] = useState({ width: 0, height: 0 });
     //let isLiked = true;//#FF3040
     const [isLiked, setIsLiked] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
     const handleFollow = useCallback(() => {
         isLiked ? setIsLiked(false) : setIsLiked(true);
         console.log("handleFollow");
@@ -27,12 +34,50 @@ export const PostCard = ({onClick, post}) => {
     }, [isLiked]);
 
 
+    useEffect(() => {
+        const updateSize = () => {
+            if (elementRef.current) {
+                const { width, height } = elementRef.current.getBoundingClientRect();
+                setSize({ width, height });
+            }
+        };
 
+        // Используем MutationObserver для отслеживания изменений DOM
+        const observer = new MutationObserver(() => {
+            updateSize();
+        });
+
+        // Следим за элементом, если он существует
+        if (elementRef.current) {
+            observer.observe(elementRef.current, {
+                attributes: true,
+                childList: true,
+                subtree: true,
+            });
+        }
+
+        // Принудительно вызываем расчет размеров после полной загрузки страницы
+        const handleLoad = () => updateSize();
+        if (document.readyState === "complete") {
+            handleLoad();
+        } else {
+            window.addEventListener("load", handleLoad);
+        }
+
+        // Подписка на изменения размера окна
+        window.addEventListener("resize", updateSize);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener("resize", updateSize);
+            window.removeEventListener("load", handleLoad);
+        };
+    }, []);
 
     const commentsCount: number = 442;
 
     return (
-        <div className={`${styles.post_card}`} onClick={onClick}>
+        <div ref={elementRef} className={`${styles.post_card}`} onClick={onClick}>
             <div className={styles.post_card__author}>
                 <div className={styles.post_card__avatar}>
                     <AvatarCircle avatar={post?.author?.avatar} className={styles.post_card__avatar__circle}/>
@@ -48,12 +93,17 @@ export const PostCard = ({onClick, post}) => {
             </div>
 
             <div className={styles.post_card__image}>
-                <img src={post?.photo.length > 1 ? post?.photo[0] : post?.photo[0]} alt="testPostImage"/>
-                {/*<img src={testPostImage} alt="testPostImage"/>*/}
+
+                {/*{post?.photo?.length > 1 ? (*/}
+                {/*    <SimpleSlider maxWidth={size.width} postImages={post?.photo}/>*/}
+                {/*) : (*/}
+                {/*    <img src={post?.photo[0]} alt=""/>*/}
+                {/*)}*/}
+                <SimpleSlider maxWidth={size.width} postImages={post?.photo}/>
             </div>
 
             <div className={styles.post_card__content}>
-                <div className={styles.post_card_like_and_comment}>
+            <div className={styles.post_card_like_and_comment}>
                     <div onClick={handleFollow} className={`${styles.hearth} ${(isAnimating && isLiked) ? styles.animate : ""}`}>
                         <svg className={isLiked ? styles.post_card__like : ""} width="21"
                              height="19"
