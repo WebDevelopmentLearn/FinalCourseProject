@@ -2,14 +2,12 @@ import {SliderProps} from "../../utils/Entitys.ts";
 import {useCallback, useState} from "react";
 import styles from "./SimpleSlider.module.scss";
 
-export const SimpleSlider = ({style, className, maxWidth, maxImages = 5, postImages = []}: SliderProps) => {
+export const SimpleSlider = ({style, className, maxWidth, maxImages = 5, postImages = [], inModal = false}: SliderProps) => {
     const [currentImg, setCurrentImg] = useState<number>(0);
 
     const handlePrevious = useCallback((event) => {
         event.stopPropagation();
         setCurrentImg((prev) => {
-            console.log("[previous] prev: ", prev);
-            console.log("[previous] prev2: ", prev - 1);
             return prev === postImages.length - 1 ? 0 : prev - 1;
         });
     }, [postImages.length]);
@@ -19,18 +17,13 @@ export const SimpleSlider = ({style, className, maxWidth, maxImages = 5, postIma
         event.stopPropagation();
         // setCurrentImg((prev) => (prev === postImages.length ? 0 : prev + 1));
         setCurrentImg((prev) => {
-            console.log("[next] prev: ", prev);
-            console.log("[next] prev2: ", prev + 1);
             return prev === postImages.length - 1 ? 0 : prev + 1;
         })
     }, [postImages.length]);
 
-
-    console.log("maxWidth: ", maxWidth);
-
     return (
         <div style={style} className={`${styles.slider} ${className}`}>
-            <div className={styles.cards} style={{transform: `translateX(${-currentImg * maxWidth}px)`, maxWidth: maxWidth * postImages.length}}>
+            <div className={`${styles.cards} ${inModal ? styles.cards_height : ""}`} style={{transform: `translateX(${-currentImg * maxWidth}px)`, maxWidth: maxWidth * postImages.length}}>
                 {postImages.length > 0 && postImages.map((image, index) => (
                     // <div key={index} className={styles.card} style={{backgroundImage: `url(${image})`, maxWidth: `${maxWidth}px`,}}>
                     //     {/*<button className={styles.card__delete_btn} onClick={() => handleDelete(image.url)}>X</button>*/}

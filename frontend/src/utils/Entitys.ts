@@ -94,6 +94,7 @@ export type UploadImageIconProps = {
 export type SliderProps = {
     style?: CSSProperties;
     className?: string;
+    inModal?: boolean;
     maxWidth?: number;
     maxImages?: number;
     postImages?: string[];

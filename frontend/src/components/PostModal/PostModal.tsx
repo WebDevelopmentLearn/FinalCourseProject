@@ -151,7 +151,7 @@ export const PostModal = ({post, handleClose}) => {
                     {/*) : (*/}
                     {/*    <img src={post?.photo} alt=""/>*/}
                     {/*)}*/}
-                    <SimpleSlider maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} />
+                    <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} />
                 </div>
 
 

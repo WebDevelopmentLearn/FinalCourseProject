@@ -132,11 +132,13 @@
     }
   }
 }
-
+.cards_height {
+  height: auto;
+}
 
 //@media screen and (max-width: 768px) {
-//  .slider {
-//    max-width: 500px;
-//    width: 100%;
+//
+//  .cards_height {
+//    height: auto;
 //  }
 //}
