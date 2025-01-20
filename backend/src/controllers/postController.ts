@@ -115,6 +115,30 @@ class PostController {
             next(error);
         }
     }
+
+    public static async getPostById(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const postId: string = req.params.postId;
+        if (!postId) {
+            res.status(400).json({
+                message: "Param postId is required"
+            });
+            return;
+        }
+        try {
+            const targetPost = await PostService.getPostById(postId);
+
+            if (targetPost === null) {
+                res.status(404).json({
+                    message: "Required post is not found"
+                });
+                return;
+            }
+
+            res.status(200).json(targetPost);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default PostController;

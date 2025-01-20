@@ -1,5 +1,6 @@
 import Post from "../models/Post";
 import {IPostDoc} from "../entitys/interfaces";
+import {Error} from "mongoose";
 
 class PostRepository {
 
@@ -16,7 +17,11 @@ class PostRepository {
 
     static async getAllPosts(): Promise<IPostDoc[]> {
         try {
-            const allPosts: IPostDoc[] = await Post.find().populate("author");
+            const allPosts: IPostDoc[] = await Post.find().populate("author", {
+                _id: 1,
+                username: 1,
+                avatar: 1
+            });
 
             return allPosts;
         } catch (error) {
