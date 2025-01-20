@@ -184,11 +184,11 @@ export const CreatePostModal = () => {
                     </header>
                     <main className={styles.create_post_modal_content}>
                         <div ref={elementRef} className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>
-                            <SimpleSlider
+                            <Slider
                             //     style={{
                             //     height: emojiPickerIsOpen ? "70vh" : "50vh"
                             // }}
-                                maxImages={5} maxWidth={size.width} sliderType={"CreatePostModal"} />
+                                maxImages={5} maxWidth={size.width - 32}/>
                         </div>
 
                         <div className={styles.create_post_modal_form} style={{

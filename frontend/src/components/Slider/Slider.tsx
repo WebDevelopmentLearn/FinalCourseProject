@@ -20,13 +20,22 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
     }
 
     const handlePrevious = useCallback(() => {
-        setCurrentImg((prev) => (prev === 0 ? images.length : prev - 1));
-    }, [images.length]);
+        if (images.length === maxImages) {
+            setCurrentImg((prev) => prev === 0 ? 0 : prev - 1);
+        } else {
+            setCurrentImg((prev) => (prev === 0 ? images.length : prev - 1));
+        }
+    }, [images.length, maxImages]);
+    //prev === postImages.length - 1 ? 0 : prev + 1
 
 
     const handleNext = useCallback(() => {
-        setCurrentImg((prev) => (prev === images.length ? 0 : prev + 1));
-    }, [images.length]);
+        if (images.length === maxImages) {
+            setCurrentImg((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+        } else {
+            setCurrentImg((prev) => (prev === images.length ? 0 : prev + 1));
+        }
+    }, [images.length, maxImages]);
 
     const handleKeyDown = useCallback((event) => {
         console.log("handleKeyDown")
@@ -59,30 +68,34 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
         };
     }, [handleKeyDown]);
 
+    console.log("MaxWidth: ", maxWidth);
+    console.log("Images: ", images.length);
+    console.log("currentImg: ", currentImg);
+
     return (
         <div style={style} className={`${styles.slider} ${className}`}>
-            <div className={styles.cards} style={{transform: `translateX(${-currentImg * maxWidth}px)`, width: maxWidth * images.length}}>
+            <div className={styles.cards} style={{transform: `translateX(${-currentImg * maxWidth}px)`, width: (images.length > 0 ? maxWidth * images.length : maxWidth) + maxWidth}}>
                 {images.map((image, index) => (
-                    <div key={index} className={styles.card} style={{backgroundImage: `url(${image.url})`, maxWidth: `${maxWidth}px`,}}>
-                        <button className={styles.card__delete_btn} onClick={() => handleDelete(image.url)}>X</button>
+                    <div key={index} className={styles.card} style={{backgroundImage: `url(${image.url})`, width: `${maxWidth}px`,}}>
+                        <button className={styles.card__delete_btn} onClick={() => handleDelete(index)}>X</button>
                     </div>
                 ))}
 
                 {/* Last slide with file input */}
-                <div className={`${styles.card__input_container} ${images.length >= maxImages ? styles.hidden_input : ""}`}>
+                <div style={{width: `${maxWidth}px`,}} className={`${styles.card__input_container} ${images.length >= maxImages ? styles.hidden_input : ""}`}>
                     <UploadImageIcon className={styles.card_input__icon}/>
                     <input type="file" onChange={handleFileChange}/>
                 </div>
             </div>
 
-            {images.length > 0 && (
+            {(images.length > 1 && currentImg > 0) && (
                 <button className={styles.previousImageBtn} onClick={handlePrevious}>
                     &lt;
                 </button>
             )}
 
-            {images.length > 0 && (
-                <button className={`${styles.nextImageBtn} ${images.length >= maxImages ? styles.hidden_input : ""}`} onClick={handleNext}>
+            {(images.length > 1) && (
+                <button className={`${styles.nextImageBtn} `} onClick={handleNext}>
                     &gt;
                 </button>
             )}

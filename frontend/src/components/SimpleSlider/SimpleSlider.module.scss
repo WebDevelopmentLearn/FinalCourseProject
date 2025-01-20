@@ -2,6 +2,7 @@
   position: relative;
   //max-width: 500px;
   //width: 500px;
+  width: 100%;
   height: 100%;//500px;
   overflow: hidden;
   background: #f0f0f0;
@@ -18,11 +19,13 @@
 .card {
   //max-width: 500px;
   //min-width: 500px;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
+  background-repeat: no-repeat;
   width: 100%;
   height: 100%;
   position: relative;
+  object-fit: contain;
 
   &__delete_btn {
     position: absolute;
