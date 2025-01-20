@@ -1,5 +1,5 @@
 import styles from "./PostCard.module.scss";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 
 import testPostImage from "../../assets/post/test_post.png";
 import testAvatar from "../../assets/post/test_avatar.png";
@@ -12,13 +12,16 @@ import {getTimeAgo} from "../../utils/Utils.ts";
 import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../store/ichgramStore.ts";
-export const PostCard = ({onClick, post}) => {
+import {IPost, PostCardProps} from "../../utils/Entitys.ts";
+import {getPostById} from "../../store/api/actionCreators.ts";
+export const PostCard = ({onClick, post}: PostCardProps) => {
     const elementRef = useRef<HTMLDivElement | null>(null);
     const [size, setSize] = useState({ width: 0, height: 0 });
     //let isLiked = true;//#FF3040
     const [isLiked, setIsLiked] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
-    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+
     const handleFollow = useCallback(() => {
         isLiked ? setIsLiked(false) : setIsLiked(true);
         console.log("handleFollow");
@@ -32,6 +35,7 @@ export const PostCard = ({onClick, post}) => {
         }
 
     }, [isLiked]);
+
 
 
     useEffect(() => {
@@ -74,10 +78,11 @@ export const PostCard = ({onClick, post}) => {
         };
     }, []);
 
-    const commentsCount: number = 442;
-
     return (
-        <div ref={elementRef} className={`${styles.post_card}`} onClick={onClick}>
+        <div  ref={elementRef} className={`${styles.post_card}`} onClick={(e) => {
+
+            navigate(`/${post?._id}`);
+        }}>
             <div className={styles.post_card__author}>
                 <div className={styles.post_card__avatar}>
                     <AvatarCircle avatar={post?.author?.avatar} className={styles.post_card__avatar__circle}/>
@@ -99,7 +104,7 @@ export const PostCard = ({onClick, post}) => {
                 {/*) : (*/}
                 {/*    <img src={post?.photo[0]} alt=""/>*/}
                 {/*)}*/}
-                <SimpleSlider maxWidth={size.width} postImages={post?.photo}/>
+                <SimpleSlider maxWidth={size.width} postImages={post?.photo} sliderType="ViewPost"/>
             </div>
 
             <div className={styles.post_card__content}>
@@ -133,9 +138,9 @@ export const PostCard = ({onClick, post}) => {
                     </p>
                 </div>
                 <div className={styles.post_card__comments}>
-                    <Link to={"/"}>
-                        <span>View all comments ({commentsCount})</span>
-                    </Link>
+                    <div >
+                        <span>View all comments ({post?.comments.length})</span>
+                    </div>
                 </div>
             </div>
 

@@ -8,6 +8,7 @@ import {postsArr} from "../../utils/DebugUtils.ts";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {userData} from "../../store/selectors.ts";
+import {useCheckMyAccess} from "../../utils/CustomHooks.ts";
 
 
 
@@ -18,7 +19,7 @@ export const Profile = () => {
 
     const {_id} = useParams();
 
-    const isMyProfile: boolean = _id == user?._id;
+    const isMyProfile: boolean = useCheckMyAccess(_id, user?._id);
 
     const posts: number = user?.posts ? user?.posts.length as number : 0;
     const followers: number = user?.followers ? user?.followers.length as number : 0;

@@ -62,6 +62,13 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
                     aspect={aspect}
                     onCropChange={setCrop}
                     onZoomChange={setZoom}
+                    onMediaLoaded={({ width, height }) => {
+                        console.log(`Image width: ${width}, height: ${height}`);
+                    }}
+                    style={{
+                        containerStyle: { height: "100%", width: "100%" },
+                        mediaStyle: { objectFit: "contain" },
+                    }}
                     onCropComplete={onCropComplete}
                 />
             </div>

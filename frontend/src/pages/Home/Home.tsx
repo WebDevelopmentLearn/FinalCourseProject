@@ -61,7 +61,7 @@ export const Home = () => {
                 </div>
             </div>
             {isModalOpen && (
-                <PostModal handleClose={handleClose} post={currentPost} />
+                <PostModal />
             )}
 
         </div>

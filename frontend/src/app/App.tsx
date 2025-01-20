@@ -35,9 +35,7 @@ function App() {
                     <Wrapper>
                         <MainRoute/>
                         {createPostModalIsOpen && (
-                            <ImageProvider>
                                 <CreatePostModal />
-                            </ImageProvider>
                         )}
                     </Wrapper>
                     <Footer/>

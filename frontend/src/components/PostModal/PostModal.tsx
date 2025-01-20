@@ -1,7 +1,7 @@
 import styles from "./PostModal.module.scss";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {Link} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {ChangeEvent, MutableRefObject, useCallback, useEffect, useRef, useState} from "react";
@@ -13,23 +13,47 @@ import {useTheme} from "../../context/ThemeContext.tsx";
 import {getEnumTheme} from "../../utils/Utils.ts";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
 import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../store/ichgramStore.ts";
+import {IPost} from "../../utils/Entitys.ts";
+import {getPostById} from "../../store/api/actionCreators.ts";
+import {Loader} from "../Loader/Loader.tsx";
 
 interface PostModalInputProps {
     content: string;
 }
 
-export const PostModal = ({post, handleClose}) => {
-    const {theme} = useTheme();
-    const elementRef = useRef(null);
-    const [size, setSize] = useState({ width: 0, height: 0 });
+export const PostModal = () => {
+
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
     const [moreOptionModalIsOpen, setMoreOptionModalIsOpen] = useState<boolean>(false);
+    const [editPostModalIsOpen, setEditPostModalIsOpen] = useState<boolean>(false);
+    const [size, setSize] = useState({ width: 0, height: 0 });
     const [isLiked, setIsLiked] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const [text, setText] = useState('');
-    const textareaRef: MutableRefObject<HTMLTextAreaElement> = useRef(null);
-    const [editPostModalIsOpen, setEditPostModalIsOpen] = useState<boolean>(false);
+    const [post, setPost] = useState<IPost | null>(null);
 
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const elementRef = useRef<HTMLDivElement>(null);
+
+    const {theme} = useTheme();
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch<AppDispatch>();
+    const {_id} = useParams();
+
+    useEffect(() => {
+        const fetchCurrentPost = async () => {
+            try {
+                const result = await dispatch(getPostById({postId: _id})).unwrap();
+                setPost(result)
+            } catch (error) {
+                console.error("Failed to get current post: ", error)
+            }
+        }
+        fetchCurrentPost();
+    }, [_id]);
 
     const {
         register,
@@ -40,16 +64,18 @@ export const PostModal = ({post, handleClose}) => {
         reset,
     } = useForm<PostModalInputProps>({mode: "onChange"});
 
+    const currentContent = watch("content") || ""; // Get current content value
+
+
+    const onEmojiClick = (emojiData: EmojiClickData) => {
+        const newContent = currentContent + emojiData.emoji; // Append emoji to content
+        setValue("content", newContent); // Update content using setValue
+    };
+
 
     const handleOpenEmojiPicker = (e) => {
         e.preventDefault();
         setEmojiPickerIsOpen(!emojiPickerIsOpen);
-    };
-    const currentContent = watch("content") || ""; // Get current content value
-    // Handle emoji click
-    const onEmojiClick = (emojiData: EmojiClickData) => {
-        const newContent = currentContent + emojiData.emoji; // Append emoji to content
-        setValue("content", newContent); // Update content using setValue
     };
 
 
@@ -140,29 +166,35 @@ export const PostModal = ({post, handleClose}) => {
         };
     }, []);
 
+    const handleClosePost = () => {
+        navigate("/");
+    }
+
     return (
-        <div className={styles.profile_post_modal_overlay} onClick={handleClose}>
+        <div className={styles.profile_post_modal_overlay} onClick={handleClosePost}>
             <div className={styles.profile_post_modal} onClick={(event) => event.stopPropagation()}>
 
                 <div ref={elementRef} className={styles.profile_post_modal_image}>
-                    {/*<img src={post.photo} alt=""/>*/}
-                    {/*{post?.photo?.length > 1 ? (*/}
-                    {/*    <SimpleSlider maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} />*/}
-                    {/*) : (*/}
-                    {/*    <img src={post?.photo} alt=""/>*/}
-                    {/*)}*/}
-                    <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} />
+                    {post?.photo ? (
+                        <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} sliderType="ViewPostModal"/>
+                    ) : (
+                        <Loader />
+                    )}
                 </div>
 
 
                 <div className={styles.profile_post_modal_details}>
                     <div className={styles.author}>
-                        <div>
-                            <AvatarCircle avatar={post?.author?.avatar} avatarSize="small" />
-                            <span>{post.author.username}</span>
-                            <span>•</span>
-                            <CustomButton className={styles.subscribe_btn} title={"Subscribe"}/>
-                        </div>
+                        {post?.author ? (
+                            <div>
+                                <AvatarCircle avatar={post?.author?.avatar} avatarSize="small"/>
+                                <span>{post.author.username}</span>
+                                <span>•</span>
+                                <CustomButton className={styles.subscribe_btn} title={"Subscribe"}/>
+                            </div>
+                        ) : (
+                            <Loader size={"20px"} />
+                        )}
 
                         <div>
                             <button onClick={handleOpenMoreOptionModal} className={styles.more_btn}>

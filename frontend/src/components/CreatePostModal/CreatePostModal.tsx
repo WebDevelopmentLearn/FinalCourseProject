@@ -2,7 +2,7 @@ import styles from "./CreatePostModal.module.scss";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {MouseEvent, ChangeEvent, useState, useEffect} from "react";
+import {MouseEvent, ChangeEvent, useState, useEffect, useRef} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,6 +13,7 @@ import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {getEnumTheme} from "../../utils/Utils.ts";
 import {Slider} from "../Slider/Slider.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
+import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
 
 type CreatePostFormInputs = {
     photo: FileList | null;
@@ -24,7 +25,8 @@ export const CreatePostModal = () => {
     const [previews, setPreviews] = useState<string[]>([]);
     const dispatch = useDispatch<AppDispatch>();
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
-
+    const [size, setSize] = useState({ width: 0, height: 0 });
+    const elementRef = useRef<HTMLDivElement | null>(null);
     const { images, addImage, removeImage } = useImages();
     const {theme} = useTheme();
     const {
@@ -126,6 +128,45 @@ export const CreatePostModal = () => {
         }
     }
 
+    useEffect(() => {
+        const updateSize = () => {
+            if (elementRef.current) {
+                const { width, height } = elementRef.current.getBoundingClientRect();
+                setSize({ width, height });
+            }
+        };
+
+        // Используем MutationObserver для отслеживания изменений DOM
+        const observer = new MutationObserver(() => {
+            updateSize();
+        });
+
+        // Следим за элементом, если он существует
+        if (elementRef.current) {
+            observer.observe(elementRef.current, {
+                attributes: true,
+                childList: true,
+                subtree: true,
+            });
+        }
+
+        // Принудительно вызываем расчет размеров после полной загрузки страницы
+        const handleLoad = () => updateSize();
+        if (document.readyState === "complete") {
+            handleLoad();
+        } else {
+            window.addEventListener("load", handleLoad);
+        }
+
+        // Подписка на изменения размера окна
+        window.addEventListener("resize", updateSize);
+
+        return () => {
+            observer.disconnect();
+            window.removeEventListener("resize", updateSize);
+            window.removeEventListener("load", handleLoad);
+        };
+    }, []);
 
     return (
         <div className={styles.create_post_modal_overlay} onClick={handleCloseModal}>
@@ -142,10 +183,12 @@ export const CreatePostModal = () => {
                         <CustomButton className={styles.share_post_btn} title="Share" type="submit"/>
                     </header>
                     <main className={styles.create_post_modal_content}>
-                        <div className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>
-                            <Slider style={{
-                                height: emojiPickerIsOpen ? "70vh" : "50vh"
-                            }} maxImages={5} />
+                        <div ref={elementRef} className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>
+                            <SimpleSlider
+                            //     style={{
+                            //     height: emojiPickerIsOpen ? "70vh" : "50vh"
+                            // }}
+                                maxImages={5} maxWidth={size.width} sliderType={"CreatePostModal"} />
                         </div>
 
                         <div className={styles.create_post_modal_form} style={{

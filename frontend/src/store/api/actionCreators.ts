@@ -131,3 +131,15 @@ export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
         console.log(error);
     }
 });
+
+
+
+export const getPostById = createAsyncThunk("post/getPostById", async ({postId}: {postId: string}) => {
+    try {
+        const response = await API.get(`/posts/post-by-id/${postId}`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+});

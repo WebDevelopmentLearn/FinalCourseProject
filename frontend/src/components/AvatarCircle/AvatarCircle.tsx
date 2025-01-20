@@ -23,7 +23,7 @@ export const AvatarCircle: FC<AvatarCircleProps> = ({avatar, className, avatarSi
 
     if (hasLink) {
         return (
-            <Link to={"/"}>
+            <div >
                 <svg className={className} width={getSize()} height={getSize()} viewBox="0 0 200 200"
                      xmlns="http://www.w3.org/2000/svg">
 
@@ -51,7 +51,7 @@ export const AvatarCircle: FC<AvatarCircleProps> = ({avatar, className, avatarSi
                            clipPath="url(#circleClip)"
                     />
                 </svg>
-            </Link>
+            </div>
         )
     } else {
         return (

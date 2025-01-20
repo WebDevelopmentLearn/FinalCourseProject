@@ -71,6 +71,7 @@ export interface ILoginData {
 
 export interface IPostState {
     posts: Post[];
+    currentPost: Post | null;
     postsStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     postsError: any;
 }
@@ -95,6 +96,7 @@ export type SliderProps = {
     style?: CSSProperties;
     className?: string;
     inModal?: boolean;
+    isEditModal?: boolean;
     maxWidth?: number;
     maxImages?: number;
     postImages?: string[];
@@ -111,6 +113,26 @@ export type InterlocutorCardProps = {
     message: string;
     time: string;
     avatar: string;
+}
+
+
+export interface IPost {
+    _id: string;
+    author: {
+        _id: string;
+        username: string;
+        avatar: string;
+    };
+    photo: string;
+    content: string;
+    likes: string[];
+    comments: string[];
+    createdAt: string;
+
+}
+export type PostCardProps = {
+    onClick?: () => void;
+    post: IPost;
 }
 
 export type PostCardInProfileProps = {
