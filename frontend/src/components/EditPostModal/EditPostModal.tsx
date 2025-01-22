@@ -9,7 +9,6 @@ import {createPost, updatePost} from "../../store/api/actionCreators.ts";
 import styles from "../CreatePostModal/CreatePostModal.module.scss";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
-import testAvatar from "../../assets/profile/default_avatar.jpg";
 import {getEnumTheme} from "../../utils/Utils.ts";
 
 interface EditPostFormInputs {
@@ -138,7 +137,7 @@ export const EditPostModal = ({post}) => {
                             minWidth: emojiPickerIsOpen ? "auto" : "240px"
                         }}>
                             <div className={styles.personal_info}>
-                                <AvatarCircle avatar={post?.author?.avatar}/>
+                                <AvatarCircle user={post?.author}/>
                                 <p>{post?.author?.username}</p>
                                 {errors && errors.photo && <span>{errors.photo.message}</span>}
                                 {errors && errors.content && <span>{errors.content.message}</span>}

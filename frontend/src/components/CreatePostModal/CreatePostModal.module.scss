@@ -38,6 +38,10 @@
     .share_post_btn {
       background-color: transparent;
       color: #007bff;
+      &:disabled {
+        color: var(--secondary-bgc);
+      }
+
     }
   }
 

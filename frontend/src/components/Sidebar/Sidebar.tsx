@@ -25,11 +25,11 @@ export const Sidebar: FC = () => {
     const [modalContent, setModalContent] = useState<ReactNode>(null);
     const user = useSelector(userData);
 
-    const handleGoToHomeLink = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleGoToHomeLink = useCallback(() => {
         navigate("/");
-    }, []);
+    }, [navigate]);
 
-    const handleOpenSearch = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleOpenSearch = useCallback(() => {
         // open search
         if (sidebarRef.current) {
             sidebarRef.current.classList.add(styles.small);
@@ -39,15 +39,15 @@ export const Sidebar: FC = () => {
         console.log("handleOpenSearch");
     }, []);
 
-    const handleGoToExplore = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleGoToExplore = useCallback(() => {
         navigate("/explore");
-    }, []);
+    }, [navigate]);
 
-    const handleOpenMessages = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleOpenMessages = useCallback(() => {
         // open messages
     }, []);
 
-    const handleOpenNotifications = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleOpenNotifications = useCallback(() => {
         // open notifications
         if (sidebarRef.current) {
             sidebarRef.current.classList.add(styles.small);
@@ -57,7 +57,7 @@ export const Sidebar: FC = () => {
         console.log("handleOpenNotifications");
     }, []);
 
-    const handleOpenCreate = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleOpenCreate = useCallback(() => {
         // open create
         dispatch(openCreatePostModal());
     }, [dispatch]);
@@ -184,7 +184,7 @@ export const Sidebar: FC = () => {
                     className={({isActive}: NavLinkRenderProps) => isActive ? `active activeLink ${styles.sidebar_profile}` : styles.sidebar_profile}
                     to={`/profile/${user?._id}`}>
                     {/*<img className={styles.sidebar_avatar} src={user?.user?.avatar} alt="profileAvatar"/>*/}
-                    <AvatarCircle avatar={user?.avatar as string} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
+                    <AvatarCircle user={user} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
                     <span className={styles.text}>Profile</span>
                 </NavLink>
 

@@ -1,20 +1,13 @@
 import styles from "./PostCard.module.scss";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
-
-import testPostImage from "../../assets/post/test_post.png";
-import testAvatar from "../../assets/post/test_avatar.png";
-
+import {useNavigate} from "react-router-dom";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {getTimeAgo} from "../../utils/Utils.ts";
-
-
 import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../store/ichgramStore.ts";
-import {IPost, PostCardProps} from "../../utils/Entitys.ts";
-import {getPostById} from "../../store/api/actionCreators.ts";
-export const PostCard = ({onClick, post}: PostCardProps) => {
+
+import {PostCardProps} from "../../utils/Entitys.ts";
+
+export const PostCard = ({post}: PostCardProps) => {
     const elementRef = useRef<HTMLDivElement | null>(null);
     const [size, setSize] = useState({ width: 0, height: 0 });
     //let isLiked = true;//#FF3040
@@ -79,13 +72,13 @@ export const PostCard = ({onClick, post}: PostCardProps) => {
     }, []);
 
     return (
-        <div  ref={elementRef} className={`${styles.post_card}`} onClick={(e) => {
+        <div  ref={elementRef} className={`${styles.post_card}`} onClick={() => {
 
             navigate(`/${post?._id}`);
         }}>
             <div className={styles.post_card__author}>
                 <div className={styles.post_card__avatar}>
-                    <AvatarCircle avatar={post?.author?.avatar} className={styles.post_card__avatar__circle}/>
+                    <AvatarCircle user={post?.author} className={styles.post_card__avatar__circle}/>
                     {/*<img src={testAvatar} alt=""/>*/}
                 </div>
 
@@ -128,7 +121,7 @@ export const PostCard = ({onClick, post}: PostCardProps) => {
                     </div>
                 </div>
                 <div>
-                    <span>101 824</span><span>likes</span>
+                    <span>{post?.likes?.length}</span><span>likes</span>
                 </div>
                 <div>
                     <p>
@@ -137,10 +130,10 @@ export const PostCard = ({onClick, post}: PostCardProps) => {
                         {/*heyyyyy | M... more*/}
                     </p>
                 </div>
-                <div className={styles.post_card__comments}>
-                    <div >
-                        <span>View all comments ({post?.comments.length})</span>
-                    </div>
+                <div className={styles.post_card__comments} onClick={() => {
+                    navigate(`/${post?._id}`);
+                }}>
+                    <span>View all comments ({post?.comments.length})</span>
                 </div>
             </div>
 

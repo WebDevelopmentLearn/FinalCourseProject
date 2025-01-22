@@ -48,7 +48,7 @@ export function getEnumTheme(userTheme: string): Theme | undefined {
 }
 
 
-export const getCroppedImg = async (imageSrc, pixelCrop, isBlob) => {
+export const getCroppedImg = async (imageSrc, pixelCrop): Promise<Blob> => {
     const image = await createImage(imageSrc);
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");

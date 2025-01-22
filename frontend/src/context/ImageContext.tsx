@@ -1,15 +1,33 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, ReactNode, useContext, useState} from "react";
 
-const ImageContext = createContext();
+type IImageProvider = {
+     images: IImage[];
+     currentImage: IImage | null;
+     addImageForEditing: (blob: Blob) => void;
+     saveCroppedImage: (blob: Blob) => void;
+     removeImage: (index: number) => void;
+}
+
+// @ts-ignore
+const ImageContext = createContext<IImageProvider>();
+
+type IImage = {
+    blob: Blob;
+    url: string;
+}
+
+type ImageProviderProps = {
+    children: ReactNode;
+}
 
 export const useImages = () => useContext(ImageContext);
 
-export const ImageProvider = ({ children }) => {
-    const [images, setImages] = useState([]);
-    const [currentImage, setCurrentImage] = useState(null); // Текущее изображение для обрезки
+export const ImageProvider = ({ children }: ImageProviderProps) => {
+    const [images, setImages] = useState<IImage[]>([]);
+    const [currentImage, setCurrentImage] = useState<IImage | null>(null); // Текущее изображение для обрезки
 
     // Добавить изображение в редактор (но не в массив)
-    const addImageForEditing = (blob) => {
+    const addImageForEditing = (blob: Blob): void => {
         setCurrentImage({
             blob,
             url: URL.createObjectURL(blob),
@@ -17,7 +35,7 @@ export const ImageProvider = ({ children }) => {
     };
 
     // Сохранить обрезанное изображение
-    const saveCroppedImage = (blob) => {
+    const saveCroppedImage = (blob: Blob): void => {
         if (!currentImage) return;
 
         const croppedUrl = URL.createObjectURL(blob);
@@ -31,17 +49,17 @@ export const ImageProvider = ({ children }) => {
         setCurrentImage(null);
     };
 
-    const addImage = (blob) => {
-        if (!(blob instanceof Blob)) {
-            console.error("The provided object is not a Blob:", blob);
-            return;
-        }
-        const url = URL.createObjectURL(blob);
-        setImages((prev) => [...prev, { blob, url }]);
-    };
+    // const addImage = (blob: Blob): void => {
+    //     if (!(blob instanceof Blob)) {
+    //         console.error("The provided object is not a Blob:", blob);
+    //         return;
+    //     }
+    //     const url = URL.createObjectURL(blob);
+    //     setImages((prev) => [...prev, { blob, url }]);
+    // };
 
 
-    const removeImage = (index) => {
+    const removeImage = (index: number): void => {
         const imageToRemove = images[index];
         if (imageToRemove) {
             URL.revokeObjectURL(imageToRemove.url);

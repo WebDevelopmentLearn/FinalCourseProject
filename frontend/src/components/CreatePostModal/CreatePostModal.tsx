@@ -1,8 +1,7 @@
 import styles from "./CreatePostModal.module.scss";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
-import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {MouseEvent, ChangeEvent, useState, useEffect, useRef} from "react";
+import {MouseEvent, useState, useEffect, useRef} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,7 +12,6 @@ import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {getEnumTheme} from "../../utils/Utils.ts";
 import {Slider} from "../Slider/Slider.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
-import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
 
 type CreatePostFormInputs = {
     photo: FileList | null;
@@ -27,8 +25,9 @@ export const CreatePostModal = () => {
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
     const [size, setSize] = useState({ width: 0, height: 0 });
     const elementRef = useRef<HTMLDivElement | null>(null);
-    const { images, addImage, removeImage } = useImages();
+    const { images } = useImages();
     const {theme} = useTheme();
+    const {user} = useSelector((state: RootState) => state.userReducer);
     const {
         register,
         handleSubmit,
@@ -43,31 +42,31 @@ export const CreatePostModal = () => {
     }
 
     // Обработчик выбора файла
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files; // Получаем список файлов
-
-        if (files) {
-            const filePreviews: string[] = []; // Массив для превью
-
-            // Итерация по всем выбранным файлам
-            Array.from(files).forEach((file) => {
-                const reader = new FileReader();
-
-                reader.onloadend = () => {
-                    if (reader.result) {
-                        filePreviews.push(reader.result as string); // Добавляем превью в массив
-                    }
-
-                    // Если это последний файл, обновляем состояние
-                    if (filePreviews.length === files.length) {
-                        setPreviews(filePreviews);
-                    }
-                };
-
-                reader.readAsDataURL(file.blob); // Читаем файл как Data URL
-            });
-        }
-    };
+    // const handleFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    //     const files = e.target.files; // Получаем список файлов
+    //
+    //     if (files) {
+    //         const filePreviews: string[] = []; // Массив для превью
+    //
+    //         // Итерация по всем выбранным файлам
+    //         Array.from(files).forEach((file) => {
+    //             const reader = new FileReader();
+    //
+    //             reader.onloadend = () => {
+    //                 if (reader.result) {
+    //                     filePreviews.push(reader.result as string); // Добавляем превью в массив
+    //                 }
+    //
+    //                 // Если это последний файл, обновляем состояние
+    //                 if (filePreviews.length === files.length) {
+    //                     setPreviews(filePreviews);
+    //                 }
+    //             };
+    //
+    //             reader.readAsDataURL(file.blob); // Читаем файл как Data URL
+    //         });
+    //     }
+    // };
 
     useEffect(() => {
         if (images) {
@@ -94,7 +93,7 @@ export const CreatePostModal = () => {
         }
     }, [images]);
 
-    useEffect(() => {
+    useEffect((): void => {
         setValue("photo", images.map((image) => image.blob)); // Сохраняем только Blob
     }, [images, setValue]);
 
@@ -180,7 +179,7 @@ export const CreatePostModal = () => {
                         <div className={styles.header}>
                             <h1>Create new post</h1>
                         </div>
-                        <CustomButton className={styles.share_post_btn} title="Share" type="submit"/>
+                        <CustomButton disabled={images.length > 1 && currentContent.length > 1} className={styles.share_post_btn} title="Share" type="submit"/>
                     </header>
                     <main className={styles.create_post_modal_content}>
                         <div ref={elementRef} className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>
@@ -195,7 +194,7 @@ export const CreatePostModal = () => {
                             minWidth: emojiPickerIsOpen ? "auto" : "240px"
                         }}>
                             <div className={styles.personal_info}>
-                                <AvatarCircle avatar={testAvatar}/>
+                                <AvatarCircle user={user}/>
                                 <p>itcareerhub</p>
                                 {errors && errors.photo && <span>{errors.photo.message}</span>}
                                 {errors && errors.content && <span>{errors.content.message}</span>}

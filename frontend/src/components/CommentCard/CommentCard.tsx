@@ -1,20 +1,21 @@
 import styles from "./CommentCard.module.scss";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import {ICommentCard} from "../../utils/Entitys.ts";
+import {getTimeAgo} from "../../utils/Utils.ts";
 
-export const CommentCard = ({avatar, author, commentDesc, date, likesCount}: ICommentCard) => {
+export const CommentCard = ({author, commentDesc, createdAt, likes}: ICommentCard) => {
     return (
-        <div className={styles.post_comment}>
+        <li className={styles.post_comment}>
             <div className={styles.post_comment_details}>
-                <AvatarCircle avatar={avatar} avatarSize="small"/>
+                <AvatarCircle user={author} avatarSize="small"/>
                 <div className={styles.comment_desc_and_stats}>
                     <div className={styles.comment_desc}>
-                        <span>{author}</span>
+                        <span>{author.username}</span>
                         <p>{commentDesc}</p>
                     </div>
                     <div className={styles.comment_stats}>
-                        <span>{date}</span>
-                        <span>Likes: {likesCount}</span>
+                        <span>{getTimeAgo(createdAt)}</span>
+                        <span>Likes: {likes.length}</span>
                     </div>
                 </div>
             </div>
@@ -26,6 +27,6 @@ export const CommentCard = ({avatar, author, commentDesc, date, likesCount}: ICo
                         fill="#262626"/>
                 </svg>
             </div>
-        </div>
+        </li>
     );
 };

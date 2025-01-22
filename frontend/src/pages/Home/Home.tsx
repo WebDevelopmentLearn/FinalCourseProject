@@ -1,33 +1,19 @@
-import {PostCard, PostModal} from "../../components";
+import {PostCard} from "../../components";
 import styles from "./Home.module.scss";
 
 import check from "../../assets/home/check_in_circle.svg";
 import LazyLoad from "react-lazyload";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch} from "../../store/ichgramStore.ts";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {getAllPosts} from "../../store/api/actionCreators.ts";
 import {posts} from "../../store/selectors.ts";
-import {Post} from "../../utils/Entitys.ts";
+import {IPost} from "../../utils/Entitys.ts";
 
 
 export const Home = () => {
-
-
     const dispatch = useDispatch<AppDispatch>();
-    const postsArr = useSelector(posts);
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [currentPost, setCurrentPost] = useState({});
-
-    const handleOpenModal = (post: Post) => {
-        setIsModalOpen(true);
-        setCurrentPost(post);
-    }
-
-    const handleClose = (e) => {
-        setIsModalOpen(false);
-        setCurrentPost({});
-    }
+    const postsArr: IPost[] = useSelector(posts);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -47,9 +33,9 @@ export const Home = () => {
         <div>
             <div className={styles.home}>
                 <div className={styles.home_posts__list}>
-                    {(postsArr && postsArr.length > 0) ? postsArr.map((post, index) => (
+                    {(postsArr && postsArr.length > 0) ? postsArr.map((post: IPost, index) => (
                         <LazyLoad key={index} height={200} offset={100}>
-                            <PostCard onClick={() => handleOpenModal(post)} post={post}/>
+                            <PostCard post={post}/>
                         </LazyLoad>
                     )) : <h1>No posts</h1>}
 
@@ -60,10 +46,6 @@ export const Home = () => {
                     <h3>You have viewed all new publications</h3>
                 </div>
             </div>
-            {isModalOpen && (
-                <PostModal />
-            )}
-
         </div>
     );
 };

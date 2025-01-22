@@ -1,11 +1,8 @@
 import {useCallback, useState} from "react";
-import {AppDispatch} from "../../store/ichgramStore.ts";
-import {useDispatch} from "react-redux";
 import Cropper from "react-easy-crop";
 import styles from "./ImageCropper.module.scss";
 import {getCroppedImg} from "../../utils/Utils.ts";
 import {ImageCropperProps} from "../../utils/Entitys.ts";
-import {updateImageBlob, updateImageUrl} from "../../store/reducers/imagesSlice.ts";
 import {useImages} from "../../context/ImageContext.tsx";
 
 
@@ -15,8 +12,6 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
     const [aspect, setAspect] = useState<number>(1); // Соотношение сторон по умолчанию 1:1
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const { saveCroppedImage } = useImages();
-
-    const dispatch = useDispatch<AppDispatch>();
 
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels);
@@ -41,7 +36,7 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
 
     const handleCrop = async () => {
         try {
-            const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels, true);
+            const croppedImage: Blob = await getCroppedImg(imageSrc, croppedAreaPixels);
             // const croppedImageUrl = await getCroppedImg(imageSrc, croppedAreaPixels, false);
             console.log("Cropped Image:", croppedImage);
             // console.log("Cropped ImageUrl:", croppedImageUrl);

@@ -1,7 +1,5 @@
 import styles from "./NotificationModal.module.scss";
-
 import {FC} from "react";
-
 import {Link} from "react-router-dom";
 
 

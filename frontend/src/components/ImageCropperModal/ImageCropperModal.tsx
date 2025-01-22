@@ -4,7 +4,7 @@ import styles from "./ImageCropperModal.module.scss";
 
 export const ImageCropperModal = ({imageSrc, handleClose}: ImageCropperModalProps) => {
 
-    console.log(imageSrc);
+    // console.log(imageSrc);
     return (
         <div className={styles.image_cropper_modal_overlay} onClick={handleClose}>
             <div className={styles.image_cropper_modal} onClick={(e) => {

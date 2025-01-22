@@ -3,12 +3,12 @@ import styles from "./Footer.module.scss";
 
 export const Footer = () => {
 
-    const currentYear = new Date().getFullYear();
+    const currentYear: number = new Date().getFullYear();
 
     return (
         <footer className={styles.footer}>
             <div className={styles.footer_links}>
-                <Link to="">
+                <Link to="/">
                     Home
                 </Link>
 
@@ -16,11 +16,11 @@ export const Footer = () => {
                     Search
                 </Link>
 
-                <Link to="">
+                <Link to="/explore">
                     Explore
                 </Link>
 
-                <Link to="">
+                <Link to="/messages">
                     Messages
                 </Link>
 

@@ -16,4 +16,8 @@
   &:hover {
     background-color: #0077C0;
   }
+
+  &:disabled {
+    color: var(--secondary-bgc);
+  }
 }

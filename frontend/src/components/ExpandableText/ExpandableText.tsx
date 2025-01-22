@@ -2,7 +2,6 @@ import {useState} from "react";
 import styles from "./ExpandableText.module.scss";
 import {ExpandableTextProps} from "../../utils/Entitys.ts";
 
-
 export const ExpandableText = ({textClass, text, maxHeight = 150}: ExpandableTextProps) => {
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
