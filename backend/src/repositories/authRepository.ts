@@ -9,7 +9,7 @@ class AuthRepository {
             const user: IUser = new User(userData);
             await user.save();
             return user;
-        } catch (error: any) {
+        } catch (error: unknown) {
             await logErrorWithObj("createUserDoc", error);
             throw new Error("Error while creating user");
         }

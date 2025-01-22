@@ -111,7 +111,24 @@ class PostController {
             const posts = await PostService.getAllPosts();
 
             res.status(200).json(posts);
-        } catch (error) {
+        } catch (error: unknown) {
+            next(error);
+        }
+    }
+
+    public static async getPostsByUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const userId: string = req.params.userId;
+        if (!userId) {
+            res.status(400).json({
+                message: "Param userId is required"
+            });
+            return;
+        }
+        try {
+            const usersPosts: IPostDoc[] = await PostService.getAllPostsByUserId(userId);
+
+            res.status(200).json(usersPosts);
+        } catch (error: unknown) {
             next(error);
         }
     }
@@ -135,7 +152,7 @@ class PostController {
             }
 
             res.status(200).json(targetPost);
-        } catch (error) {
+        } catch (error: unknown) {
             next(error);
         }
     }

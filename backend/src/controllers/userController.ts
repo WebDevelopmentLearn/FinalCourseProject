@@ -1,6 +1,8 @@
 import {Request, Response, NextFunction} from "express";
 import User from "../models/User";
 import {logDebug} from "../utils/Logger";
+import {Types} from "mongoose";
+
 
 
 export const getUserProfile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -8,7 +10,7 @@ export const getUserProfile = async (req: Request, res: Response, next: NextFunc
         const user = req.user;
         console.log(user);
 
-        const userProfile = await User.findOne(user._id);
+        const userProfile = await User.findOne({_id: user.id});
         if (!userProfile) {
             res.status(404).json({message: "User not found"});
             return;
@@ -18,7 +20,7 @@ export const getUserProfile = async (req: Request, res: Response, next: NextFunc
 
         await logDebug(`[getUserProfile] User profile for ${userProfile.username} was sent`);
 
-    } catch (error) {
+    } catch (error: unknown) {
         next(error);
     }
 }

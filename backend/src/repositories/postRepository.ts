@@ -9,7 +9,7 @@ class PostRepository {
             const post: IPostDoc = new Post(postData);
             await post.save();
             return post;
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error in createPostDoc:", error);
             throw new Error("Error while creating post");
         }
@@ -24,7 +24,18 @@ class PostRepository {
             });
 
             return allPosts;
-        } catch (error) {
+        } catch (error: unknown) {
+            console.error("Error in getAllPosts:", error);
+            throw new Error("Error while creating post");
+        }
+    }
+
+    static async getAllPostsByUserId(userId: string): Promise<IPostDoc[]> {
+        try {
+            const allPosts: IPostDoc[] = await Post.find({author: userId});
+
+            return allPosts;
+        } catch (error: unknown) {
             console.error("Error in getAllPosts:", error);
             throw new Error("Error while creating post");
         }
@@ -37,7 +48,7 @@ class PostRepository {
                 .populate("author");
 
             return post;
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error("Error in getPostById:", error);
             throw new Error("Error while getting post by id");
         }

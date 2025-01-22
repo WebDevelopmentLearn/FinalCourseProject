@@ -1,4 +1,4 @@
-import {model, Schema, Types} from "mongoose";
+import {CallbackError, model, Schema, Types} from "mongoose";
 import {IRefreshToken} from "../entitys/interfaces";
 import bcrypt from "bcrypt";
 import {hashPassword} from "../utils/utils";

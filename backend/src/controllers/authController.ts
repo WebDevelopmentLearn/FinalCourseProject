@@ -40,7 +40,7 @@ class AuthController {
             });
             await logInfo(`[AuthController.register] User created successfully`);
 
-        } catch (error) {
+        } catch (error: unknown) {
             next(error);
         }
     }
@@ -80,11 +80,14 @@ class AuthController {
             });//Generate refresh token
             await logDebug(`[AuthController.login] Refresh token generated successfully: ${refreshToken}`);
 
+            const accessTokenExpires: string = process.env.JWT_ACCESS_EXPIRES_IN || "15m";
+            const maxAgeAccess: number = Number(accessTokenExpires.split("m")[0]);
+
             res.cookie("accessToken", accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
-                maxAge: 1000 * 60 * 2  // 2 minutes
+                maxAge: 1000 * 60 * maxAgeAccess  // 2 minutes
             });
             await logInfo(`[AuthController.login] Access token saved in cookie`);
 
@@ -114,7 +117,7 @@ class AuthController {
             });
             await logInfo(`[AuthController.login] User logged in successfully`);
 
-        } catch (error) {
+        } catch (error: unknown) {
             next(error);
         }
     }
@@ -125,7 +128,7 @@ class AuthController {
             res.clearCookie("refreshToken");
             res.status(200).json({ message: "Logged out successfully" });
             await logInfo(`[AuthController.logout] User logged out successfully`);
-        } catch (error) {
+        } catch (error: unknown) {
             next(error);
         }
     }
@@ -170,7 +173,7 @@ class AuthController {
                 // accessToken, // Отправляем токен на фронт
             });
             await logInfo("[AuthController.refreshAccessToken] Access token refreshed successfully");
-        } catch (error) {
+        } catch (error: unknown) {
             next(error);
         }
     }
@@ -191,7 +194,7 @@ class AuthController {
             await logInfo(`[AuthController.checkAccessToken] Decoded token: ${decoded}`);
             res.status(200).json({ message: 'Token is valid' });
             return;
-        } catch (err) {
+        } catch (err: unknown) {
             console.error('Token validation error:', err);
             await logErrorWithObj('[AuthController.checkAccessToken] Token validation error', err);
             res.status(403).json({ message: 'Invalid or expired token' });

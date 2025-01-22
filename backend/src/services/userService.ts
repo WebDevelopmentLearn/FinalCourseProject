@@ -6,7 +6,7 @@ import {IPostDoc, IUser} from "../entitys/interfaces";
 export const getUsers = async () => {
     try {
         return await User.find();
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("Error in getUsers:", error);
     }
 }
@@ -24,7 +24,7 @@ class UserService {
             // }
 
             return await User.findById(id);
-        } catch (error: any) {
+        } catch (error: unknown) {
             await logErrorWithObj("getUser", error);
             throw new Error("Error while getting user by id");
         }
@@ -41,7 +41,7 @@ class UserService {
             }
 
             return user;
-        } catch (error: any) {
+        } catch (error: unknown) {
             await logErrorWithObj("getUser", error);
             throw new Error("Error while getting user by email");
         }
@@ -58,7 +58,7 @@ class UserService {
             }
 
             return user;
-        } catch (error: any) {
+        } catch (error: unknown) {
             await logErrorWithObj("getUser", error);
             throw new Error("Error while getting user by username");
         }

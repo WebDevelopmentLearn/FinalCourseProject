@@ -17,6 +17,11 @@ class PostService {
         return allPosts;
     }
 
+    static async getAllPostsByUserId(userId: string) {
+        const allPosts: IPostDoc[] = await PostRepository.getAllPostsByUserId(userId);
+        return allPosts;
+    }
+
     static async getPostById(postId: string): Promise<IPostDoc | null> {
         const post: IPostDoc | null = await PostRepository.getPostById(postId);
 
@@ -27,6 +32,8 @@ class PostService {
         return post;
 
     }
+
+
 }
 
 export default PostService;

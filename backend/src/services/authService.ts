@@ -28,7 +28,7 @@ const getAdditionalData = async (user: IUser | null, getPosts?: boolean, getFoll
         if (getNotifications) {
             await user.populate("notifications");
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         await logErrorWithObj("getAdditionalData", error);
     }
 }
@@ -140,7 +140,7 @@ class AuthService {
             });
 
             await logInfo(`[saveRefreshToken] Refresh token saved successfully for userId: ${userId}`);
-        } catch (error: any) {
+        } catch (error: unknown) {
             await logErrorWithObj("createRefreshToken", error);
 
         }

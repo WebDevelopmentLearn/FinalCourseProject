@@ -31,7 +31,7 @@ export const validateRefreshToken = async (userId: string, refreshToken: string)
         }
 
         return isTokenValid;
-    } catch (error: any) {
+    } catch (error: unknown) {
         await logErrorWithObj("validateRefreshToken", { userId, error });
         return false;
     }
@@ -61,7 +61,7 @@ export const checkAccessToken = async (req: Request, res: Response, next: NextFu
             next();
         });
         // next();
-    } catch (error: any) {
+    } catch (error: unknown) {
         await logErrorWithObj("checkAccessToken", error);
         res.status(500).json({message: "Internal server error"});
     }

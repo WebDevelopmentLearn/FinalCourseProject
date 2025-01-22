@@ -12,6 +12,8 @@ router.put("/update-post/:postId", checkAccessToken, PostController.updatePost);
 
 router.get("/all-posts", checkAccessToken, PostController.getAllPosts);
 
+router.get("/posts-by-user/:userId", checkAccessToken, PostController.getPostsByUser)
+
 router.get("/post-by-id/:postId", checkAccessToken, PostController.getPostById)
 
 
