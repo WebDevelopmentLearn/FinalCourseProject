@@ -24,6 +24,12 @@ export const MainRoute: MainRoute = (): ReactElement => {
                 </ProtectedRoute>
             } />
 
+            <Route path="/profile/:_id/:_id" element={
+                <ProtectedRoute>
+                    <PostModal />
+                </ProtectedRoute>
+            } />
+
             <Route path="/profile/:_id" element={
                 <ProtectedRoute>
                     <Profile/>

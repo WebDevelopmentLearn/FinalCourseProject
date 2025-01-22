@@ -1,16 +1,14 @@
 import styles from "./PostModal.module.scss";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
-import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
-import {ChangeEvent, MutableRefObject, useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {CommentCard} from "../CommentCard/CommentCard.tsx";
-import {CustomInput} from "../CustomInput/CustomInput.tsx";
-import Picker, {EmojiClickData, Theme} from "emoji-picker-react";
+import Picker, {EmojiClickData} from "emoji-picker-react";
 import {useForm} from "react-hook-form";
 import {useTheme} from "../../context/ThemeContext.tsx";
-import {getEnumTheme} from "../../utils/Utils.ts";
+import {getEnumTheme, getTimeAgo} from "../../utils/Utils.ts";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
 import {SimpleSlider} from "../SimpleSlider/SimpleSlider.tsx";
 import {useDispatch} from "react-redux";
@@ -42,6 +40,7 @@ export const PostModal = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const {_id} = useParams();
+    const location = useLocation();
 
     useEffect(() => {
         const fetchCurrentPost = async () => {
@@ -103,9 +102,6 @@ export const PostModal = () => {
 
     }, [isLiked]);
 
-
-
-
     const handleChange = (e) => {
         setText(e.target.value);
     };
@@ -166,8 +162,13 @@ export const PostModal = () => {
         };
     }, []);
 
+
     const handleClosePost = () => {
-        navigate("/");
+        if (location.pathname.includes("profile")) {
+            navigate(`/profile/${location.pathname.split("/")[2]}`);
+        } else {
+            navigate("/");
+        }
     }
 
     return (
@@ -187,7 +188,7 @@ export const PostModal = () => {
                     <div className={styles.author}>
                         {post?.author ? (
                             <div>
-                                <AvatarCircle avatar={post?.author?.avatar} avatarSize="small"/>
+                                <AvatarCircle user={post?.author} avatarSize="small"/>
                                 <span>{post.author.username}</span>
                                 <span>•</span>
                                 <CustomButton className={styles.subscribe_btn} title={"Subscribe"}/>
@@ -221,82 +222,46 @@ export const PostModal = () => {
                                     <AvatarCircle avatar={post?.author?.avatar} avatarSize="small"/>
                                 </div>
                                 <div className={styles.post_details}>
-                                    <p><Link to={`/profile/${post?.author?._id}`}>{post?.author?.username}</Link> Потрясающие новости пришли к нам из Черногории!
-                                        Проект по поддержке бездомных животных
-                                        TailBook, в разработке которого участвуют сразу 9 наших
-                                        стажёров, будет представлен на Web Summit 2024 в
-                                        Португалии🔥</p>
-
-                                    <br/>
-
-                                    <p>Мы поздравляем наших студентов, приглашаем вас на
-                                        Web Summit и предлагаем стать частью огромного
-                                        сообщества крутых специалистов, помогающих развивать
-                                        и очищать нашу планету.
-
+                                    <p><Link to={`/profile/${post?.author?._id}`}>{post?.author?.username}</Link>
+                                        {post?.content}
+                                        {/*Потрясающие новости пришли к нам из Черногории!*/}
+                                        {/*Проект по поддержке бездомных животных*/}
+                                        {/*TailBook, в разработке которого участвуют сразу 9 наших*/}
+                                        {/*стажёров, будет представлен на Web Summit 2024 в*/}
+                                        {/*Португалии🔥*/}
                                     </p>
 
-                                    <br/>
+                                    {/*<br/>*/}
 
-                                    <p>Занимайте место на бесплатной консультации по ссылке в
-                                        шапке профиля, чтобы узнать подробности!
-                                    </p>
+                                    {/*<p>Мы поздравляем наших студентов, приглашаем вас на*/}
+                                    {/*    Web Summit и предлагаем стать частью огромного*/}
+                                    {/*    сообщества крутых специалистов, помогающих развивать*/}
+                                    {/*    и очищать нашу планету.*/}
+
+                                    {/*</p>*/}
+
+                                    {/*<br/>*/}
+
+                                    {/*<p>Занимайте место на бесплатной консультации по ссылке в*/}
+                                    {/*    шапке профиля, чтобы узнать подробности!*/}
+                                    {/*</p>*/}
 
                                     <div className={styles.post_date}>
-                                    <span>
-                                    1 day.
-                                </span>
+                                        <span>{getTimeAgo(post?.createdAt)}</span>
                                     </div>
                                 </div>
 
                             </div>
 
-                            <CommentCard avatar={testAvatar} author={"Tom"} commentDesc={"Отличный пост"}
-                                         date={"10.05.2025"} likesCount={10}/>
+                            {/*<CommentCard author={} commentDesc={"Отличный пост"}*/}
+                            {/*             date={"10.05.2025"} likesCount={10}/>*/}
 
-                            <CommentCard avatar={testAvatar} author={"Alice"}
-                                         commentDesc={"Отличный пост, а главное информативный"} date={"11.05.2025"}
-                                         likesCount={5}/>
+                            {post?.comments?.length > 0 ? post?.comments?.map((comment) => (
+                                <CommentCard key={comment._id} author={comment.author} commentDesc={comment.commentDesc} createdAt={comment.createdAt} likes={comment.likes} />
 
-                            <CommentCard avatar={testAvatar} author={"Tom"}
-                                         commentDesc={"Ну такое, фотки еды как по мне - интереснее"} date={"10.05.2025"}
-                                         likesCount={2}/>
-
-                            <CommentCard avatar={testAvatar} author={"Sasha"}
-                                         commentDesc={"А когда этот саммит проводится? Я просто читать не умею"}
-                                         date={"10.05.2025"} likesCount={1}/>
-
-                            <CommentCard avatar={testAvatar} author={"Sasha"}
-                                         commentDesc={"На самом деле крайне интересная тема. Я бы тоже хотела участвовать в таких проектах. Но у меня нет таких возможностей. Поэтому я просто смотрю на вас и восхищаюсь."}
-                                         date={"10.05.2025"} likesCount={1}/>
-
-                            <CommentCard avatar={testAvatar} author={"Sasha"}
-                                         commentDesc={"Мне кажется, что людям стоит больше внимания уделять таким проектам. Ведь это действительно важно."}
-                                         date={"10.05.2025"} likesCount={1}/>
+                            )) : <h2 style={{textAlign: "center"}}>No comments</h2>}
 
 
-                            <CommentCard avatar={testAvatar} author={"Tom"} commentDesc={"Отличный пост"}
-                                         date={"10.05.2025"} likesCount={10}/>
-
-                            <CommentCard avatar={testAvatar} author={"Alice"}
-                                         commentDesc={"Отличный пост, а главное информативный"} date={"11.05.2025"}
-                                         likesCount={5}/>
-
-                            <CommentCard avatar={testAvatar} author={"Tom"}
-                                         commentDesc={"Ну такое, фотки еды как по мне - интереснее"} date={"10.05.2025"}
-                                         likesCount={2}/>
-
-                            <CommentCard avatar={testAvatar} author={"Sasha"}
-                                         commentDesc={"А когда этот саммит проводится? Я просто читать не умею"}
-                                         date={"10.05.2025"} likesCount={1}/>
-
-                            <CommentCard avatar={testAvatar} author={"Sasha"}
-                                         commentDesc={"На самом деле крайне интересная тема. Я бы тоже хотела участвовать в таких проектах. Но у меня нет таких возможностей. Поэтому я просто смотрю на вас и восхищаюсь."}
-                                         date={"10.05.2025"} likesCount={1}/>
-
-                            <CommentCard avatar={testAvatar} author={"Sasha"}
-                                         commentDesc={"Мне кажется, что людям стоит больше внимания уделять таким проектам. Ведь это действительно важно."}
-                                         date={"10.05.2025"} likesCount={1}/>
                         </ul>
 
                     </div>
@@ -325,8 +290,8 @@ export const PostModal = () => {
                         </div>
 
                         <div className={styles.likes_and_date_container}>
-                            <span>25 likes</span>
-                            <span>2 days.</span>
+                            <span>{post?.likes.length} likes</span>
+                            <span>{getTimeAgo(post?.createdAt)}</span>
                         </div>
                     </div>
 
@@ -352,6 +317,8 @@ export const PostModal = () => {
                         <textarea
                             {...register("content", {required: "Content is required", maxLength: 2200})}
                             ref={textareaRef}
+                            id={"content"}
+                            name={"content"}
                             rows={1} // Начальная высота
                             style={{
                                 width: '100%',

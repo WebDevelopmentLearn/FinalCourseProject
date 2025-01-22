@@ -7,28 +7,15 @@ export interface IUser {
     username: string;
     email: string;
     full_name: string;
-    password: string;
-    bio: string;
+    bio?: string;
     avatar: string;//Base64
-    website: string;
-    notifications: object[];
-    posts: object[];
-    followers: object[];
-    following: object[];
+    website?: string;
+    notifications?: object[];
+    posts?: object[];
+    followers?: object[];
+    following?: object[];
 }
 
-export interface Post {
-    _id: number;
-    author: IUser;
-    title: string;
-    description: string;
-    image: string;
-    url: string;
-    comments: IUser[];
-    // likes: number;
-    // tags: string[];
-    // date: string;
-}
 
 
 export interface Notification {
@@ -36,17 +23,16 @@ export interface Notification {
     author: IUser;
     notificationType: "like" | "comment" | "follow";
     date: string;
-    post: Post;
-    url: Post["url"];
+    post: IPost;
+    // url: IPost["url"];
 }
 
 
 export interface ICommentCard {
-    avatar: string;
-    author: string;
+    author: IUser;
     commentDesc: string;
-    date: string;
-    likesCount: number;
+    createdAt: string;
+    likes: string[];
 }
 
 export interface IRegisterData {
@@ -70,8 +56,8 @@ export interface ILoginData {
 }
 
 export interface IPostState {
-    posts: Post[];
-    currentPost: Post | null;
+    posts: IPost[];
+    currentPost: IPost | null;
     postsStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     postsError: any;
 }
@@ -118,15 +104,11 @@ export type InterlocutorCardProps = {
 
 export interface IPost {
     _id: string;
-    author: {
-        _id: string;
-        username: string;
-        avatar: string;
-    };
-    photo: string;
+    author: IUser;
+    photo: string[];
     content: string;
     likes: string[];
-    comments: string[];
+    comments: ICommentCard[];
     createdAt: string;
 
 }
@@ -136,16 +118,13 @@ export type PostCardProps = {
 }
 
 export type PostCardInProfileProps = {
-    post: {
-        postId: number;
-        image: string;
-    },
+    post: IPost,
     onClick?: () => void;
 }
 
 
 export type AvatarCircleProps = {
-    avatar: string,
+    user: IUser;
     avatarSize?:  "small" | "medium" | "big" | string,
     className?: string,
     hasLink?: boolean,
@@ -157,6 +136,7 @@ export type CustomButtonProps = {
     styles?: CSSProperties;
     onClick?: () => void;
     className?: string;
+    disabled?: boolean;
 }
 
 type CustomInputType = "text" | "password" | "email" | "number" | "tel" | "url" | "search" | "date" | "time" | "datetime-local" | "month" | "week" | "color";

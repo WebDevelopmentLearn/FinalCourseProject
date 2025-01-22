@@ -2,13 +2,15 @@ import styles from "./Profile.module.scss";
 import testAvatar from "../../assets/profile/default_avatar.jpg";
 import {AvatarCircle, CustomButton, ExpandableText, PostCardInProfile, PostModal} from "../../components";
 
-import {useCallback, useState} from "react";
-import {Post} from "../../utils/Entitys.ts";
+import {useCallback, useEffect, useState} from "react";
+import {IPost} from "../../utils/Entitys.ts";
 import {postsArr} from "../../utils/DebugUtils.ts";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {userData} from "../../store/selectors.ts";
 import {useCheckMyAccess} from "../../utils/CustomHooks.ts";
+import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
+import {getAllPostsByUser} from "../../store/api/actionCreators.ts";
 
 
 
@@ -16,16 +18,17 @@ export const Profile = () => {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const user = useSelector(userData);
+    const {posts} = useSelector((state: RootState) => state.postReducer);
 
     const {_id} = useParams();
 
     const isMyProfile: boolean = useCheckMyAccess(_id, user?._id);
 
-    const posts: number = user?.posts ? user?.posts.length as number : 0;
+    const postsCount: number = user?.posts ? user?.posts.length as number : 0;
     const followers: number = user?.followers ? user?.followers.length as number : 0;
     const following: number = user?.following ? user?.following.length as number : 0;
 
-
+    const dispatch = useDispatch<AppDispatch>();
 
     const text: string =
         "• Гарантия помощи с трудоустройством в ведущие IT-компании\n" +
@@ -58,11 +61,26 @@ export const Profile = () => {
         navigate("/edit_profile");
     }
 
+    useEffect(() => {
+        const fetchUserPosts = async() => {
+            try {
+                await dispatch(getAllPostsByUser({userId: _id}));
+
+                console.log("fetchUserPosts is done");
+
+            } catch (error) {
+                console.error("Failed to fetch users posts: ", error);
+            }
+        }
+        fetchUserPosts();
+    }, [dispatch]);
+
+    console.log("user?.posts: ", posts);
     return (
         <div className={styles.profile}>
             <div className={styles.profile_main}>
                 <div>
-                    <AvatarCircle avatar={user?.avatar as string} avatarSize={"big"} />
+                    <AvatarCircle user={user} avatarSize={"big"} />
                 </div>
 
                 <div className={styles.profile_info}>
@@ -80,7 +98,7 @@ export const Profile = () => {
                         )}
                     </div>
                     <div className={styles.profile_stats}>
-                        <span>{posts} posts</span>
+                        <span>{postsCount} posts</span>
                         <span>{followers} followers</span>
                         <span>{following} following</span>
                     </div>
@@ -116,14 +134,14 @@ export const Profile = () => {
             </div>
 
             <div className={styles.profile_posts}>
-                {postsArr.map((post: Post) => (
-                    <PostCardInProfile onClick={() => handleOpenModal(post)} key={post.id} post={post}/>
-                ))}
+                {(posts && posts?.length > 0) ? posts?.map((post) => (
+                    <PostCardInProfile  key={post._id} post={post}/>
+                )) : <h1>No posts</h1>}
             </div>
 
-            {isModalOpen && (
-                <PostModal handleClose={handleClose} post={currentPost} />
-            )}
+            {/*{isModalOpen && (*/}
+            {/*    <PostModal handleClose={handleClose} post={currentPost} />*/}
+            {/*)}*/}
         </div>
     );
 };

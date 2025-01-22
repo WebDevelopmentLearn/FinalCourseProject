@@ -132,9 +132,17 @@ export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
     }
 });
 
+export const getAllPostsByUser = createAsyncThunk("post/getAllPostsByUser", async ({userId}: {userId: string | undefined}) => {
+    try {
+        const response = await API.get(`/posts/posts-by-user/${userId}`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+});
 
-
-export const getPostById = createAsyncThunk("post/getPostById", async ({postId}: {postId: string}) => {
+export const getPostById = createAsyncThunk("post/getPostById", async ({postId}: {postId: string | undefined}) => {
     try {
         const response = await API.get(`/posts/post-by-id/${postId}`);
         console.log(response.data);

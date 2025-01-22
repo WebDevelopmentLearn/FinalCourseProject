@@ -1,6 +1,6 @@
 import {IPostState} from "../../utils/Entitys.ts";
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
-import {createPost, getAllPosts, getPostById, updatePost} from "../api/actionCreators.ts";
+import {createPost, getAllPosts, getAllPostsByUser, getPostById, updatePost} from "../api/actionCreators.ts";
 
 
 const initialState: IPostState = {
@@ -54,6 +54,16 @@ const postSlice = createSlice({
         }).addCase(getPostById.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.error.message;
+        }).addCase(getAllPostsByUser.pending, (state) => {
+            state.postsStatus = "LOADING";
+            state.postsError = null;
+        }).addCase(getAllPostsByUser.fulfilled, (state, action) => {
+            state.postsStatus = "SUCCESS";
+            state.postsError = null;
+            state.posts = action.payload;
+        }).addCase(getAllPostsByUser.rejected, (state, action) => {
+            state.postsStatus = "FAILED";
+            state.postsError = action.payload;
         });
     }
 });

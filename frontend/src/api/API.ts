@@ -1,8 +1,8 @@
-import axios, {AxiosError, AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosInstance, AxiosResponse} from "axios";
 import {NavigateFunction} from "react-router-dom";
 
 
-const API = axios.create({
+const API: AxiosInstance = axios.create({
     baseURL: "http://localhost:3400/api",
     withCredentials: true,
     headers: {
@@ -29,10 +29,10 @@ const API = axios.create({
 
 
 // Функция для установки интерсептора с передачей navigate
-export const setupInterceptors = (navigate: NavigateFunction) => {
+export const setupInterceptors = (navigate: NavigateFunction): void => {
     API.interceptors.response.use(
         (response) => response,
-        async (error) => {
+        async (error): Promise<AxiosResponse<any, any>> => {
             const originalRequest = error.config;
 
             if (error.response?.status === 401 && !originalRequest._retry) {
