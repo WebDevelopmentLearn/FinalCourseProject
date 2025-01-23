@@ -21,7 +21,7 @@ class PostRepository {
                 _id: 1,
                 username: 1,
                 avatar: 1
-            });
+            }).populate("comments");
 
             return allPosts;
         } catch (error: unknown) {
@@ -32,7 +32,11 @@ class PostRepository {
 
     static async getAllPostsByUserId(userId: string): Promise<IPostDoc[]> {
         try {
-            const allPosts: IPostDoc[] = await Post.find({author: userId});
+            const allPosts: IPostDoc[] = await Post.find({author: userId}).populate("author", {
+                _id: 1,
+                username: 1,
+                avatar: 1
+            }).populate("comments");
 
             return allPosts;
         } catch (error: unknown) {
@@ -45,7 +49,19 @@ class PostRepository {
         try {
             const post: IPostDoc | null = await Post
                 .findById(postId)
-                .populate("author");
+                .populate("author", {
+                    _id: 1,
+                    username: 1,
+                    avatar: 1
+                }).populate({
+                    path: "comments",
+                    populate: [
+                        {
+                            path: "author",
+                            select: `_id username avatar`
+                        }
+                    ]
+                });
 
             return post;
         } catch (error: unknown) {
