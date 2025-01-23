@@ -43,29 +43,13 @@ export interface IRegisterData {
 }
 
 
-export interface IUserState {
-    user: IUser | null;
-    userStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
-    userError: any;
-}
-
 export interface ILoginData {
     email?: string;
     username?: string;
     password: string;
 }
 
-export interface IPostState {
-    posts: IPost[];
-    currentPost: IPost | null;
-    postsStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
-    postsError: any;
-}
 
-export interface IImagesState {
-    images: any[];
-    imagesUrls: any[];
-}
 
 
 //PROPS

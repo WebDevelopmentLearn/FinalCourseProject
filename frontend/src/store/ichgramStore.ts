@@ -3,7 +3,6 @@ import modalReducer from "./reducers/modalSlice";
 import authReducer from "./reducers/authSlice.ts";
 import userReducer from "./reducers/userSlice.ts";
 import postReducer from "./reducers/postSlice.ts";
-import imagesReducer from "./reducers/imagesSlice.ts";
 
 const rootReducer = combineReducers({
     modalReducer,

@@ -1,12 +1,16 @@
-import {IUserState} from "../../utils/Entitys.ts";
+
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
-import {getUser} from "../api/actionCreators.ts";
+import {getUser, updateUserProfile} from "../api/actionCreators.ts";
+import {IUserState} from "../types.ts";
 
 
 const initialState: IUserState = {
     user: null,
     userStatus: "IDLE",
-    userError: null
+    userError: null,
+
+    updateProfileStatus: "IDLE",
+    updateProfileError: null
 }
 
 const userSlice = createSlice({
@@ -24,6 +28,15 @@ const userSlice = createSlice({
         }).addCase(getUser.rejected, (state, action) => {
             state.userStatus = "FAILED";
             state.userError = action.error;
+        }).addCase(updateUserProfile.pending, (state) => {
+            state.updateProfileStatus = "IDLE";
+            state.updateProfileError = null;
+        }).addCase(updateUserProfile.fulfilled, (state) => {
+            state.updateProfileStatus = "SUCCESS";
+            state.updateProfileError = null;
+        }).addCase(updateUserProfile.rejected, (state, action) => {
+            state.updateProfileStatus = "FAILED";
+            state.updateProfileError = action.payload;
         })
     }
 });

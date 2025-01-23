@@ -151,3 +151,38 @@ export const getPostById = createAsyncThunk("post/getPostById", async ({postId}:
         console.log(error);
     }
 });
+
+
+export const updateUserProfile = createAsyncThunk("user/updateUserProfile", async (
+    {username, bio, website}: {username?: string, bio?: string, website?: string},
+    {rejectWithValue}) => {
+    try {
+        console.log("updateData: ", {username, bio, website});
+        const formData = new FormData();
+
+        if (username) formData.append("username", username);
+
+        if (bio) formData.append("bio", bio);
+
+        if (website) formData.append("website", website);
+
+        for (const [key, value] of formData.entries()) {
+            console.log(`[createPost] ${key}:`, value);
+        }
+
+        const response = await API.put(`/user/update-profile/`, formData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        if (error instanceof AxiosError) {
+            if (error.response && error.response.data.message) {
+                console.log("Error message1:", error.response.data.message);
+                return rejectWithValue(error.response.data.message)
+            } else {
+                console.log("Error message2:", error.message);
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+});

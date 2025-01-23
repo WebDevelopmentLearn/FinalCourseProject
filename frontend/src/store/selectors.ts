@@ -1,7 +1,7 @@
 import {RootState} from "./ichgramStore.ts";
 import {createSelector} from "@reduxjs/toolkit";
-import {IPostState, IUserState} from "../utils/Entitys.ts";
-import {IAuthState} from "./reducers/authSlice.ts";
+import {IPostState, IUserState} from "./types.ts";
+
 
 const userSlice = (state: RootState) => state.userReducer;
 export const userData = createSelector(userSlice, (state: IUserState) => state.user);
