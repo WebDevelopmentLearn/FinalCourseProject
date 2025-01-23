@@ -63,6 +63,21 @@ class UserService {
             throw new Error("Error while getting user by username");
         }
     }
+
+
+    public static async updateProfile(targetUser: IUser, profileData: any) {
+        try {
+            console.log("Profile data: ", profileData);
+           const updatedUser = await targetUser.updateOne(profileData, {
+               new: true
+           });
+
+           return updatedUser;
+        } catch (error: unknown) {
+            await logErrorWithObj("getUser", error);
+            throw new Error("Error while getting user by username");
+        }
+    }
 }
 
 export default UserService;
