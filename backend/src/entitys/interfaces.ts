@@ -8,7 +8,15 @@ export interface IPostDoc extends Document {
     likes: Types.ObjectId[];
     comments: Types.ObjectId[];
     createdAt: Date;
+}
 
+export interface ICommentDoc extends Document {
+    _id: Types.ObjectId | string;
+    post: Types.ObjectId | string;
+    author: Types.ObjectId | string;
+    content: String;
+    likes: Types.ObjectId[];
+    createdAt: Date;
 }
 
 export interface IUser extends Document {

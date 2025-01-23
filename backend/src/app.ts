@@ -10,6 +10,7 @@ import {configureCors} from "./config/cors";
 import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import postRoutes from "./routes/postRoutes";
+import commentRoutes from "./routes/commentRoutes";
 
 const app: Application = express();
 
@@ -45,6 +46,7 @@ const start = async () => {
         app.use("/api/auth", authRoutes);
         app.use("/api/user", userRoutes);
         app.use("/api/posts", postRoutes);
+        app.use("/api/comments", commentRoutes);
 
         app.listen(PORT, () => {
             logInfo(`Server is running at: ${URL}:${PORT}`);
