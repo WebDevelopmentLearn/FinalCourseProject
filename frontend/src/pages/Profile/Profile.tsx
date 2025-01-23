@@ -103,12 +103,7 @@ export const Profile = () => {
                         <span>{following} following</span>
                     </div>
                     <div className={styles.profile_about}>
-                        {/*<p>*/}
-                        {/*    • Гарантия помощи с трудоустройством в ведущие IT-компании*/}
-                        {/*    • Выпускники зарабатывают от 45к евро*/}
-                        {/*    БЕСПЛАТНАЯ...*/}
-                        {/*</p>*/}
-                        <ExpandableText textClass={styles.profile_desc}  text={text} maxHeight={50} />
+                        <ExpandableText textClass={styles.profile_desc}  text={user?.bio} maxHeight={50} />
                     </div>
                     <div>
                         <span>
@@ -124,8 +119,8 @@ export const Profile = () => {
                                 <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="8.471" x2="15.529" y1="15.529" y2="8.471"></line>
                             </svg>
                         </span>
-                        <a href="https://bit.ly/3rpiIbh" target="_blank">
-                            bit.ly/3rpiIbh
+                        <a href={user?.website} target="_blank">
+                            {user?.website}
                         </a>
 
                     </div>

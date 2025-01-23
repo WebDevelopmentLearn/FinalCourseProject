@@ -1,6 +1,7 @@
-import {IPostState} from "../../utils/Entitys.ts";
+
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
 import {createPost, getAllPosts, getAllPostsByUser, getPostById, updatePost} from "../api/actionCreators.ts";
+import {IPostState} from "../types.ts";
 
 
 const initialState: IPostState = {
@@ -8,12 +9,19 @@ const initialState: IPostState = {
     currentPost: null,
     postsStatus: "IDLE",
     postsError: null,
+
+    currentPostStatus: "IDLE",
+    currentPostError: null
 }
 
 const postSlice = createSlice({
     name: "post",
     initialState,
-    reducers: {},
+    reducers: {
+        clearStatus: (state, action) => {
+            state[action.payload] = "IDLE";
+        }
+    },
     extraReducers: (builder:  ActionReducerMapBuilder<IPostState>) => {
         builder.addCase(getAllPosts.pending, (state) => {
             state.postsStatus = "LOADING";
@@ -45,14 +53,14 @@ const postSlice = createSlice({
             state.postsStatus = "FAILED";
             state.postsError = action.error.message;
         }).addCase(getPostById.pending, (state) => {
-            state.postsStatus = "LOADING";
-            state.postsError = null;
+            state.currentPostStatus = "LOADING";
+            state.currentPostError = null;
         }).addCase(getPostById.fulfilled, (state, action) => {
-            state.postsStatus = "SUCCESS";
-            state.postsError = null;
+            state.currentPostStatus = "SUCCESS";
+            state.currentPostError = null;
             state.currentPost = action.payload;
         }).addCase(getPostById.rejected, (state, action) => {
-            state.postsStatus = "FAILED";
+            state.currentPostStatus = "FAILED";
             state.postsError = action.error.message;
         }).addCase(getAllPostsByUser.pending, (state) => {
             state.postsStatus = "LOADING";
@@ -67,5 +75,7 @@ const postSlice = createSlice({
         });
     }
 });
+
+export const {clearStatus} = postSlice.actions;
 
 export default postSlice.reducer;

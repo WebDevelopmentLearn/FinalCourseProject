@@ -29,6 +29,8 @@ export const Home = () => {
         fetchData();
     }, [dispatch]);
 
+    console.log("Posts: ", postsArr);
+
     return (
         <div>
             <div className={styles.home}>

@@ -5,8 +5,8 @@ import React, {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} f
 import styles from "./Sidebar.module.scss";
 
 
-import {SearchModal} from "../SearchModal/SearchModal.tsx";
-import {NotificationModal} from "../NotificationModal/NotificationModal.tsx";
+import {SearchModal} from "../modals/SearchModal/SearchModal.tsx";
+import {NotificationModal} from "../modals/NotificationModal/NotificationModal.tsx";
 import {useTheme} from "../../context/ThemeContext.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {openCreatePostModal} from "../../store/reducers/modalSlice.ts";

@@ -18,13 +18,13 @@ export const MainRoute: MainRoute = (): ReactElement => {
                 <Home/>
             </ProtectedRoute>}/>
 
-            <Route path="/:_id" element={
+            <Route path="/post/:_id" element={
                 <ProtectedRoute>
                     <PostModal />
                 </ProtectedRoute>
             } />
 
-            <Route path="/profile/:_id/:_id" element={
+            <Route path="/profile/:_id/post/:_id" element={
                 <ProtectedRoute>
                     <PostModal />
                 </ProtectedRoute>
