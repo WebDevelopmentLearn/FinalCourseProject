@@ -7,6 +7,11 @@ class CommentRepository {
     static async createCommentDoc(commentData: any) {
         try {
             const newComment: ICommentDoc = new Comment(commentData);
+            await newComment.populate("author", {
+                _id: 1,
+                username: 1,
+                avatar: 1
+            });
             await newComment.save();
 
             return newComment;
