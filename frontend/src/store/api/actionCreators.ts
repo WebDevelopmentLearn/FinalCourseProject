@@ -186,3 +186,22 @@ export const updateUserProfile = createAsyncThunk("user/updateUserProfile", asyn
         }
     }
 });
+
+
+
+export const createComment = createAsyncThunk("post/createComment", async ({postId, content}: {postId: string, content: string}) => {
+    try {
+        const formData = new FormData();
+        formData.append('content', content);
+        for (const [key, value] of formData.entries()) {
+            console.log(`[createComment] ${key}:`, value);
+        }
+        const response = await API.post(`/comments/create-comment/${postId}`, formData);
+        console.log(response.data);
+        return response.data;
+        // const response = await API.get(`/posts/create-comment/`);
+
+    } catch (error) {
+        console.log(error);
+    }
+});

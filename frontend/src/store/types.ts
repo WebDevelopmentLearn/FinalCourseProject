@@ -7,6 +7,8 @@ export interface IPostState {
     postsError: any;
     currentPostStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     currentPostError: any;
+    createCommentStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    createCommentError: any;
 }
 
 export interface IImagesState {

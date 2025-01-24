@@ -4,20 +4,24 @@ import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 
 import {useCallback, useEffect, useRef, useState} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
-import {useForm} from "react-hook-form";
+import {SubmitHandler, useForm} from "react-hook-form";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {getEnumTheme, getTimeAgo} from "../../../utils/Utils.ts";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../../store/ichgramStore.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IPost} from "../../../utils/Entitys.ts";
-import {getPostById} from "../../../store/api/actionCreators.ts";
+import {createComment, getPostById} from "../../../store/api/actionCreators.ts";
 import {Loader} from "../../Loader/Loader.tsx";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
 
 interface PostModalInputProps {
+    content: string;
+}
+
+type PostModalInputValues = {
     content: string;
 }
 
@@ -39,6 +43,7 @@ export const PostModal = () => {
     const navigate = useNavigate();
 
     const dispatch = useDispatch<AppDispatch>();
+    const {currentPost} = useSelector((state: RootState) => state.postReducer);
     const {_id} = useParams();
     const location = useLocation();
 
@@ -61,7 +66,9 @@ export const PostModal = () => {
         formState: { errors },
         setValue,
         reset,
-    } = useForm<PostModalInputProps>({mode: "onChange"});
+    } = useForm<PostModalInputValues>({mode: "onChange", defaultValues: {
+        content: ""
+        }});
 
     const currentContent = watch("content") || ""; // Get current content value
 
@@ -171,7 +178,22 @@ export const PostModal = () => {
         }
     }
 
-    console.log("CurrentPost: ", post);
+    const handleSendComment: SubmitHandler<PostModalInputValues> = async (data) => {
+        if (data) {
+            try {
+                await dispatch(createComment({
+                    postId: _id,
+                    content: currentContent}));
+
+                // await dispatch(getPostById(_id)); // Загружаем актуальные данные
+
+            } catch (error) {
+                console.error("Error: ", error);
+            }
+        }
+    }
+
+    console.log("currentContent: ", currentContent);
 
     return (
         <div className={styles.profile_post_modal_overlay} onClick={handleClosePost}>
@@ -236,8 +258,8 @@ export const PostModal = () => {
                             </div>
 
 
-                            {post?.comments?.length > 0 ? post?.comments?.map((comment) => (
-                                <CommentCard key={comment._id} author={comment.author} commentDesc={comment.commentDesc} createdAt={comment.createdAt} likes={comment.likes} />
+                            {currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment) => (
+                                <CommentCard key={comment._id} author={comment.author} commentDesc={comment.content} createdAt={comment.createdAt} likes={comment.likes} />
 
                             )) : <h2 style={{textAlign: "center"}}>No comments</h2>}
 
@@ -275,7 +297,7 @@ export const PostModal = () => {
                         </div>
                     </div>
 
-                    <div className={styles.comment_control}>
+                    <form className={styles.comment_control} onSubmit={handleSubmit(handleSendComment)}>
                         <button onClick={handleOpenEmojiPicker}>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
@@ -296,7 +318,7 @@ export const PostModal = () => {
                             </div>}
                         <textarea
                             {...register("content", {required: "Content is required", maxLength: 2200})}
-                            ref={textareaRef}
+
                             id={"content"}
                             name={"content"}
                             rows={1} // Начальная высота
@@ -307,8 +329,8 @@ export const PostModal = () => {
                             }} // Стиль для авто-изменения
                             placeholder="Add a comment..."
                             className={styles.add_comment_input}/>
-                        <CustomButton title="send" className={styles.post_comment_btn}/>
-                    </div>
+                        <CustomButton type="submit" title="send" className={styles.post_comment_btn}/>
+                    </form>
                 </div>
                 {moreOptionModalIsOpen && (
                     <div className={styles.post_more_modal_overlay} onClick={handleCloseMoreOptionModal}>

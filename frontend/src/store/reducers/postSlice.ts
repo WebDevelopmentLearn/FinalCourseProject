@@ -1,6 +1,13 @@
 
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
-import {createPost, getAllPosts, getAllPostsByUser, getPostById, updatePost} from "../api/actionCreators.ts";
+import {
+    createComment,
+    createPost,
+    getAllPosts,
+    getAllPostsByUser,
+    getPostById,
+    updatePost
+} from "../api/actionCreators.ts";
 import {IPostState} from "../types.ts";
 
 
@@ -11,7 +18,10 @@ const initialState: IPostState = {
     postsError: null,
 
     currentPostStatus: "IDLE",
-    currentPostError: null
+    currentPostError: null,
+
+    createCommentStatus: "IDLE",
+    createCommentError: null
 }
 
 const postSlice = createSlice({
@@ -72,6 +82,28 @@ const postSlice = createSlice({
         }).addCase(getAllPostsByUser.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.payload;
+        }).addCase(createComment.pending, (state) => {
+            state.createCommentStatus = "LOADING";
+            state.createCommentError = null;
+        }).addCase(createComment.fulfilled, (state, action) => {
+            state.createCommentStatus = "SUCCESS";
+            state.createCommentError = null;
+            console.log("Action.payload: ", action.payload);
+            console.log("Before update: ", state.currentPost);
+            if (state.currentPost) {
+                state.currentPost = {
+                    ...state.currentPost,
+                    comments: [...state.currentPost.comments, action.payload.newComment]
+                };
+            } else {
+                console.warn("currentPost отсутствует");
+            }
+
+
+            console.log("After update: ", state.currentPost);
+        }).addCase(createComment.rejected, (state, action) => {
+            state.createCommentStatus = "LOADING";
+            state.createCommentError = null;
         });
     }
 });
