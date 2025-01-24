@@ -1,15 +1,7 @@
 import User from "../models/User";
 import {logErrorWithObj} from "../utils/Logger";
-import {IPostDoc, IUser} from "../entitys/interfaces";
+import {IUser} from "../entitys/interfaces";
 
-
-export const getUsers = async () => {
-    try {
-        return await User.find();
-    } catch (error: unknown) {
-        console.error("Error in getUsers:", error);
-    }
-}
 
 class UserService {
 
