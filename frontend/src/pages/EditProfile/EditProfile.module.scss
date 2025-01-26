@@ -6,15 +6,39 @@
   margin: 5% 10%;//48px;
   gap: 21px;
 
-  h1 {
-    font-size: 2.0rem;
-    margin-bottom: 23px;
-  }
+
 
   label {
     font-size: 1.6rem;
     font-weight: 700;
   }
+}
+
+.edit_profile_header {
+  display: flex;
+  align-items: center;
+  height: max-content;
+  margin-bottom: 23px;
+
+  .edit_profile_back_to_profile_btn {
+    border: none;
+    background-color: transparent;
+
+    svg {
+      color: var(--secondary-text-color);
+
+      &:hover {
+        color: var(--primary-text-color);
+      }
+    }
+  }
+
+  h1 {
+    font-size: 2.0rem;
+  }
+
+
+
 }
 
 .profile_details {

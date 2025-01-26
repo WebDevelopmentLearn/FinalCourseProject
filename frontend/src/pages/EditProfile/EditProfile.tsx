@@ -1,6 +1,6 @@
 import styles from "./EditProfile.module.scss";
 import {CustomButton, CustomInput, ThemeSwitcher} from "../../components";
-import {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useTheme} from "../../context/ThemeContext.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {userData} from "../../store/selectors.ts";
@@ -11,6 +11,7 @@ import {updateUserProfile} from "../../store/api/actionCreators.ts";
 import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
 import {SimpleAvatarCircle} from "../../components/SimpleAvatarCircle/SimpleAvatarCircle.tsx";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
 type EditProfileValues = {
     avatar_input: File;
@@ -31,6 +32,7 @@ export const EditProfile = () => {
 
     const {images, clearImages } = useImages();
     const { theme, setTheme } = useTheme();
+    const navigate: NavigateFunction = useNavigate();
     const aboutValue = watch("about_input");
 
     const handleEditProfile: SubmitHandler<EditProfileValues> = async(data: EditProfileValues) => {
@@ -65,10 +67,27 @@ export const EditProfile = () => {
            setValue("avatar_input", images[0].blob as File); // Сохраняем только Blob
        }
     }, [images, setValue]);
+    const handleBackToProfile = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+        navigate(-1);
+    }, [navigate]);
+
 
     return (
         <div className={styles.edit_profile_page}>
-            <h1>Edit Profile</h1>
+            <div className={styles.edit_profile_header}>
+                <button onClick={handleBackToProfile} className={styles.edit_profile_back_to_profile_btn}>
+                    <svg width="24px" height="24px" viewBox="0 0 1024 1024" className="icon" version="1.1"
+                         xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                        {/*<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>*/}
+                        {/*<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>*/}
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
+                                  fill="currentColor"></path>
+                        </g>
+                    </svg>
+                </button>
+                <h1>Edit Profile</h1>
+            </div>
 
             <div className={styles.profile_details}>
                 <div className={styles.profile_avatar_and_desc}>
