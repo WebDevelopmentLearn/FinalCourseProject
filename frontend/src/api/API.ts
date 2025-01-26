@@ -3,7 +3,7 @@ import {NavigateFunction} from "react-router-dom";
 
 
 const API: AxiosInstance = axios.create({
-    baseURL: "http://localhost:3400/api",
+    baseURL: "http://192.168.2.48:3400/api",
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
