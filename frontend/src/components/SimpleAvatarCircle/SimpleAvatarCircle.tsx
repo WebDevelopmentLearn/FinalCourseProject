@@ -45,7 +45,6 @@ export const SimpleAvatarCircle: FC<SimpleAvatarCircleProps> = ({url, className,
             <circle cx="100" cy="100" r="80" fill="#ffffff"/>
 
             <image href={url}
-
                    x="0" y="0"
                    width="100%" height="100%"
                    clipPath="url(#circleClip)"

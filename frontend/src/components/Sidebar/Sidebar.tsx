@@ -64,8 +64,6 @@ export const Sidebar: FC = () => {
 
 
     const handleCloseModal = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        const target: EventTarget = event.target;
-
         if (sidebarRef.current) {
 
             sidebarRef.current.classList.remove(styles.small);
@@ -171,7 +169,17 @@ export const Sidebar: FC = () => {
                         </svg>
 
                         <span className={styles.sidebar_mobile_content}>Create</span>
+
                     </button>
+
+                    <NavLink
+                        className={styles.mobile_profile}
+                        //className={({isActive}: NavLinkRenderProps) => isActive ? `active activeLink ${styles.sidebar_profile}` : styles.sidebar_profile}
+                        to={`/profile/${user?._id}`}>
+                        {/*<img className={styles.sidebar_avatar} src={user?.user?.avatar} alt="profileAvatar"/>*/}
+                        <AvatarCircle user={user} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
+
+                    </NavLink>
                 </div>
 
                 {/*<div className={styles.sidebar_profile}>*/}

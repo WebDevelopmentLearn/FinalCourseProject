@@ -61,12 +61,12 @@ export const Profile = () => {
         }
     }
 
-    useEffect(() => {
-        if (logoutStatus === "SUCCESS") {
-            navigate("/signin");
-            clearStatus("logoutStatus");
-        }
-    }, [dispatch]);
+    // useEffect(() => {
+    //     if (logoutStatus === "SUCCESS") {
+    //         navigate("/signin");
+    //         clearStatus("logoutStatus");
+    //     }
+    // }, [dispatch]);
 
     useEffect(() => {
         const fetchUserPosts = async() => {

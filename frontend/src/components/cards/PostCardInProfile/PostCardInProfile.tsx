@@ -18,12 +18,10 @@ export const PostCardInProfile = ({post}: PostCardInProfileProps) => {
             }
         };
 
-        // Используем MutationObserver для отслеживания изменений DOM
         const observer = new MutationObserver(() => {
             updateSize();
         });
 
-        // Следим за элементом, если он существует
         if (elementRef.current) {
             observer.observe(elementRef.current, {
                 attributes: true,
@@ -32,7 +30,6 @@ export const PostCardInProfile = ({post}: PostCardInProfileProps) => {
             });
         }
 
-        // Принудительно вызываем расчет размеров после полной загрузки страницы
         const handleLoad = () => updateSize();
         if (document.readyState === "complete") {
             handleLoad();
@@ -40,7 +37,6 @@ export const PostCardInProfile = ({post}: PostCardInProfileProps) => {
             window.addEventListener("load", handleLoad);
         }
 
-        // Подписка на изменения размера окна
         window.addEventListener("resize", updateSize);
 
         return () => {
@@ -50,11 +46,9 @@ export const PostCardInProfile = ({post}: PostCardInProfileProps) => {
         };
     }, []);
 
-    console.log("Post: ", post);
-
     return (
         <div ref={elementRef} onClick={() => {
-            navigate(`/profile/${post?.author}/post/${post?._id}`);
+            navigate(`/profile/${post?.author._id}/post/${post?._id}`);
         }} className={styles.post_card_in_profile} >
             {/*<Slider inModal={false} postImages={post.photo} />*/}
             <SimpleSlider maxWidth={size.width} postImages={post?.photo} sliderType="ViewPost"/>

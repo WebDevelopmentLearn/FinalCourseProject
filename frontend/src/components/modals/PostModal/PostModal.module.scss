@@ -286,12 +286,14 @@
     margin-left: 8px;
     font-size: 1.4rem;
 
+
     &:focus {
         outline: none;
         border: none;
     }
 
 }
+
 
 .post_comment_btn {
     background-color: transparent;
@@ -371,7 +373,7 @@
     }
 
     .comment_control {
-        button {
+        .emoji_btn {
             display: none;
         }
     }

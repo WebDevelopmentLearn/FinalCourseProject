@@ -17,9 +17,9 @@ import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
 
-interface PostModalInputProps {
-    content: string;
-}
+// interface PostModalInputProps {
+//     content: string;
+// }
 
 type PostModalInputValues = {
     content: string;
@@ -33,18 +33,18 @@ export const PostModal = () => {
     const [size, setSize] = useState({ width: 0, height: 0 });
     const [isLiked, setIsLiked] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [text, setText] = useState('');
+    // const [text, setText] = useState('');
     const [post, setPost] = useState<IPost | null>(null);
 
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    // const textareaRef = useRef<HTMLTextAreaElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
 
     const {theme} = useTheme();
     const navigate = useNavigate();
 
     const dispatch = useDispatch<AppDispatch>();
-    const {currentPost} = useSelector((state: RootState) => state.postReducer);
-    const {_id} = useParams();
+    const {currentPost} = useSelector((state: RootState) => state.postReducer) || null;
+    const {_id} = useParams() || "";
     const location = useLocation();
 
     useEffect(() => {
@@ -63,7 +63,7 @@ export const PostModal = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors },
+        // formState: { errors },
         setValue,
         reset,
     } = useForm<PostModalInputValues>({mode: "onChange", defaultValues: {
@@ -79,7 +79,7 @@ export const PostModal = () => {
     };
 
 
-    const handleOpenEmojiPicker = (e) => {
+    const handleOpenEmojiPicker = (e: MouseEvent) => {
         e.preventDefault();
         setEmojiPickerIsOpen(!emojiPickerIsOpen);
     };
@@ -100,34 +100,33 @@ export const PostModal = () => {
         console.log("handleFollow");
         setIsAnimating(true);
 
-        // Убираем класс анимации после её завершения
         if (!isLiked) {
             setTimeout(() => {
                 setIsAnimating(false);
-            }, 300); // Должно совпадать с длительностью анимации в CSS
+            }, 300);
         }
 
     }, [isLiked]);
 
-    const handleChange = (e) => {
-        setText(e.target.value);
-    };
-
-    // Функция для авто-изменения высоты
-    const autoResize = () => {
-        const textarea = textareaRef.current;
-        if (textarea) {
-            // Сбросим высоту перед измерением
-            textarea.style.height = 'auto';
-            // Устанавливаем высоту в зависимости от содержимого
-            textarea.style.height = `${textarea.scrollHeight}px`;
-        }
-    };
-
-    useEffect(() => {
-        // Вызовем autoResize каждый раз, когда меняется текст
-        autoResize();
-    }, [text]);
+    // const handleChange = (e) => {
+    //     setText(e.target.value);
+    // };
+    //
+    // // Функция для авто-изменения высоты
+    // const autoResize = () => {
+    //     const textarea = textareaRef.current;
+    //     if (textarea) {
+    //         // Сбросим высоту перед измерением
+    //         textarea.style.height = 'auto';
+    //         // Устанавливаем высоту в зависимости от содержимого
+    //         textarea.style.height = `${textarea.scrollHeight}px`;
+    //     }
+    // };
+    //
+    // useEffect(() => {
+    //     // Вызовем autoResize каждый раз, когда меняется текст
+    //     autoResize();
+    // }, [text]);
 
     useEffect(() => {
         const updateSize = () => {
@@ -137,12 +136,10 @@ export const PostModal = () => {
             }
         };
 
-        // Используем MutationObserver для отслеживания изменений DOM
         const observer = new MutationObserver(() => {
             updateSize();
         });
 
-        // Следим за элементом, если он существует
         if (elementRef.current) {
             observer.observe(elementRef.current, {
                 attributes: true,
@@ -151,7 +148,6 @@ export const PostModal = () => {
             });
         }
 
-        // Принудительно вызываем расчет размеров после полной загрузки страницы
         const handleLoad = () => updateSize();
         if (document.readyState === "complete") {
             handleLoad();
@@ -159,7 +155,6 @@ export const PostModal = () => {
             window.addEventListener("load", handleLoad);
         }
 
-        // Подписка на изменения размера окна
         window.addEventListener("resize", updateSize);
 
         return () => {
@@ -182,18 +177,16 @@ export const PostModal = () => {
         if (data) {
             try {
                 await dispatch(createComment({
-                    postId: _id,
+                    postId: _id || "",
                     content: currentContent}));
 
                 // await dispatch(getPostById(_id)); // Загружаем актуальные данные
-
+                reset();
             } catch (error) {
                 console.error("Error: ", error);
             }
         }
     }
-
-    console.log("currentContent: ", currentContent);
 
     return (
         <div className={styles.profile_post_modal_overlay} onClick={handleClosePost}>
@@ -257,7 +250,7 @@ export const PostModal = () => {
                         </div>
 
 
-                        {currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment) => (
+                        {currentPost && currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment) => (
                             <CommentCard key={comment._id} author={comment.author} commentDesc={comment.content}
                                          createdAt={comment.createdAt} likes={comment.likes}/>
 
@@ -296,7 +289,7 @@ export const PostModal = () => {
                     </div>
 
                     <form className={styles.comment_control} onSubmit={handleSubmit(handleSendComment)}>
-                        <button onClick={handleOpenEmojiPicker}>
+                        <button className={styles.emoji_btn} onClick={handleOpenEmojiPicker}>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path
