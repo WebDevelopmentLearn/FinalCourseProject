@@ -33,9 +33,7 @@ class UserController {
     public static async editProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
         const userId = getUserIdFromToken(req.cookies.accessToken);
         const {username, bio, website}: {username?: string, bio?: string, website?: string} = req.body;
-        console.log("req.body::: ", req.body);
         try {
-
             if (!userId) {
                 res.status(401).json({
                     message: "AccessToken is required"
@@ -51,7 +49,20 @@ class UserController {
                 return;
             }
 
-            const updateUser = await UserService.updateProfile(targetUser, {username, bio, website});
+            const updatedData: {username?: string, bio?: string, website?: string, avatar?: string} = {};
+            //{username, bio, website}
+            if (username)  updatedData.username = username;
+            if (bio)  updatedData.bio = bio;
+            if (website)  updatedData.website = website;
+
+
+            if (req.file) {
+                const imageBase64: string = req.file.buffer.toString("base64");
+                const encodedBase64Image: string = `data:${req.file.mimetype};base64,${imageBase64}`;
+                updatedData.avatar = encodedBase64Image;
+            }
+
+            const updateUser = await UserService.updateProfile(targetUser, updatedData);
 
             console.log("UpdateUser: ", updateUser);
 
