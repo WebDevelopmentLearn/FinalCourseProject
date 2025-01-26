@@ -1,6 +1,7 @@
 import styles from "./PostModal.module.scss";
 import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import {useCallback, useEffect, useRef, useState} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
@@ -35,7 +36,7 @@ export const PostModal = () => {
     const [isAnimating, setIsAnimating] = useState(false);
     // const [text, setText] = useState('');
     const [post, setPost] = useState<IPost | null>(null);
-
+    const [copied, setCopied] = useState(false);
     // const textareaRef = useRef<HTMLTextAreaElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
 
@@ -162,6 +163,11 @@ export const PostModal = () => {
             window.removeEventListener("resize", updateSize);
             window.removeEventListener("load", handleLoad);
         };
+    }, []);
+    const handleCopyUrlPostToClipboard = useCallback((text: string, result: boolean) => {
+        setCopied(true);
+        alert("Ссылка на пост успешно скопирована");
+        console.log("onCustomButtonClick");
     }, []);
 
 
@@ -331,9 +337,11 @@ export const PostModal = () => {
                                 setEditPostModalIsOpen(true);
                                 handleCloseMoreOptionModal();
                             }} title={"Edit"} className={`${styles.more_btn} ${styles.edit_btn}`}/>
-                            <CustomButton title={"Go to Post"}
-                                          className={`${styles.more_btn} ${styles.go_to_post_btn}`}/>
-                            <CustomButton title={"Copy Link"} className={`${styles.more_btn} ${styles.copy_link_btn}`}/>
+                            {/*<CustomButton title={"Go to Post"}*/}
+                            {/*              className={`${styles.more_btn} ${styles.go_to_post_btn}`}/>*/}
+                            <CopyToClipboard text={window.location.href} onCopy={handleCopyUrlPostToClipboard}>
+                                <CustomButton title={"Copy Link"} className={`${styles.more_btn} ${styles.copy_link_btn}`}/>
+                            </CopyToClipboard>
                             <CustomButton title={"Cancel"} className={`${styles.more_btn} ${styles.cancel_btn}`}
                                           onClick={handleCloseMoreOptionModal}/>
                         </div>
