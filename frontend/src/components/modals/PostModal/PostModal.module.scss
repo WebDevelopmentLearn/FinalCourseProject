@@ -262,6 +262,11 @@
     padding: 12px;
     border-top: 1px solid var(--border-color);
 
+    .emoji_btn {
+        background-color: transparent;
+        border: none;
+    }
+
     .smiles_and_input {
         display: flex;
         gap: 8px;
@@ -276,6 +281,7 @@
 
 .add_comment_input {
     background-color: transparent;
+    color: var(--primary-text-color);
     border: none;
     text-wrap: wrap;
     resize: none;

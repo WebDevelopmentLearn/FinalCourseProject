@@ -51,6 +51,8 @@
 .card__input_container {
   @extend .card;
 
+  background-color: var(--secondary-bgc);
+
   display: flex;
   justify-content: center;
   align-items: center;

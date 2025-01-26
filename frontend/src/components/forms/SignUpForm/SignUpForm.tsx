@@ -1,13 +1,13 @@
+import {FC} from "react";
+import {Link, useNavigate} from "react-router-dom";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+
 import styles from "./SignUpForm.module.scss";
 import ichgramLogo from "../../../assets/logo.svg";
 import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
-
-import {FC} from "react";
-import {Link, useNavigate} from "react-router-dom";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
-import {SubmitHandler, useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
 import {registerUser} from "../../../store/api/actionCreators.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IRegisterData} from "../../../utils/Entitys.ts";
@@ -122,9 +122,6 @@ export const SignUpForm: FC = () => {
 
                 <CustomButton type="submit" title={"Sign up"}/>
 
-                {/*<div className={styles.sign_up_form_forgot_password}>*/}
-                {/*    <Link to="/">Forgot password?</Link>*/}
-                {/*</div>*/}
             </form>
         </div>
     );

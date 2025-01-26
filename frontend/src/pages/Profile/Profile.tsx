@@ -53,9 +53,7 @@ export const Profile = () => {
     const handleLogout = async() => {
         try {
             await dispatch(logoutUser());
-            if (logoutStatus === "SUCCESS") {
-                navigate("/signin");
-            }
+            navigate("/signin");
         } catch (error) {
             console.error("Failed to logout: ", error);
         }
