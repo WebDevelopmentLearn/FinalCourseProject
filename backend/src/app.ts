@@ -15,7 +15,7 @@ import commentRoutes from "./routes/commentRoutes";
 const app: Application = express();
 
 const PORT = process.env.BACK_PORT || 3333;
-const URL = process.env.BACK_URL || "http://localhost";
+const URL = process.env.URL || "localhost";
 const ENV = process.env.NODE_ENV || "development";
 
 declare global {
@@ -48,8 +48,9 @@ const start = async () => {
         app.use("/api/posts", postRoutes);
         app.use("/api/comments", commentRoutes);
 
-        app.listen(PORT, () => {
-            logInfo(`Server is running at: ${URL}:${PORT}`);
+        app.listen(Number(PORT), URL, () => {
+            console.log("")
+            logInfo(`Server is running at: http://${URL}:${PORT}`);
         });
     } catch (error) {
         await logErrorWithObj("An error occurred while starting the server: ", error);
