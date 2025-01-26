@@ -239,34 +239,32 @@ export const PostModal = () => {
                         </div>
                     </div>
 
-                    <div className={styles.post_comments}>
-                        <ul>
-                            <div className={styles.post}>
-                                <div>
-                                    <AvatarCircle user={post?.author} avatarSize="small"/>
-                                </div>
-                                <div className={styles.post_details}>
-                                    <p><Link to={`/profile/${post?.author?._id}`}>{post?.author?.username}</Link>
-                                        {post?.content}
-                                    </p>
+                    <ul className={styles.post_comments}>
+                        <div className={styles.post}>
+                            <div>
+                                <AvatarCircle user={post?.author} avatarSize="small"/>
+                            </div>
+                            <div className={styles.post_details}>
+                                <p><Link to={`/profile/${post?.author?._id}`}>{post?.author?.username}</Link>
+                                    {post?.content}
+                                </p>
 
-                                    <div className={styles.post_date}>
-                                        <span>{getTimeAgo(post?.createdAt)}</span>
-                                    </div>
+                                <div className={styles.post_date}>
+                                    <span>{getTimeAgo(post?.createdAt)}</span>
                                 </div>
-
                             </div>
 
-
-                            {currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment) => (
-                                <CommentCard key={comment._id} author={comment.author} commentDesc={comment.content} createdAt={comment.createdAt} likes={comment.likes} />
-
-                            )) : <h2 style={{textAlign: "center"}}>No comments</h2>}
+                        </div>
 
 
-                        </ul>
+                        {currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment) => (
+                            <CommentCard key={comment._id} author={comment.author} commentDesc={comment.content}
+                                         createdAt={comment.createdAt} likes={comment.likes}/>
 
-                    </div>
+                        )) : <h2 style={{textAlign: "center"}}>No comments</h2>}
+
+
+                    </ul>
 
                     <div className={styles.post_stats}>
                         <div className={styles.post_card_like_and_comment}>

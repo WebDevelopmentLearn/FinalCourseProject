@@ -14,7 +14,7 @@ export const ImageCropperModal = ({imageSrc, handleClose}: ImageCropperModalProp
                     <h1>Edit image</h1>
                 </div>
                 <div className={styles.image_cropper_modal_content}>
-                    <ImageCropper handleClose={handleClose} imageSrc={imageSrc} />
+                    <ImageCropper handleClose={handleClose} imageSrc={imageSrc} shape="rect" permittedAspects={["1:1", "4:5", "16:9"]} />
                 </div>
             </div>
         </div>

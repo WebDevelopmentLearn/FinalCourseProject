@@ -76,6 +76,10 @@ export type SliderProps = {
 export type ImageCropperProps = {
     handleClose: () => void;
     imageSrc: any;
+    shape: "round" | "rect";
+    permittedAspects: string[];
+    className?: string;
+    singleMode?: boolean;
 }
 
 export type InterlocutorCardProps = {
@@ -123,7 +127,7 @@ export type CustomButtonProps = {
     disabled?: boolean;
 }
 
-type CustomInputType = "text" | "password" | "email" | "number" | "tel" | "url" | "search" | "date" | "time" | "datetime-local" | "month" | "week" | "color";
+type CustomInputType = "text" | "password" | "email" | "number" | "tel" | "url" | "search" | "date" | "time" | "datetime-local" | "month" | "week" | "color" | "file";
 
 export type CustomInputProps = {
     type: CustomInputType;

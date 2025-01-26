@@ -14,7 +14,7 @@ export const CommentCard = ({author, commentDesc, createdAt, likes}: ICommentCar
                 <div className={styles.comment_desc_and_stats}>
                     <div className={styles.comment_desc}>
                         <span>{author?.username}</span>
-                        <p>{commentDesc}</p>
+                        <span>{commentDesc}</span>
                     </div>
                     <div className={styles.comment_stats}>
                         <span>{getTimeAgo(createdAt)}</span>

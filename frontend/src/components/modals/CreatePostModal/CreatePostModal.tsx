@@ -179,7 +179,7 @@ export const CreatePostModal = () => {
                         <div className={styles.header}>
                             <h1>Create new post</h1>
                         </div>
-                        <CustomButton disabled={images.length > 1 && currentContent.length > 1} className={styles.share_post_btn} title="Share" type="submit"/>
+                        <CustomButton disabled={images.length > 0 && currentContent.length > 0 && images.length < 1 && currentContent.length < 1} className={styles.share_post_btn} title="Share" type="submit"/>
                     </header>
                     <main className={styles.create_post_modal_content}>
                         <div ref={elementRef} className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>
@@ -195,7 +195,7 @@ export const CreatePostModal = () => {
                         }}>
                             <div className={styles.personal_info}>
                                 <AvatarCircle user={user}/>
-                                <p>itcareerhub</p>
+                                <p>{user?.username}</p>
                                 {errors && errors.photo && <span>{errors.photo.message}</span>}
                                 {errors && errors.content && <span>{errors.content.message}</span>}
 
