@@ -24,7 +24,11 @@ const initialState: IAuthState = {
 export const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        clearStatus: (state, action) => {
+            state[action.payload] = "IDLE";
+        }
+    },
     extraReducers: (builder: ActionReducerMapBuilder<IAuthState>) => {
         builder.addCase(registerUser.pending, (state) => {
             state.registerError = null;
@@ -58,4 +62,5 @@ export const authSlice = createSlice({
     }
 });
 
+export const {clearStatus} = authSlice.actions;
 export default authSlice.reducer;

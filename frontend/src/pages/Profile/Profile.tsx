@@ -10,7 +10,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {userData} from "../../store/selectors.ts";
 import {useCheckMyAccess} from "../../utils/CustomHooks.ts";
 import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
-import {getAllPostsByUser} from "../../store/api/actionCreators.ts";
+import {getAllPostsByUser, logoutUser} from "../../store/api/actionCreators.ts";
+import {clearStatus} from "../../store/reducers/authSlice.ts";
 
 
 
@@ -19,6 +20,7 @@ export const Profile = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const user = useSelector(userData);
     const {posts} = useSelector((state: RootState) => state.postReducer);
+    const {logoutStatus} = useSelector((state: RootState) => state.authReducer);
 
     const {_id} = useParams();
 
@@ -30,19 +32,6 @@ export const Profile = () => {
 
     const dispatch = useDispatch<AppDispatch>();
 
-    const text: string =
-        "• Гарантия помощи с трудоустройством в ведущие IT-компании\n" +
-        "• Выпускники зарабатывают от 45к евро\n" +
-        "БЕСПЛАТНАЯ...\n" +
-        "• Гарантия помощи с трудоустройством в ведущие IT-компании\n" +
-        "• Выпускники зарабатывают от 45к евро\n" +
-        "БЕСПЛАТНАЯ...\n" +
-        "• Гарантия помощи с трудоустройством в ведущие IT-компании\n" +
-        "• Выпускники зарабатывают от 45к евро\n" +
-        "БЕСПЛАТНАЯ...\n" +
-        "• Гарантия помощи с трудоустройством в ведущие IT-компании\n" +
-        "• Выпускники зарабатывают от 45к евро\n" +
-        "БЕСПЛАТНАЯ...";
 
     const [currentPost, setCurrentPost] = useState({});
 
@@ -60,6 +49,24 @@ export const Profile = () => {
     const handleRedirect = () => {
         navigate("/edit_profile");
     }
+
+    const handleLogout = async() => {
+        try {
+            await dispatch(logoutUser());
+            if (logoutStatus === "SUCCESS") {
+                navigate("/signin");
+            }
+        } catch (error) {
+            console.error("Failed to logout: ", error);
+        }
+    }
+
+    useEffect(() => {
+        if (logoutStatus === "SUCCESS") {
+            navigate("/signin");
+            clearStatus("logoutStatus");
+        }
+    }, [dispatch]);
 
     useEffect(() => {
         const fetchUserPosts = async() => {
@@ -89,6 +96,7 @@ export const Profile = () => {
                         {isMyProfile ? (
                             <div>
                                 <CustomButton onClick={handleRedirect} title="Edit Profile" className={styles.profile_edit_profile_btn} />
+                                <CustomButton onClick={handleLogout} title="Logout" className={styles.logout_btn} />
                             </div>
                         ) : (
                             <div className={styles.profile_follow_and_message_btn_container}>

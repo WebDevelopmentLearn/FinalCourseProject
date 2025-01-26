@@ -82,9 +82,18 @@
   @extend .profile_follow_btn;
   background-color: #EFEFEF;
   color: #000000;
-
+  margin-right: 4px;
   &:hover {
     background-color: #aaaaaa;
+  }
+}
+
+.logout_btn {
+  @extend .profile_follow_btn;
+  background-color: #ED4956;
+
+  &:hover {
+    background-color: #f52332;
   }
 }
 
