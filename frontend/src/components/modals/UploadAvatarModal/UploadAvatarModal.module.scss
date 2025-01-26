@@ -1,0 +1,107 @@
+.image_cropper_modal_overlay {
+  position: fixed;
+  top: 0;
+  z-index: 20;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image_cropper_modal {
+  background-color: var(--bgc);
+  width: 50vw;
+  padding: 16px;
+  max-height: calc(100% - 40px);
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+
+  &_header {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &_content {
+    width: 100%;
+  }
+}
+
+
+//.card {
+//  //max-width: 500px;
+//  //min-width: 500px;
+//  background-size: contain;
+//  background-position: center;
+//  background-repeat: no-repeat;
+//  width: 100%;
+//  height: 100%;
+//  position: relative;
+//  object-fit: contain;
+//
+//  &__delete_btn {
+//    position: absolute;
+//    top: 0;
+//    right: 0;
+//  }
+//
+//  input[type="file"] {
+//    width: 100%;
+//    height: 100%;
+//    display: flex;
+//    justify-content: center;
+//    align-items: center;
+//    opacity: 0;
+//    cursor: pointer;
+//
+//    &:hover {
+//      background: #b24343;
+//    }
+//  }
+//}
+
+.card__input_container {
+  width: 100%;
+  height: 50vh;
+  border-radius: 15px;
+  border: 1px solid #5f5f5f;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .card_input__icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+  }
+
+  input[type="file"] {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+  }
+}
+
+.card__input_container.hidden_input {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .image_cropper_modal {
+    width: 100vw;
+  }
+
+}

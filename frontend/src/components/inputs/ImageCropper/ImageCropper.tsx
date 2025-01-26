@@ -4,14 +4,15 @@ import styles from "./ImageCropper.module.scss";
 import {getCroppedImg} from "../../../utils/Utils.ts";
 import {ImageCropperProps} from "../../../utils/Entitys.ts";
 import {useImages} from "../../../context/ImageContext.tsx";
+import {CustomButton} from "../CustomButton/CustomButton.tsx";
 
 
-export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
+export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAspects, singleMode = false}: ImageCropperProps) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);
     const [aspect, setAspect] = useState<number>(1); // Соотношение сторон по умолчанию 1:1
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-    const { saveCroppedImage } = useImages();
+    const { saveCroppedImage, addSingleImage } = useImages();
 
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
         setCroppedAreaPixels(croppedAreaPixels);
@@ -37,10 +38,11 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
     const handleCrop = async () => {
         try {
             const croppedImage: Blob = await getCroppedImg(imageSrc, croppedAreaPixels);
-            // const croppedImageUrl = await getCroppedImg(imageSrc, croppedAreaPixels, false);
-            console.log("Cropped Image:", croppedImage);
-            // console.log("Cropped ImageUrl:", croppedImageUrl);
-            saveCroppedImage(croppedImage); // Сохраняем Blob через контекст
+            if (singleMode) {
+                addSingleImage(croppedImage);
+            } else {
+                saveCroppedImage(croppedImage);
+            }
             handleClose();
         } catch (error) {
             console.error("Error with handleCrop: ", error);
@@ -49,7 +51,7 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
 
     return (
         <div>
-            <div className={styles.cropper}>
+            <div className={`${styles.cropper}`}>
                 <Cropper
                     image={imageSrc}
                     crop={crop}
@@ -60,6 +62,7 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
                     onMediaLoaded={({ width, height }) => {
                         console.log(`Image width: ${width}, height: ${height}`);
                     }}
+                    cropShape={shape}
                     style={{
                         containerStyle: { height: "100%", width: "100%" },
                         mediaStyle: { objectFit: "contain" },
@@ -71,9 +74,12 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
                 <div className={styles.cropper_control__aspect_select}>
                     <label htmlFor="aspect-select">Соотношение сторон: </label>
                     <select id="aspect-select" onChange={handleAspectChange}>
-                        <option value="1:1">1:1</option>
-                        <option value="4:5">4:5</option>
-                        <option value="16:9">16:9</option>
+                    {/*    <option value="1:1">1:1</option>*/}
+                    {/*    <option value="4:5">4:5</option>*/}
+                    {/*    <option value="16:9">16:9</option>*/}
+                        {permittedAspects.length > 0 && permittedAspects.map((aspect, index) => (
+                            <option key={index} value={aspect}>{aspect}</option>
+                        ))}
                     </select>
                 </div>
                 <div className={styles.cropper_control__zoom_range}>
@@ -88,9 +94,7 @@ export const ImageCropper = ({handleClose, imageSrc}: ImageCropperProps) => {
                         onChange={(e) => setZoom(Number(e.target.value))}
                     />
                 </div>
-                <button className={styles.cropper_control__crop_btn} onClick={handleCrop}>
-                    Обрезать
-                </button>
+                <CustomButton type={"button"} title={"Обрезать"} className={styles.cropper_control__crop_btn} onClick={handleCrop} />
             </div>
         </div>
     );

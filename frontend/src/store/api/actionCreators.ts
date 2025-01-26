@@ -9,16 +9,13 @@ export const BACKEND_URL: string = "http://localhost:3400/api";
 export const registerUser = createAsyncThunk("auth/registerUser", async (data: IRegisterData, { rejectWithValue }) => {
     try {
         const response = await API.post(`/auth/register`, data);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);
         if (error instanceof AxiosError) {
             if (error.response && error.response.data.message) {
-                console.log("Error message1:", error.response.data.message);
                 return rejectWithValue(error.response.data.message)
             } else {
-                console.log("Error message2:", error.message);
                 return rejectWithValue(error.message)
             }
         }
@@ -27,17 +24,14 @@ export const registerUser = createAsyncThunk("auth/registerUser", async (data: I
 
 export const loginUser = createAsyncThunk("auth/loginUser", async (data: ILoginData, { rejectWithValue }) => {
     try {
-        // configure header's Content-Type as JSON
         const response = await API.post(`/auth/login`, data);
         return response.data;
     } catch (error) {
         console.log(error);
         if (error instanceof AxiosError) {
             if (error.response && error.response.data.message) {
-                console.log("Error message1:", error.response.data.message);
                 return rejectWithValue(error.response.data.message)
             } else {
-                console.log("Error message2:", error.message);
                 return rejectWithValue(error.message)
             }
         }
@@ -47,7 +41,6 @@ export const loginUser = createAsyncThunk("auth/loginUser", async (data: ILoginD
 export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
     try {
         const response = await API.post(`/auth/logout`);
-        console.log("User logged out successfully");
         return response.data;
     } catch (error) {
         console.log(error);
@@ -77,22 +70,16 @@ export const createPost = createAsyncThunk("post/createPost", async ({photo, con
             formData.append("photo", el);
         });
         formData.append('content', content);
-        for (const [key, value] of formData.entries()) {
-            console.log(`[createPost] ${key}:`, value);
-        }
         const response = await API.post(`/posts/create-post`, formData, {
             headers: {'Content-Type': 'multipart/form-data'},
         });
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);
         if (error instanceof AxiosError) {
             if (error.response && error.response.data.message) {
-                console.log("Error message1:", error.response.data.message);
                 return rejectWithValue(error.response.data.message)
             } else {
-                console.log("Error message2:", error.message);
                 return rejectWithValue(error.message)
             }
         }
@@ -106,16 +93,13 @@ export const updatePost = createAsyncThunk("post/updatePost", async ({postId, ph
         formData.append('photo', photo[0]);
         formData.append('content', content);
         const response = await API.put(`/posts/update-post/${postId}`, formData);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);
         if (error instanceof AxiosError) {
             if (error.response && error.response.data.message) {
-                console.log("Error message1:", error.response.data.message);
                 return rejectWithValue(error.response.data.message)
             } else {
-                console.log("Error message2:", error.message);
                 return rejectWithValue(error.message)
             }
         }
@@ -125,7 +109,6 @@ export const updatePost = createAsyncThunk("post/updatePost", async ({postId, ph
 export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
     try {
         const response = await API.get(`/posts/all-posts`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -135,7 +118,6 @@ export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
 export const getAllPostsByUser = createAsyncThunk("post/getAllPostsByUser", async ({userId}: {userId: string | undefined}) => {
     try {
         const response = await API.get(`/posts/posts-by-user/${userId}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -145,7 +127,6 @@ export const getAllPostsByUser = createAsyncThunk("post/getAllPostsByUser", asyn
 export const getPostById = createAsyncThunk("post/getPostById", async ({postId}: {postId: string | undefined}) => {
     try {
         const response = await API.get(`/posts/post-by-id/${postId}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -154,33 +135,25 @@ export const getPostById = createAsyncThunk("post/getPostById", async ({postId}:
 
 
 export const updateUserProfile = createAsyncThunk("user/updateUserProfile", async (
-    {username, bio, website}: {username?: string, bio?: string, website?: string},
+    {avatar, username, bio, website}: {avatar?: File, username?: string, bio?: string, website?: string},
     {rejectWithValue}) => {
     try {
-        console.log("updateData: ", {username, bio, website});
         const formData = new FormData();
-
+        if (avatar) formData.append("avatar", avatar);
         if (username) formData.append("username", username);
-
         if (bio) formData.append("bio", bio);
-
         if (website) formData.append("website", website);
 
-        for (const [key, value] of formData.entries()) {
-            console.log(`[createPost] ${key}:`, value);
-        }
-
-        const response = await API.put(`/user/update-profile/`, formData);
-        console.log(response.data);
+        const response = await API.put(`/user/update-profile/`, formData, {
+            headers: {'Content-Type': 'multipart/form-data'},
+        });
         return response.data;
     } catch (error) {
         console.log(error);
         if (error instanceof AxiosError) {
             if (error.response && error.response.data.message) {
-                console.log("Error message1:", error.response.data.message);
                 return rejectWithValue(error.response.data.message)
             } else {
-                console.log("Error message2:", error.message);
                 return rejectWithValue(error.message)
             }
         }

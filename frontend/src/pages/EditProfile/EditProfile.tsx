@@ -1,6 +1,6 @@
 import styles from "./EditProfile.module.scss";
-import {AvatarCircle, CustomButton, CustomInput, ThemeSwitcher} from "../../components";
-import {useCallback} from "react";
+import {CustomButton, CustomInput, ThemeSwitcher} from "../../components";
+import {useCallback, useEffect, useState} from "react";
 import {useTheme} from "../../context/ThemeContext.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {userData} from "../../store/selectors.ts";
@@ -8,36 +8,41 @@ import {IUser} from "../../utils/Entitys.ts";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {AppDispatch} from "../../store/ichgramStore.ts";
 import {updateUserProfile} from "../../store/api/actionCreators.ts";
+import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
+import {useImages} from "../../context/ImageContext.tsx";
+import {SimpleAvatarCircle} from "../../components/SimpleAvatarCircle/SimpleAvatarCircle.tsx";
 
 type EditProfileValues = {
+    avatar_input: File;
     username_input: string;
     about_input: string;
     website_input: string;
 }
 
+
 export const EditProfile = () => {
+    const [isOpenUploadAvatarModal, setIsOpenUploadAvatarModal] = useState<boolean>(false);
     const maxSymbols: number = 150;
     const user: IUser | null = useSelector(userData);
     const dispatch = useDispatch<AppDispatch>();
-    const {handleSubmit, register, watch} = useForm<EditProfileValues>({
+    const {handleSubmit, register, watch, setValue} = useForm<EditProfileValues>({
         mode: "onChange"
     });
+
+    const {images, clearImages } = useImages();
+    const { theme, setTheme } = useTheme();
     const aboutValue = watch("about_input");
 
     const handleEditProfile: SubmitHandler<EditProfileValues> = async(data: EditProfileValues) => {
         if (data) {
             try {
-                // const result = await dispatch();
-                console.log("Data: ", data);
-
-                const updateData: {username?: string, bio?: string, website?: string} = {};
+                const updateData: {avatar?: File, username?: string, bio?: string, website?: string} = {};
+                if (data.avatar_input) updateData.avatar = data.avatar_input;
                 if (data.username_input.length > 0) updateData.username = data.username_input;
                 if (data.about_input.length > 0) updateData.bio = data.about_input;
                 if (data.website_input.length > 0) updateData.website = data.website_input;
-                console.log("updateData: ", updateData);
-                const result = await dispatch(updateUserProfile(updateData));
-
-                console.log("Result: ", result);
+                await dispatch(updateUserProfile(updateData));
+                clearImages("all");
 
             } catch (error) {
                 console.error("Failed to edit profile: ", error);
@@ -45,14 +50,21 @@ export const EditProfile = () => {
         }
     }
 
-
-
-    const { theme, setTheme } = useTheme();
     const onButtonClick = useCallback(() => {
         theme === 'light' ? setTheme('dark') : setTheme('light');
         console.log('theme', theme);
         document.documentElement.className = theme === 'light' ? 'dark-theme' : '';
     }, [theme, setTheme]);
+
+    const handleOpenUploadAvatar = () => {
+        setIsOpenUploadAvatarModal(true);
+    }
+
+    useEffect((): void => {
+       if (images.length > 0) {
+           setValue("avatar_input", images[0].blob as File); // Сохраняем только Blob
+       }
+    }, [images, setValue]);
 
     return (
         <div className={styles.edit_profile_page}>
@@ -60,9 +72,12 @@ export const EditProfile = () => {
 
             <div className={styles.profile_details}>
                 <div className={styles.profile_avatar_and_desc}>
-                    <AvatarCircle avatarSize="56px" user={user}/>
+                    <SimpleAvatarCircle avatarSize="56px" url={images[0]?.url ?? user?.avatar}/>
                     <div className={styles.profile_username_and_desc}>
                         <h3>{user?.username}</h3>
+                        <p>
+                            {user?.bio}
+                        </p>
                         <p>
                             {user?.website}
                         </p>
@@ -70,7 +85,7 @@ export const EditProfile = () => {
                 </div>
 
                 <div>
-                    <CustomButton title="New Photo" className={styles.new_photo_btn}/>
+                    <CustomButton type="button" title={"New Photo"} onClick={handleOpenUploadAvatar} />
                 </div>
             </div>
 
@@ -104,7 +119,7 @@ export const EditProfile = () => {
                                 message: "Ссылка должна содержать в себе http:// или https://"
                             }
                         })} className={`${styles.edit_profile_input} ${styles.website_input}`}
-                                     id="website_input" type="url"/>
+                                     defaultValue={user?.website}  id="website_input" type="url"/>
                         <svg aria-label="Link-Symbol." className={styles.link_icon} fill="currentColor" height="12"
                              role="img"
                              viewBox="0 0 24 24" width="12">
@@ -132,7 +147,7 @@ export const EditProfile = () => {
                             value: maxSymbols,
                             message: `Max about length = ${maxSymbols}`
                         },
-                    })}
+                    })} defaultValue={user?.bio}
                               className={`${styles.edit_profile_input} ${styles.about_input}`} name="about_input"
                               id="about_input"/>
 
@@ -141,6 +156,9 @@ export const EditProfile = () => {
 
                 <CustomButton className={styles.save_btn} type="submit" title="Save"/>
             </form>
+            {isOpenUploadAvatarModal && (
+                <UploadAvatarModal setIsOpenUploadAvatarModal={setIsOpenUploadAvatarModal}  />
+            )}
         </div>
     );
 };

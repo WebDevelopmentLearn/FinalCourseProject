@@ -1,32 +1,39 @@
 import {createContext, ReactNode, useContext, useState} from "react";
+type ClearType = "currentImage" | "images" | "all";
 
 type IImageProvider = {
-     images: IImage[];
-     currentImage: IImage | null;
-     addImageForEditing: (blob: Blob) => void;
-     saveCroppedImage: (blob: Blob) => void;
-     removeImage: (index: number) => void;
-}
+    images: IImage[];
+    currentImage: IImage | null;
+    addImageForEditing: (blob: Blob) => void;
+    saveCroppedImage: (blob: Blob) => void;
+    addSingleImage: (blob: Blob) => void;
+    removeImage: (index: number) => void;
+    clearImages: (clearType: ClearType) => void;
+};
 
-// @ts-ignore
-const ImageContext = createContext<IImageProvider>();
+const ImageContext = createContext<IImageProvider | undefined>(undefined);
 
 type IImage = {
     blob: Blob;
     url: string;
-}
+};
 
 type ImageProviderProps = {
     children: ReactNode;
-}
+};
 
-export const useImages = () => useContext(ImageContext);
+export const useImages = () => {
+    const context = useContext(ImageContext);
+    if (!context) {
+        throw new Error("useImages must be used within an ImageProvider");
+    }
+    return context;
+};
 
 export const ImageProvider = ({ children }: ImageProviderProps) => {
     const [images, setImages] = useState<IImage[]>([]);
-    const [currentImage, setCurrentImage] = useState<IImage | null>(null); // Текущее изображение для обрезки
+    const [currentImage, setCurrentImage] = useState<IImage | null>(null);
 
-    // Добавить изображение в редактор (но не в массив)
     const addImageForEditing = (blob: Blob): void => {
         setCurrentImage({
             blob,
@@ -34,7 +41,6 @@ export const ImageProvider = ({ children }: ImageProviderProps) => {
         });
     };
 
-    // Сохранить обрезанное изображение
     const saveCroppedImage = (blob: Blob): void => {
         if (!currentImage) return;
 
@@ -44,20 +50,40 @@ export const ImageProvider = ({ children }: ImageProviderProps) => {
             { blob, url: croppedUrl },
         ]);
 
-        // Освобождаем память для временного URL
         URL.revokeObjectURL(currentImage.url);
         setCurrentImage(null);
     };
 
-    // const addImage = (blob: Blob): void => {
-    //     if (!(blob instanceof Blob)) {
-    //         console.error("The provided object is not a Blob:", blob);
-    //         return;
-    //     }
-    //     const url = URL.createObjectURL(blob);
-    //     setImages((prev) => [...prev, { blob, url }]);
-    // };
+    const addSingleImage = (blob: Blob): void => {
+        // Очистка предыдущего изображения
+        images.forEach((image) => URL.revokeObjectURL(image.url));
+        const newImage = {
+            blob,
+            url: URL.createObjectURL(blob),
+        };
+        setImages([newImage]); // Всегда один элемент в массиве
+    };
 
+    const clearImages = (clearType: ClearType): void => {
+        switch (clearType) {
+            case "currentImage":
+                setCurrentImage(null);
+                break;
+            case "images":
+                images.forEach((image) => URL.revokeObjectURL(image.url));
+                setImages([]);
+                break;
+            case "all":
+                images.forEach((image) => URL.revokeObjectURL(image.url));
+                setImages([]);
+                setCurrentImage(null);
+                break;
+            default:
+                setCurrentImage(null);
+                setImages([]);
+                break;
+        }
+    };
 
     const removeImage = (index: number): void => {
         const imageToRemove = images[index];
@@ -68,13 +94,17 @@ export const ImageProvider = ({ children }: ImageProviderProps) => {
     };
 
     return (
-        <ImageContext.Provider value={{
-            images,
-            currentImage,
-            addImageForEditing,
-            saveCroppedImage,
-            removeImage,
-        }}>
+        <ImageContext.Provider
+            value={{
+                images,
+                currentImage,
+                addImageForEditing,
+                saveCroppedImage,
+                addSingleImage,
+                removeImage,
+                clearImages,
+            }}
+        >
             {children}
         </ImageContext.Provider>
     );
