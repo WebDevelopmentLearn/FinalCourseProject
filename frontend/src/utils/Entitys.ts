@@ -11,7 +11,7 @@ export interface IUser {
     avatar: string;//Base64
     website?: string;
     notifications?: object[];
-    posts?: object[];
+    posts?: IPost[];
     followers?: object[];
     following?: object[];
 }

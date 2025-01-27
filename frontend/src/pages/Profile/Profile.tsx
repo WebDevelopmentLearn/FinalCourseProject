@@ -1,49 +1,32 @@
-import styles from "./Profile.module.scss";
-import testAvatar from "../../assets/profile/default_avatar.jpg";
-import {AvatarCircle, CustomButton, ExpandableText, PostCardInProfile, PostModal} from "../../components";
-
-import {useCallback, useEffect, useState} from "react";
-import {IPost} from "../../utils/Entitys.ts";
-import {postsArr} from "../../utils/DebugUtils.ts";
-import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
+
+import styles from "./Profile.module.scss";
+import {AvatarCircle, CustomButton, ExpandableText, PostCardInProfile} from "../../components";
 import {userData} from "../../store/selectors.ts";
 import {useCheckMyAccess} from "../../utils/CustomHooks.ts";
 import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
-import {getAllPostsByUser, logoutUser} from "../../store/api/actionCreators.ts";
-import {clearStatus} from "../../store/reducers/authSlice.ts";
-
-
+import {getAllPostsByUser, getUserById, logoutUser} from "../../store/api/actionCreators.ts";
+import {IUser} from "../../utils/Entitys.ts";
 
 export const Profile = () => {
 
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const user = useSelector(userData);
-    const {posts} = useSelector((state: RootState) => state.postReducer);
-    const {logoutStatus} = useSelector((state: RootState) => state.authReducer);
-
+    const {currentUser} = useSelector((state: RootState) => state.userReducer);
+    // const {logoutStatus} = useSelector((state: RootState) => state.authReducer);
+    const [profileUser, setProfileUser] = useState<IUser | null>(null);
     const {_id} = useParams();
 
     const isMyProfile: boolean = useCheckMyAccess(_id, user?._id);
 
-    const postsCount: number = user?.posts ? user?.posts.length as number : 0;
-    const followers: number = user?.followers ? user?.followers.length as number : 0;
-    const following: number = user?.following ? user?.following.length as number : 0;
+    const postsCount: number = profileUser?.posts ? profileUser?.posts.length as number : 0;
+    const followers: number = profileUser?.followers ? profileUser?.followers.length as number : 0;
+    const following: number = profileUser?.following ? profileUser?.following.length as number : 0;
 
     const dispatch = useDispatch<AppDispatch>();
 
-
-    const [currentPost, setCurrentPost] = useState({});
-
-    const handleOpenModal = (post: Post) => {
-        setIsModalOpen(true);
-        setCurrentPost(post);
-    }
-
-    const handleClose = (e) => {
-        setIsModalOpen(false);
-        setCurrentPost({});
-    }
 
     const navigate: NavigateFunction = useNavigate();
     const handleRedirect = () => {
@@ -67,6 +50,19 @@ export const Profile = () => {
     // }, [dispatch]);
 
     useEffect(() => {
+        const fetchUserFunc = async() => {
+            if (!_id) return;
+            if (user?._id !== _id) {
+                const result = await dispatch(getUserById({userId: _id}));
+                setProfileUser(currentUser);
+            } else {
+                setProfileUser(user);
+            }
+        }
+        fetchUserFunc();
+    }, [_id, user]);
+
+    useEffect(() => {
         const fetchUserPosts = async() => {
             try {
                 await dispatch(getAllPostsByUser({userId: _id}));
@@ -80,17 +76,16 @@ export const Profile = () => {
         fetchUserPosts();
     }, [dispatch]);
 
-    console.log("user?.posts: ", posts);
     return (
         <div className={styles.profile}>
             <div className={styles.profile_main}>
                 <div>
-                    <AvatarCircle user={user} avatarSize={"big"} />
+                    <AvatarCircle user={profileUser} avatarSize={"big"} />
                 </div>
 
                 <div className={styles.profile_info}>
                     <div className={styles.profile_info__first}>
-                        <span>{user?.username}</span>
+                        <span>{profileUser?.username}</span>
                         {isMyProfile ? (
                             <div>
                                 <CustomButton onClick={handleRedirect} title="Edit Profile" className={styles.profile_edit_profile_btn} />
@@ -109,7 +104,7 @@ export const Profile = () => {
                         <span>{following} following</span>
                     </div>
                     <div className={styles.profile_about}>
-                        <ExpandableText textClass={styles.profile_desc}  text={user?.bio} maxHeight={50} />
+                        <ExpandableText textClass={styles.profile_desc}  text={profileUser?.bio ?? ""} maxHeight={50} />
                     </div>
                     <div>
                         <span>
@@ -125,8 +120,8 @@ export const Profile = () => {
                                 <line fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" x1="8.471" x2="15.529" y1="15.529" y2="8.471"></line>
                             </svg>
                         </span>
-                        <a href={user?.website} target="_blank">
-                            {user?.website}
+                        <a href={profileUser?.website} target="_blank">
+                            {profileUser?.website}
                         </a>
 
                     </div>
@@ -135,9 +130,10 @@ export const Profile = () => {
             </div>
 
             <div className={styles.profile_posts}>
-                {(posts && posts?.length > 0) ? posts?.map((post) => (
-                    <PostCardInProfile  key={post._id} post={post}/>
-                )) : <h1>No posts</h1>}
+                {(profileUser?.posts && profileUser?.posts?.length > 0) ? profileUser?.posts.map((post) => {
+                    console.log("Post: ", post);
+                    return <PostCardInProfile key={post._id} post={post}/>
+                }) : <h1>No posts</h1>}
             </div>
 
             {/*{isModalOpen && (*/}

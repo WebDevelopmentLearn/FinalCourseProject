@@ -28,6 +28,11 @@ export interface IUserState {
     user: IUser | null;
     userStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     userError: any;
+
+    currentUser:  IUser | null;
+    currentUserStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    currentUserError: any,
+
     updateProfileStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     updateProfileError: any;
 }

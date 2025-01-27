@@ -1,5 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
+
 import {ILoginData, IRegisterData} from "../../utils/Entitys.ts";
 import API from "../../api/API.ts";
 
@@ -50,6 +51,17 @@ export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
 export const getUser = createAsyncThunk("auth/getUser", async () => {
     try {
         const response = await API.get(`/user/profile`);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+export const getUserById = createAsyncThunk("auth/getUserById", async ({userId}: {userId: string}) => {
+    try {
+        console.log("Userid: ", userId);
+        const response = await API.get(`/user/profile/${userId}`);
         console.log(response.data);
         return response.data;
     } catch (error) {

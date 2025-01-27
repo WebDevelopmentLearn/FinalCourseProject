@@ -1,6 +1,6 @@
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
 
-import {getUser, updateUserProfile} from "../api/actionCreators.ts";
+import {getUser, getUserById, updateUserProfile} from "../api/actionCreators.ts";
 import {IUserState} from "../types.ts";
 
 
@@ -8,6 +8,10 @@ const initialState: IUserState = {
     user: null,
     userStatus: "IDLE",
     userError: null,
+
+    currentUser: null,
+    currentUserStatus: "IDLE",
+    currentUserError: null,
 
     updateProfileStatus: "IDLE",
     updateProfileError: null
@@ -37,7 +41,17 @@ const userSlice = createSlice({
         }).addCase(updateUserProfile.rejected, (state, action) => {
             state.updateProfileStatus = "FAILED";
             state.updateProfileError = action.payload;
-        })
+        }).addCase(getUserById.pending, (state) => {
+            state.currentUserStatus = "LOADING";
+            state.currentUserError = null;
+        }).addCase(getUserById.fulfilled, (state, action) => {
+            state.currentUserStatus = "LOADING";
+            state.currentUserError = null;
+            state.currentUser = action.payload;
+        }).addCase(getUserById.rejected, (state, action) => {
+            state.currentUserStatus = "FAILED";
+            state.currentUserError = action.payload;
+        });
     }
 });
 
