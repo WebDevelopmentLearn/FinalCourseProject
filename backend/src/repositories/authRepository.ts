@@ -5,14 +5,8 @@ import {logErrorWithObj} from "../utils/Logger";
 class AuthRepository {
 
     public static async createUserDoc(userData: any) {
-        try {
-            const user: IUser = new User(userData);
-            await user.save();
-            return user;
-        } catch (error: unknown) {
-            await logErrorWithObj("createUserDoc", error);
-            throw new Error("Error while creating user");
-        }
+        const user: IUser = new User(userData);
+        return await user.save();
     }
 
     public static async getUserByEmailOrUsername(email: string, username: string) {

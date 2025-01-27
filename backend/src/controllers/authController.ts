@@ -9,8 +9,29 @@ import {logDebug, logErrorWithObj, logInfo} from "../utils/Logger";
 import jwt from "jsonwebtoken";
 import AuthService from "../services/authService";
 import AuthRepository from "../repositories/authRepository";
+import {body, validationResult} from "express-validator";
 
 class AuthController {
+
+    // Валидация данных для регистрации пользователя
+    static validateRegistration() {
+        return [
+            body('email').isEmail().withMessage('Invalid email format'),
+            body('username').notEmpty().withMessage('Username is required'),
+            body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
+        ];
+    }
+
+    // Обработка ошибки валидации
+    static handleValidationErrors(req: Request, res: Response, next: NextFunction): void {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() })
+            return;
+        }
+        next();
+    }
+
     public static async register(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { email, full_name, username, password } = req.body;

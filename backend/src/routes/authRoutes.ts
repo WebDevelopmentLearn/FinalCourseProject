@@ -3,7 +3,10 @@ import AuthController from "../controllers/authController";
 
 const router: Router = Router();
 
-router.post("/register", AuthController.register);
+router.post("/register",
+    AuthController.validateRegistration(), // Валидация
+    AuthController.handleValidationErrors,  // Обработка ошибок валидации
+    AuthController.register);
 
 router.post("/login", AuthController.login);
 

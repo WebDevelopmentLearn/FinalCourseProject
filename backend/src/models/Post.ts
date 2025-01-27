@@ -9,11 +9,16 @@ const postSchema: Schema = new Schema({
        type: Types.ObjectId,
          ref: 'User',
    },
-    photo: {
-       type: [String],
+    // photo: {
+    //    type: [String],
+    //     max: 5,
+    //     required: true
+    // },
+    photos: [{
+       type:Types.ObjectId,
         max: 5,
-        required: true
-    },
+        ref: "Photo"
+   }],
     content: {
        type: String,
         required: true,

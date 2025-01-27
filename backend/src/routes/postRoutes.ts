@@ -6,7 +6,7 @@ import UploadFiles from "../middleware/uploadImage";
 
 const router: Router = Router();
 
-router.post("/create-post", UploadFiles.uploadMultiple("photo", 5), checkAccessToken, PostController.createPost);
+router.post("/create-post", UploadFiles.uploadMultiple("photos", 5), checkAccessToken, PostController.createPost);
 
 router.put("/update-post/:postId", checkAccessToken, PostController.updatePost);
 

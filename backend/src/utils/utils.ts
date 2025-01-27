@@ -55,3 +55,8 @@ export const getUserIdFromToken = (accessToken: string): string => {
     }
     return "";
 }
+
+export const getPublicIdFromUrl = (url: string): string => {
+    const parts = url.split('/upload/');
+    return parts[1]?.split('.')[0]; // Извлекаем public_id из URL
+};

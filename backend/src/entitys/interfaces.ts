@@ -1,9 +1,16 @@
 import {Document, Types} from "mongoose";
 
+export interface IPhotoDoc extends Document {
+    _id: Types.ObjectId | string;
+    url: string;
+    public_id: string;
+    post: Types.ObjectId | string;
+}
+
 export interface IPostDoc extends Document {
     _id: Types.ObjectId | string;
     author: Types.ObjectId | string;
-    image: string;
+    photos: [IPhotoDoc];
     content: string;
     likes: Types.ObjectId[];
     comments: Types.ObjectId[];

@@ -1,4 +1,5 @@
 import multer from "multer";
+import {cloudinary} from "../config/cloudinary";
 
 
 
@@ -64,7 +65,21 @@ class UploadFiles {
         }).array(fieldName, maxCount);
     }
 
+    // Extend Express's Request interface to include 'files'
 
+    public static deleteImage = async (publicId: string) => {
+        try {
+            const result = await cloudinary.uploader.destroy(publicId);
+            return result;  // Результат возвращает информацию об удалении
+        } catch (error) {
+            console.error("Error deleting image from Cloudinary:", error);
+        }
+    };
+
+}
+
+export interface MulterRequest extends Request {
+    files: Express.Multer.File[]; // Type files explicitly
 }
 
 

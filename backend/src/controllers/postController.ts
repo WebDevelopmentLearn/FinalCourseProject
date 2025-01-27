@@ -4,79 +4,110 @@ import UserService from "../services/userService";
 import {IPostDoc, IUser} from "../entitys/interfaces";
 import PostService from "../services/postService";
 import {logError} from "../utils/Logger";
+import {cloudinary} from "../config/cloudinary";
 import Post from "../models/Post";
 import {Types} from "mongoose";
+import {MulterRequest} from "../middleware/uploadImage";
+import sharp from "sharp";
+import Photo from "../models/Photo";
 
 class PostController {
 
 
     public static async createPost(req: Request, res: Response, next: NextFunction): Promise<void> {
         const userId = getUserIdFromToken(req.cookies.accessToken);
+
         try {
-            const {content} = req.body;
+            const { content } = req.body;
             console.log("userid: ", userId);
+
             if (!userId || !content) {
-                res.status(400).json({message: "All fields are required"});
+                res.status(400).json({ message: "All fields are required" });
                 return;
             }
 
             const targetUser: IUser | null = await UserService.getUserById(userId);
 
             if (targetUser === null) {
-                res.status(404).json({message: "User not found"});
+                res.status(404).json({ message: "User not found" });
                 return;
             }
 
+            const uploadedPhotos = (
+                await Promise.all(
+                    (req as unknown as MulterRequest).files.map(async (file) => {
+                        const { width, height } = await sharp(file.buffer).metadata();
+                        if (!height || !width) return undefined; // Если метаданные недоступны, возвращаем undefined
 
-            if (req.files && Array.isArray(req.files) && targetUser) {
-                const imageBase64Arr: string[] = req.files.map((file: Express.Multer.File) => file.buffer.toString("base64"));
+                        let aspectRatio = "4:4";
+                        if (width / height > 1) {
+                            aspectRatio = "16:9";
+                        } else if (width / height < 1) {
+                            aspectRatio = "4:5";
+                        }
 
-                // const encodedImageBase64 = `data:${req.file.mimetype};base64,${imageBase64}`;
-                const encodedImageBase64Arr = imageBase64Arr.map((imageBase64: string) => `data:image/png;base64,${imageBase64}`);
+                        return new Promise<{ url: string; public_id: string }>((resolve, reject) => {
+                            cloudinary.uploader.upload_stream(
+                                {
+                                    folder: "posts",
+                                    transformation: [
+                                        { aspect_ratio: aspectRatio, crop: "fill", gravity: "auto" },
+                                    ],
+                                },
+                                (error, result) => {
+                                    if (error) {
+                                        reject(error);
+                                    } else if (result) {
+                                        resolve({
+                                            url: result.secure_url,
+                                            public_id: result.public_id,
+                                        });
+                                    }
+                                }
+                            ).end(file.buffer);
+                        });
+                    })
+                )
+            ).filter((photo): photo is { url: string; public_id: string } => photo !== undefined); // Фильтруем undefined
 
+            // Создание записей в базе данных для каждой фотографии
+            const photoDocuments = await Promise.all(
+                uploadedPhotos.map(async ({ url, public_id }) => {
+                    const photo = new Photo({
+                        url,
+                        public_id,
+                        post: null, // Связь с постом будет добавлена позже
+                    });
+                    await photo.save();
+                    return photo._id;
+                })
+            );
 
+            // Создание нового поста
+            const post = await Post.create({
+                photos: photoDocuments,
+                content,
+                author: targetUser._id,
+            });
 
-                // const post: IPost | null = await Post.create({
-                //     photo: encodedImageBase64,
-                //     content: content,
-                //     author: {
-                //         _id: userId
-                //     }
-                // });
+            // Обновление поля `post` в каждом документе Photo
+            await Promise.all(
+                photoDocuments.map(async (photoId) => {
+                    await Photo.findByIdAndUpdate(photoId, { post: post._id });
+                })
+            );
 
-                const postData = {
-                    photo: encodedImageBase64Arr,
-                    content: content,
-                    author: {
-                        _id: userId
-                    }
-                }
+            // Добавление поста в список постов пользователя
+            // @ts-ignore
+            targetUser.posts.push(post._id);
+            await targetUser.save();
 
-                const newPost: IPostDoc | null = await PostService.createPost(postData);
+            // Заполнение данных о фото в ответе
+            await post.populate("photos", "url public_id");
 
-                if (newPost === null) {
-                    res.status(500).json({message: "Error creating post"});
-                    await logError("[PostController.createPost] Error creating post");
-                    return;
-                }
-
-                targetUser.posts?.push(new Types.ObjectId(newPost._id));
-                await targetUser.save();
-
-                res.status(201).json({message: "Post created successfully", newPost});
-
-            } else {
-                res.status(400).json({message: "Image is required"});
-                return;
-            }
-
+            res.status(201).json({ message: "Post created successfully", post });
         } catch (error) {
             next(error);
-            // if (error instanceof multer.MulterError) {
-            //     res.status(400).send(error.message);  // Send Multer's error message
-            // } else {
-            //     res.status(500).send('Error creating post');
-            // }
         }
     }
 
@@ -106,9 +137,37 @@ class PostController {
         }
     }
 
-    public static async getAllPosts(req: Request, res: Response, next: NextFunction): Promise<void> {
+    public static async deletePost(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const posts = await PostService.getAllPosts();
+            const {postId} = req.params;
+
+            if (!postId) {
+                res.status(400).json({message: "Param postId is required"});
+                return;
+            }
+
+            const post: IPostDoc | null = await PostService.getPostById(postId);
+
+            if (post === null) {
+                res.status(404).json({message: "Post not found"});
+                return;
+            }
+
+            await post.deleteOne();
+            // await Photo.deleteMany({post: Types.ObjectId(postId)});
+            // await UserService.deletePostFromUser(post.author, postId);
+            // await cloudinary.api.delete_resources_by_prefix(`posts/${postId}`);
+
+            res.status(200).json({message: "Post deleted successfully"});
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public static async getAllPosts(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const { page, limit } = req.query;
+        try {
+            const posts = await PostService.getAllPosts(Number(page), Number(limit));
 
             res.status(200).json(posts);
         } catch (error: unknown) {
@@ -118,6 +177,7 @@ class PostController {
 
     public static async getPostsByUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         const userId: string = req.params.userId;
+        const { page, limit } = req.query;
         if (!userId) {
             res.status(400).json({
                 message: "Param userId is required"
@@ -125,7 +185,7 @@ class PostController {
             return;
         }
         try {
-            const usersPosts: IPostDoc[] = await PostService.getAllPostsByUserId(userId);
+            const usersPosts = await PostService.getAllPostsByUserId(userId, Number(page), Number(limit));
 
             res.status(200).json(usersPosts);
         } catch (error: unknown) {
