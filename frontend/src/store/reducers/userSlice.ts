@@ -1,5 +1,5 @@
-
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
+
 import {getUser, updateUserProfile} from "../api/actionCreators.ts";
 import {IUserState} from "../types.ts";
 

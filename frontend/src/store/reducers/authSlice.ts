@@ -1,14 +1,7 @@
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
-import {loginUser, logoutUser, registerUser} from "../api/actionCreators.ts";
 
-export interface IAuthState {
-    registerStatus: string;
-    loginStatus: string;
-    logoutStatus: string;
-    registerError: any;
-    loginError: any;
-    logoutError: any;
-}
+import {loginUser, logoutUser, registerUser} from "../api/actionCreators.ts";
+import {IAuthState} from "../types.ts";
 
 const initialState: IAuthState = {
     registerStatus: "IDLE",
@@ -19,7 +12,6 @@ const initialState: IAuthState = {
     loginError: null,
     logoutError: null,
 }
-
 
 export const authSlice = createSlice({
     name: "auth",

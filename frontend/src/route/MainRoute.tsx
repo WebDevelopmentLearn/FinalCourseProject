@@ -1,5 +1,6 @@
-import {Navigate, Route, Routes} from "react-router-dom";
 import {ReactElement} from "react";
+import {Navigate, Route, Routes} from "react-router-dom";
+
 import {EditProfile, Explore, ForgotPassword, Home, Messages, NotFound, Profile, SignIn, SignUp} from "../pages";
 import {PostModal, ProtectedRoute} from "../components";
 
@@ -63,14 +64,3 @@ export const MainRoute: MainRoute = (): ReactElement => {
         </Routes>
     )
 }
-
-// const MainRoute: ReactElement = (): ReactElement => {
-//     return (
-//         <Routes>
-//             <Route path="/" element={<Home/>}/>
-//             <Route path="/about" element={<About/>}/>
-//             <Route path="/contact" element={<Contact/>}/>
-//         </Routes>
-//     )
-//
-// }

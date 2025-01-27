@@ -1,5 +1,18 @@
 import {IPost, IUser} from "../utils/Entitys.ts";
 
+export interface IModalState {
+    createPostModalIsOpen: boolean;
+}
+
+export interface IAuthState {
+    registerStatus: string;
+    loginStatus: string;
+    logoutStatus: string;
+    registerError: any;
+    loginError: any;
+    logoutError: any;
+}
+
 export interface IPostState {
     posts: IPost[];
     currentPost: IPost | null;
@@ -9,11 +22,6 @@ export interface IPostState {
     currentPostError: any;
     createCommentStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     createCommentError: any;
-}
-
-export interface IImagesState {
-    images: any[];
-    imagesUrls: any[];
 }
 
 export interface IUserState {

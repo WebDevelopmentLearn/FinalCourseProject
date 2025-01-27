@@ -1,19 +1,18 @@
 import {FC} from "react";
+import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+
 import styles from "./SignInForm.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import ichgramLogo from "../../../assets/logo.svg";
 import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
-import {useForm} from "react-hook-form";
 import {Separator} from "../../Separator/Separator.tsx";
 import {ILoginData, SignInFormValues} from "../../../utils/Entitys.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
-import {useDispatch, useSelector} from "react-redux";
 import {loginUser} from "../../../store/api/actionCreators.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
-
-
 
 export const SignInForm: FC = () => {
     const {theme} = useTheme();

@@ -1,11 +1,11 @@
 import {useCallback, useState} from "react";
 import Cropper from "react-easy-crop";
+
 import styles from "./ImageCropper.module.scss";
 import {getCroppedImg} from "../../../utils/Utils.ts";
 import {ImageCropperProps} from "../../../utils/Entitys.ts";
 import {useImages} from "../../../context/ImageContext.tsx";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
-
 
 export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAspects, singleMode = false}: ImageCropperProps) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -15,6 +15,8 @@ export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAs
     const { saveCroppedImage, addSingleImage } = useImages();
 
     const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+        console.log("croppedArea: ", croppedArea);
+        console.log("croppedAreaPixels: ", croppedAreaPixels);
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
@@ -74,9 +76,6 @@ export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAs
                 <div className={styles.cropper_control__aspect_select}>
                     <label htmlFor="aspect-select">Соотношение сторон: </label>
                     <select id="aspect-select" onChange={handleAspectChange}>
-                    {/*    <option value="1:1">1:1</option>*/}
-                    {/*    <option value="4:5">4:5</option>*/}
-                    {/*    <option value="16:9">16:9</option>*/}
                         {permittedAspects.length > 0 && permittedAspects.map((aspect, index) => (
                             <option key={index} value={aspect}>{aspect}</option>
                         ))}

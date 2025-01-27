@@ -8,7 +8,6 @@ type SimpleAvatarCircleProps = {
 
 export const SimpleAvatarCircle: FC<SimpleAvatarCircleProps> = ({url, className, avatarSize = "small"}: SimpleAvatarCircleProps) => {
     const getSize = (): string => {
-        // console.log("size: ", avatarSize);
         switch (avatarSize) {
             case "small":
                 return "30"
@@ -20,8 +19,6 @@ export const SimpleAvatarCircle: FC<SimpleAvatarCircleProps> = ({url, className,
                 return avatarSize;
         }
     }
-
-    // console.log("avatar: ", avatar);
 
     return (
         <svg className={className} width={getSize()} height={getSize()} viewBox="0 0 200 200"

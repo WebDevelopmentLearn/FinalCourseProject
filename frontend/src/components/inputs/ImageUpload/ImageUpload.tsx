@@ -1,7 +1,6 @@
 import {ChangeEvent, FC, useState} from "react";
 import {useFormContext} from "react-hook-form";
 
-
 interface ImageUploadProps {
     name: string;
     label?: string;
@@ -16,12 +15,9 @@ export const ImageUpload: FC<ImageUploadProps> = ({ name, label, required = fals
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            // Create a preview URL
             const reader = new FileReader();
             reader.onloadend = () => setPreview(reader.result as string);
             reader.readAsDataURL(file);
-
-            // Update RHF value
             setValue(name, file);
         }
     };
@@ -47,5 +43,3 @@ export const ImageUpload: FC<ImageUploadProps> = ({ name, label, required = fals
         </div>
     );
 };
-
-export default ImageUpload;

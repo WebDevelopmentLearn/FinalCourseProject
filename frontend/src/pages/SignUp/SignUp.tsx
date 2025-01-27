@@ -1,6 +1,7 @@
+import {Link} from "react-router-dom";
+
 import {SignUpForm} from "../../components";
 import styles from "./SignUp.module.scss";
-import {Link} from "react-router-dom";
 
 export const SignUp = () => {
     return (

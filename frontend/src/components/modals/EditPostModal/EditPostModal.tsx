@@ -1,10 +1,11 @@
 import {ChangeEvent, MouseEvent, useState} from "react";
 import {useDispatch} from "react-redux";
+import {SubmitHandler, useForm} from "react-hook-form";
+import Picker, {EmojiClickData} from "emoji-picker-react";
+
 import {AppDispatch} from "../../../store/ichgramStore.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
-import {SubmitHandler, useForm} from "react-hook-form";
 import {closeCreatePostModal} from "../../../store/reducers/modalSlice.ts";
-import Picker, {EmojiClickData} from "emoji-picker-react";
 import {createPost, updatePost} from "../../../store/api/actionCreators.ts";
 import styles from "../CreatePostModal/CreatePostModal.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
@@ -166,11 +167,7 @@ export const EditPostModal = ({post}) => {
                                     </svg>
                                 </button>
                                 {emojiPickerIsOpen &&
-                                    <div
-                                        // className="absolute bottom-28 md:bottom-0 z-10
-                                        //     -right-50 md:right-60 lg:right-80 xl:right-96"
-
-                                    >
+                                    <div>
                                         <Picker theme={getEnumTheme(theme)} lazyLoadEmojis={true} width={"100%"}
                                                 onEmojiClick={onEmojiClick}/>
                                     </div>}

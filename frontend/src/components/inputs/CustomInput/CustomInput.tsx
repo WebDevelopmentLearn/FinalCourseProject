@@ -1,4 +1,5 @@
 import {FC, forwardRef} from "react";
+
 import styles from "./CustomInput.module.scss";
 import {CustomInputProps} from "../../../utils/Entitys.ts";
 

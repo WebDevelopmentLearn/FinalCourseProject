@@ -1,5 +1,4 @@
 import styles from "./Messages.module.scss";
-
 import nikita_avatar from "../../assets/messages/nikita_avatar.png";
 import sasha_avatar from "../../assets/messages/sasha_avatar.png";
 import {InterlocutorCard} from "../../components";

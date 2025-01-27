@@ -11,24 +11,6 @@ const API: AxiosInstance = axios.create({
 });
 
 
-
-// API.interceptors.response.use(
-//     (response: AxiosResponse<any, any>) => response,
-//     (error) => {
-//         if (error.response?.status === 401 || error.response?.status === 403) {
-//             console.log("Redirecting to login page");
-//             window.location.href = "/signin";
-//         }
-//         return Promise.reject(error);
-//     }
-// );
-
-
-//
-
-
-
-// Функция для установки интерсептора с передачей navigate
 export const setupInterceptors = (navigate: NavigateFunction): void => {
     API.interceptors.response.use(
         (response) => response,
@@ -56,8 +38,6 @@ export const setupInterceptors = (navigate: NavigateFunction): void => {
             return Promise.reject(error);
         }
     );
-
-
 };
 
 export default API;

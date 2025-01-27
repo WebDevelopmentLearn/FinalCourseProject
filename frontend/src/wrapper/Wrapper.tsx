@@ -1,4 +1,5 @@
 import React, {FC} from "react";
+
 import styles from "./Wrapper.module.scss";
 
 type WrapperProps = {
@@ -6,7 +7,6 @@ type WrapperProps = {
 }
 
 export const Wrapper: FC<WrapperProps> = ({children}) => {
-
 
     return (
         <main className={`${styles.wrapper}`}>

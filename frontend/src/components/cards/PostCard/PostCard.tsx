@@ -1,16 +1,16 @@
-import styles from "./PostCard.module.scss";
-import {useNavigate} from "react-router-dom";
-import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
 import {useCallback, useEffect, useRef, useState} from "react";
+import {useNavigate} from "react-router-dom";
+
+import styles from "./PostCard.module.scss";
+import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
 import {getTimeAgo} from "../../../utils/Utils.ts";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
-
 import {PostCardProps} from "../../../utils/Entitys.ts";
 
 export const PostCard = ({post}: PostCardProps) => {
     const elementRef = useRef<HTMLDivElement | null>(null);
     const [size, setSize] = useState({ width: 0, height: 0 });
-    //let isLiked = true;//#FF3040
+
     const [isLiked, setIsLiked] = useState(false);
     const [isAnimating, setIsAnimating] = useState(false);
     const navigate = useNavigate();
@@ -91,12 +91,6 @@ export const PostCard = ({post}: PostCardProps) => {
             </div>
 
             <div className={styles.post_card__image}>
-
-                {/*{post?.photo?.length > 1 ? (*/}
-                {/*    <SimpleSlider maxWidth={size.width} postImages={post?.photo}/>*/}
-                {/*) : (*/}
-                {/*    <img src={post?.photo[0]} alt=""/>*/}
-                {/*)}*/}
                 <SimpleSlider maxWidth={size.width} postImages={post?.photo} sliderType="ViewPost"/>
             </div>
 
@@ -126,8 +120,6 @@ export const PostCard = ({post}: PostCardProps) => {
                 <div>
                     <p>
                         {post?.content}
-                        {/*Sashaa 𝘐𝘵’𝘴 𝒈𝒐𝒍𝒅𝒆𝒏, 𝘗𝘰𝘯𝘺𝘣𝘰𝘺!*/}
-                        {/*heyyyyy | M... more*/}
                     </p>
                 </div>
                 <div className={styles.post_card__comments} onClick={() => {

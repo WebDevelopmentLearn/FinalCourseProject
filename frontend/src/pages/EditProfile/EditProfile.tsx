@@ -1,17 +1,18 @@
+import {useCallback, useEffect, useState} from "react";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {NavigateFunction, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+
 import styles from "./EditProfile.module.scss";
 import {CustomButton, CustomInput, ThemeSwitcher} from "../../components";
-import React, {useCallback, useEffect, useState} from "react";
 import {useTheme} from "../../context/ThemeContext.tsx";
-import {useDispatch, useSelector} from "react-redux";
 import {userData} from "../../store/selectors.ts";
 import {IUser} from "../../utils/Entitys.ts";
-import {SubmitHandler, useForm} from "react-hook-form";
 import {AppDispatch} from "../../store/ichgramStore.ts";
 import {updateUserProfile} from "../../store/api/actionCreators.ts";
 import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
 import {SimpleAvatarCircle} from "../../components/SimpleAvatarCircle/SimpleAvatarCircle.tsx";
-import {NavigateFunction, useNavigate} from "react-router-dom";
 
 type EditProfileValues = {
     avatar_input: File;
@@ -19,7 +20,6 @@ type EditProfileValues = {
     about_input: string;
     website_input: string;
 }
-
 
 export const EditProfile = () => {
     const [isOpenUploadAvatarModal, setIsOpenUploadAvatarModal] = useState<boolean>(false);
@@ -67,7 +67,7 @@ export const EditProfile = () => {
            setValue("avatar_input", images[0].blob as File); // Сохраняем только Blob
        }
     }, [images, setValue]);
-    const handleBackToProfile = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleBackToProfile = useCallback(() => {
         navigate(-1);
     }, [navigate]);
 
@@ -78,8 +78,6 @@ export const EditProfile = () => {
                 <button onClick={handleBackToProfile} className={styles.edit_profile_back_to_profile_btn}>
                     <svg width="24px" height="24px" viewBox="0 0 1024 1024" className="icon" version="1.1"
                          xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                        {/*<g id="SVGRepo_bgCarrier" strokeWidth="0"></g>*/}
-                        {/*<g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>*/}
                         <g id="SVGRepo_iconCarrier">
                             <path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z"
                                   fill="currentColor"></path>

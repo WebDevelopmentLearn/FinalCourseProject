@@ -5,20 +5,14 @@ interface ThemeContextType {
     setTheme(theme: string): Dispatch<SetStateAction<string>>;
 }
 
-/**
- * Контекст переключения темы приложения
- */
-// const ThemeContext: Context<string> = createContext("light");
-export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
 type ThemeProviderProps = {
     children: React.ReactNode
 }
 
+export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children  }) => {
     const [theme, setTheme] = useState('light'); // Значение по умолчанию
-
-
 
     return (
         <ThemeContext.Provider value={{theme, setTheme}}>

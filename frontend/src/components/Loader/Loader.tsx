@@ -1,5 +1,6 @@
-import styles from "./Loader.module.scss";
 import {CSSProperties} from "react";
+
+import styles from "./Loader.module.scss";
 
 export const Loader = ({size = "40px", color = "black", speed = "0.9s", stroke = "5px",}) => {
 
@@ -11,8 +12,6 @@ export const Loader = ({size = "40px", color = "black", speed = "0.9s", stroke =
     } as CSSProperties; // Explicit cast to allow custom properties.
 
     return (
-        <div className={styles.loader} style={style}>
-
-        </div>
+        <div className={styles.loader} style={style}></div>
     );
 };

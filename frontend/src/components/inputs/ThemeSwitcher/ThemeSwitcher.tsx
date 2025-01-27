@@ -1,5 +1,6 @@
-import styles from "./ThemeSwitcher.module.scss";
 import React, {FC} from "react";
+
+import styles from "./ThemeSwitcher.module.scss";
 
 type ThemeSwitcherProps = {
     onClick(event: React.MouseEvent<HTMLInputElement>): void;

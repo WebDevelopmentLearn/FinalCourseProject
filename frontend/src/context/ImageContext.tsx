@@ -1,4 +1,5 @@
 import {createContext, ReactNode, useContext, useState} from "react";
+
 type ClearType = "currentImage" | "images" | "all";
 
 type IImageProvider = {

@@ -1,5 +1,5 @@
-
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
+
 import {
     createComment,
     createPost,
@@ -9,7 +9,6 @@ import {
     updatePost
 } from "../api/actionCreators.ts";
 import {IPostState} from "../types.ts";
-
 
 const initialState: IPostState = {
     posts: [],

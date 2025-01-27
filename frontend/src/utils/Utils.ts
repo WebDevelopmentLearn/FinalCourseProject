@@ -1,12 +1,14 @@
 import {Theme} from "emoji-picker-react";
 
-const createImage = (url) =>
-    new Promise((resolve, reject) => {
+const createImage = (url: string): Promise<CanvasImageSource> => {
+    return  new Promise((resolve, reject) => {
         const image = new Image();
         image.onload = () => resolve(image);
         image.onerror = (error) => reject(error);
         image.src = url;
     });
+}
+
 
 export const getTimeAgo = (date: string): string => {
     const dateObj = new Date(date);
@@ -49,26 +51,37 @@ export function getEnumTheme(userTheme: string): Theme | undefined {
 
 
 export const getCroppedImg = async (imageSrc, pixelCrop): Promise<Blob> => {
-    const image = await createImage(imageSrc);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+    console.log("ImageSrc: ", typeof imageSrc);
+    console.log("pixelCrop: ", typeof pixelCrop);
+    const image: CanvasImageSource = await createImage(imageSrc);
+    const canvas: HTMLCanvasElement = document.createElement("canvas");
+    const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
 
     canvas.width = pixelCrop.width;
     canvas.height = pixelCrop.height;
 
-    ctx.drawImage(
-        image,
-        pixelCrop.x,
-        pixelCrop.y,
-        pixelCrop.width,
-        pixelCrop.height,
-        0,
-        0,
-        pixelCrop.width,
-        pixelCrop.height
-    );
+    console.log("ctx: ", typeof ctx);
+    console.log("image: ", typeof image);
 
-    return new Promise((resolve, reject) => {
+    if (ctx && image) {
+        ctx.drawImage(
+            image,
+            pixelCrop.x,
+            pixelCrop.y,
+            pixelCrop.width,
+            pixelCrop.height,
+            0,
+            0,
+            pixelCrop.width,
+            pixelCrop.height
+        );
+    } else {
+        return new Promise((_, reject) => {
+            reject();
+        })
+    }
+
+    return new Promise((resolve) => {
         canvas.toBlob((blob) => {
             if (!blob) {
                 console.error("Canvas is empty");

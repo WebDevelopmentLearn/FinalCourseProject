@@ -1,13 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {IModalState} from "../types.ts";
 
-
-interface InitialState {
-    createPostModalIsOpen: boolean;
-    // status: "IDLE" | "LOADING" | "SUCCEEDED" | "FAILED";
-    // error: null | string | undefined;
-}
-
-const initialState: InitialState = {
+const initialState: IModalState = {
     createPostModalIsOpen: false,
 }
 

@@ -1,8 +1,7 @@
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import {Phone, SignInForm} from "../../components";
 import styles from "./SignIn.module.scss";
-
 
 export const SignIn = () => {
 
@@ -10,7 +9,6 @@ export const SignIn = () => {
         <div className={styles.signin}>
 
             <Phone />
-
 
             <div className={styles.signin_form_container}>
                 <SignInForm/>

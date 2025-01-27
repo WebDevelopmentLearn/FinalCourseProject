@@ -1,20 +1,17 @@
+import React, {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} from "react";
 import {NavigateFunction, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+
+import styles from "./Sidebar.module.scss";
 import logo from "../../assets/logo.svg";
 import logo_dark from "../../assets/logo_dark.svg";
-import React, {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} from "react";
-import styles from "./Sidebar.module.scss";
-
-
 import {SearchModal} from "../modals/SearchModal/SearchModal.tsx";
 import {NotificationModal} from "../modals/NotificationModal/NotificationModal.tsx";
 import {useTheme} from "../../context/ThemeContext.tsx";
-import {useDispatch, useSelector} from "react-redux";
 import {openCreatePostModal} from "../../store/reducers/modalSlice.ts";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import {userData} from "../../store/selectors.ts";
 import {RootState} from "../../store/ichgramStore.ts";
-// import {ThemeSwitcher} from "../ThemeSwitcher/ThemeSwitcher.tsx";
-
 
 export const Sidebar: FC = () => {
     const navigate: NavigateFunction = useNavigate();

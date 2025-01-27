@@ -1,11 +1,8 @@
-import styles from "./NotificationModal.module.scss";
 import {FC} from "react";
 import {Link} from "react-router-dom";
 
-
 export const NotificationModal: FC = () => {
     const notifications: Notification[] = [];
-
 
     const getNotifTypeFromObject = (notificationType: string): string => {
         switch (notificationType) {

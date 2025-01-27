@@ -1,10 +1,11 @@
-import styles from "./CreatePostModal.module.scss";
-import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
-import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
 import {MouseEvent, useState, useEffect, useRef} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
+
+import styles from "./CreatePostModal.module.scss";
+import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
+import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
 import {closeCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {createPost} from "../../../store/api/actionCreators.ts";
@@ -40,33 +41,6 @@ export const CreatePostModal = () => {
     const handleCloseModal = () => {
         dispatch(closeCreatePostModal());
     }
-
-    // Обработчик выбора файла
-    // const handleFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    //     const files = e.target.files; // Получаем список файлов
-    //
-    //     if (files) {
-    //         const filePreviews: string[] = []; // Массив для превью
-    //
-    //         // Итерация по всем выбранным файлам
-    //         Array.from(files).forEach((file) => {
-    //             const reader = new FileReader();
-    //
-    //             reader.onloadend = () => {
-    //                 if (reader.result) {
-    //                     filePreviews.push(reader.result as string); // Добавляем превью в массив
-    //                 }
-    //
-    //                 // Если это последний файл, обновляем состояние
-    //                 if (filePreviews.length === files.length) {
-    //                     setPreviews(filePreviews);
-    //                 }
-    //             };
-    //
-    //             reader.readAsDataURL(file.blob); // Читаем файл как Data URL
-    //         });
-    //     }
-    // };
 
     useEffect(() => {
         if (images) {

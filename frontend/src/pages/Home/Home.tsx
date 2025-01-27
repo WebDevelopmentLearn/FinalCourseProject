@@ -1,15 +1,14 @@
-import {PostCard} from "../../components";
-import styles from "./Home.module.scss";
-
-import check from "../../assets/home/check_in_circle.svg";
-import LazyLoad from "react-lazyload";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch} from "../../store/ichgramStore.ts";
 import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import LazyLoad from "react-lazyload";
+
+import styles from "./Home.module.scss";
+import {PostCard} from "../../components";
+import check from "../../assets/home/check_in_circle.svg";
+import {AppDispatch} from "../../store/ichgramStore.ts";
 import {getAllPosts} from "../../store/api/actionCreators.ts";
 import {posts} from "../../store/selectors.ts";
 import {IPost} from "../../utils/Entitys.ts";
-
 
 export const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -23,13 +22,11 @@ export const Home = () => {
                     console.log("getAllPosts.fulfilled");
                 }
             } catch (error) {
-                console.log("getUser.rejected");
+                console.error("Failed to fetch Userdata: ", error);
             }
         }
         fetchData();
     }, [dispatch]);
-
-    console.log("Posts: ", postsArr);
 
     return (
         <div>

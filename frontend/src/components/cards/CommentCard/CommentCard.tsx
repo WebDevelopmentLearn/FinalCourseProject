@@ -5,8 +5,6 @@ import {getTimeAgo} from "../../../utils/Utils.ts";
 
 export const CommentCard = ({author, commentDesc, createdAt, likes}: ICommentCard) => {
 
-    console.log("CommentDetails: ", {author, commentDesc, createdAt, likes});
-
     return (
         <li className={styles.post_comment}>
             <div className={styles.post_comment_details}>

@@ -1,7 +1,6 @@
 import styles from "./InterlocutorCard.module.scss";
 import {InterlocutorCardProps} from "../../../utils/Entitys.ts";
 
-
 export const InterlocutorCard = ({name, message = "", time, avatar}: InterlocutorCardProps) => {
     return (
         <div className={styles.interlocutor}>

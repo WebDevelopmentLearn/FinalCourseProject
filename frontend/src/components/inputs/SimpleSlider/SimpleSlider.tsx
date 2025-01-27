@@ -1,9 +1,9 @@
-import {SliderProps} from "../../../utils/Entitys.ts";
 import {CSSProperties, useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
+
 import styles from "./SimpleSlider.module.scss";
 import {UploadImageIcon} from "../../../assets/icons/UploadImageIcon.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
-import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../../store/ichgramStore.ts";
 import {ImageCropperModal} from "../../modals/ImageCropperModal/ImageCropperModal.tsx";
 
@@ -19,12 +19,10 @@ type SimpleSliderProps = {
     postImages?: string[];
 }
 
-export const SimpleSlider = ({style, className, maxWidth, maxImages = 5, postImages = [], inModal = false, sliderType = "ViewPost"}: SimpleSliderProps) => {
+export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, postImages = [], inModal = false, sliderType = "ViewPost"}: SimpleSliderProps) => {
     const [currentImg, setCurrentImg] = useState<number>(0);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const {currentImage, images, addImageForEditing, removeImage } = useImages();
-    const dispatch = useDispatch<AppDispatch>();
-
 
     const handlePrevious = useCallback((event) => {
         event.stopPropagation();
@@ -35,7 +33,6 @@ export const SimpleSlider = ({style, className, maxWidth, maxImages = 5, postIma
 
     const handleNext = useCallback((event) => {
         event.stopPropagation();
-        // setCurrentImg((prev) => (prev === postImages.length ? 0 : prev + 1));
         setCurrentImg((prev) => {
             return prev === postImages.length - 1 ? 0 : prev + 1;
         })
@@ -65,9 +62,6 @@ export const SimpleSlider = ({style, className, maxWidth, maxImages = 5, postIma
         removeImage(imageUrl)
     }
     //=======================[CREATE POST MODAL FUNCS END]=======================\\
-
-
-    console.log("maxWidth: ", maxWidth);
 
     const getMaxWidthByType = (): string => {
         switch (sliderType) {

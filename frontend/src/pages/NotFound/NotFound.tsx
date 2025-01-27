@@ -1,4 +1,3 @@
-
 import styles from "./NotFound.module.scss";
 import {Phone} from "../../components";
 

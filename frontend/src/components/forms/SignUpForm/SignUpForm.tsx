@@ -20,8 +20,6 @@ type SignUpFormValues = {
     password: string;
 }
 
-
-
 export const SignUpForm: FC = () => {
 
     const {register, handleSubmit, formState: {errors}} = useForm<SignUpFormValues>({

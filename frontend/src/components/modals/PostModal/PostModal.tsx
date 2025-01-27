@@ -1,15 +1,15 @@
-import styles from "./PostModal.module.scss";
-import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
-import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 import {useCallback, useEffect, useRef, useState} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+import styles from "./PostModal.module.scss";
+import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {getEnumTheme, getTimeAgo} from "../../../utils/Utils.ts";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
-import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IPost} from "../../../utils/Entitys.ts";
 import {createComment, getPostById} from "../../../store/api/actionCreators.ts";
@@ -17,10 +17,6 @@ import {Loader} from "../../Loader/Loader.tsx";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
-
-// interface PostModalInputProps {
-//     content: string;
-// }
 
 type PostModalInputValues = {
     content: string;
@@ -164,10 +160,9 @@ export const PostModal = () => {
             window.removeEventListener("load", handleLoad);
         };
     }, []);
-    const handleCopyUrlPostToClipboard = useCallback((text: string, result: boolean) => {
+    const handleCopyUrlPostToClipboard = useCallback(() => {
         setCopied(true);
-        alert("Ссылка на пост успешно скопирована");
-        console.log("onCustomButtonClick");
+        alert("The link to the post is successfully copied");
     }, []);
 
 
