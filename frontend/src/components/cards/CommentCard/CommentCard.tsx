@@ -1,5 +1,5 @@
 import styles from "./CommentCard.module.scss";
-import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
+import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {ICommentCard} from "../../../utils/Entitys.ts";
 import {getTimeAgo} from "../../../utils/Utils.ts";
 

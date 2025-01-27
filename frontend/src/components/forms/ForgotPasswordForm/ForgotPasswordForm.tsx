@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import styles from "./ForgotPasswordForm.module.scss"
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
-import {Separator} from "../../Separator/Separator.tsx";
+import {Separator} from "../../other/Separator/Separator.tsx";
 import lock_icon from "../../../assets/forgot_password/lock_icon.svg";
 import {ForgotPasswordFormValues} from "../../../utils/Entitys.ts";
 

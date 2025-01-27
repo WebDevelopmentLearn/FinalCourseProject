@@ -12,7 +12,7 @@ import {AppDispatch} from "../../store/ichgramStore.ts";
 import {updateUserProfile} from "../../store/api/actionCreators.ts";
 import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
-import {SimpleAvatarCircle} from "../../components/SimpleAvatarCircle/SimpleAvatarCircle.tsx";
+import {SimpleAvatarCircle} from "../../components/other/SimpleAvatarCircle/SimpleAvatarCircle.tsx";
 
 type EditProfileValues = {
     avatar_input: File;

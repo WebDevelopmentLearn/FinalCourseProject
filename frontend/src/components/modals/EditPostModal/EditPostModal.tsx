@@ -9,7 +9,7 @@ import {closeCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {createPost, updatePost} from "../../../store/api/actionCreators.ts";
 import styles from "../CreatePostModal/CreatePostModal.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
-import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
+import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {getEnumTheme} from "../../../utils/Utils.ts";
 
 interface EditPostFormInputs {

@@ -6,17 +6,18 @@ import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import styles from "./PostModal.module.scss";
-import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
+import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {getEnumTheme, getTimeAgo} from "../../../utils/Utils.ts";
-import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
+
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IPost} from "../../../utils/Entitys.ts";
 import {createComment, getPostById} from "../../../store/api/actionCreators.ts";
-import {Loader} from "../../Loader/Loader.tsx";
+import {Loader} from "../../other/Loader/Loader.tsx";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
+import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
 
 type PostModalInputValues = {
     content: string;

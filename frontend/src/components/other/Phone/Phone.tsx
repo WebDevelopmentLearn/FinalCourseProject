@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 
 import styles from "./Phone.module.scss";
-import screenshot1 from "../../assets/signin/screenshot1-2x.png"
-import screenshot2 from "../../assets/signin/screenshot2-2x.png"
-import screenshot3 from "../../assets/signin/screenshot3-2x.png"
-import screenshot4 from "../../assets/signin/screenshot4-2x.png"
+import screenshot1 from "../../../assets/signin/screenshot1-2x.png"
+import screenshot2 from "../../../assets/signin/screenshot2-2x.png"
+import screenshot3 from "../../../assets/signin/screenshot3-2x.png"
+import screenshot4 from "../../../assets/signin/screenshot4-2x.png"
 
 const imageArray: string[] = [screenshot1, screenshot2, screenshot3, screenshot4];
 

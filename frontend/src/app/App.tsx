@@ -4,8 +4,8 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 import './App.css'
 import {MainRoute} from "../route/MainRoute.tsx";
-import {Wrapper} from "../wrapper/Wrapper.tsx";
-import {CreatePostModal, Footer, Sidebar} from "../components";
+
+import {CreatePostModal, Footer, Sidebar, Wrapper} from "../components";
 import {setupInterceptors} from "../api/API.ts";
 import {RootState} from "../store/ichgramStore.ts";
 

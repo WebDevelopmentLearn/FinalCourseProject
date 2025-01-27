@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import styles from "./CreatePostModal.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
-import {AvatarCircle} from "../../AvatarCircle/AvatarCircle.tsx";
+import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {closeCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {createPost} from "../../../store/api/actionCreators.ts";

@@ -3,9 +3,9 @@ import {useDispatch} from "react-redux";
 import {AxiosError} from "axios";
 import {useNavigate} from "react-router-dom";
 
-import API from "../../api/API.ts";
-import {getUser} from "../../store/api/actionCreators.ts";
-import {AppDispatch} from "../../store/ichgramStore.ts";
+import API from "../../../api/API.ts";
+import {getUser} from "../../../store/api/actionCreators.ts";
+import {AppDispatch} from "../../../store/ichgramStore.ts";
 
 type ProtectedRouteProps = {
     children: ReactNode;

@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
-import {AvatarCircleProps} from "../../utils/Entitys.ts";
+import {AvatarCircleProps} from "../../../utils/Entitys.ts";
 import {Loader} from "../Loader/Loader.tsx";
 
 export const AvatarCircle: FC<AvatarCircleProps> = ({user, className, avatarSize = "small", hasLink = true}: AvatarCircleProps) => {

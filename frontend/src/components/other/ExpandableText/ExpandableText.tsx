@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 import styles from "./ExpandableText.module.scss";
-import {ExpandableTextProps} from "../../utils/Entitys.ts";
+import {ExpandableTextProps} from "../../../utils/Entitys.ts";
 
 export const ExpandableText = ({textClass, text, maxHeight = 150}: ExpandableTextProps) => {
 

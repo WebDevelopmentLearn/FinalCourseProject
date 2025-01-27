@@ -8,7 +8,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import ichgramLogo from "../../../assets/logo.svg";
 import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
-import {Separator} from "../../Separator/Separator.tsx";
+import {Separator} from "../../other/Separator/Separator.tsx";
 import {ILoginData, SignInFormValues} from "../../../utils/Entitys.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {loginUser} from "../../../store/api/actionCreators.ts";
