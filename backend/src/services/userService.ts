@@ -7,15 +7,9 @@ class UserService {
 
     public static async getUserById(id: string): Promise<IUser | null> {
         try {
-            // const user = await User
-            //     .findById(id)
-            //     .exec();
-            //
-            // if (!user) {
-            //     return null;
-            // }
+            const user: IUser | null = await User.findById(id).populate("posts");
 
-            return await User.findById(id);
+            return user;
         } catch (error: unknown) {
             await logErrorWithObj("getUser", error);
             throw new Error("Error while getting user by id");

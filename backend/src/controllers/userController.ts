@@ -8,13 +8,41 @@ import {IUser} from "../entitys/interfaces";
 
 
 class UserController {
+    public static async getUserProfileById(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            // const user = req.user;
+            // console.log(user);
+            console.log("Req.body: ", req.body);
+            const userId: string = req.params.userId;
+
+            if (!userId) {
+                res.status(401).json({
+                    message: "Param UserId is required"
+                });
+                return;
+            }
+
+            const userProfile = await UserService.getUserById(userId);
+            if (!userProfile) {
+                res.status(404).json({message: "User not found"});
+                return;
+            }
+
+            res.status(200).json(userProfile);
+
+            await logDebug(`[getUserProfile] User profile for ${userProfile.username} was sent`);
+
+        } catch (error: unknown) {
+            next(error);
+        }
+    }
 
     public static async getUserProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const user = req.user;
             console.log(user);
 
-            const userProfile = await User.findOne({_id: user.id});
+            const userProfile = await UserService.getUserById(user.id);
             if (!userProfile) {
                 res.status(404).json({message: "User not found"});
                 return;
