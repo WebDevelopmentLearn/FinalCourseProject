@@ -12,6 +12,13 @@ import {IPostState} from "../types.ts";
 
 const initialState: IPostState = {
     posts: [],
+    loading: false,
+    hasMore: true,
+    page: 1,
+    limit: 10,
+
+    postsByUser: [],
+
     currentPost: null,
     postsStatus: "IDLE",
     postsError: null,
@@ -22,6 +29,7 @@ const initialState: IPostState = {
     createCommentStatus: "IDLE",
     createCommentError: null
 }
+
 
 const postSlice = createSlice({
     name: "post",
@@ -35,12 +43,20 @@ const postSlice = createSlice({
         builder.addCase(getAllPosts.pending, (state) => {
             state.postsStatus = "LOADING";
             state.postsError = null;
+            state.loading = true;
         }).addCase(getAllPosts.fulfilled, (state, action) => {
+            // state.postsStatus = "SUCCESS";
+            // state.posts = action.payload;
+            const { posts, total, totalPages } = action.payload;
             state.postsStatus = "SUCCESS";
-            state.posts = action.payload;
+            state.posts = [...state.posts, ...posts]; // Добавляем новые посты к текущим
+            state.hasMore = state.page < totalPages; // Проверяем, есть ли еще посты
+            state.page += 1; // Увеличиваем номер страницы
+            state.loading = false;
         }).addCase(getAllPosts.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.error.message;
+            state.loading = false;
         }).addCase(createPost.pending, (state) => {
             state.postsStatus = "LOADING";
             state.postsError = null;
@@ -74,10 +90,11 @@ const postSlice = createSlice({
         }).addCase(getAllPostsByUser.pending, (state) => {
             state.postsStatus = "LOADING";
             state.postsError = null;
+            state.postsByUser = [];
         }).addCase(getAllPostsByUser.fulfilled, (state, action) => {
             state.postsStatus = "SUCCESS";
             state.postsError = null;
-            state.posts = action.payload;
+            state.postsByUser = action.payload;
         }).addCase(getAllPostsByUser.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.payload;

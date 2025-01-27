@@ -14,7 +14,7 @@ import {getEnumTheme} from "../../../utils/Utils.ts";
 
 interface EditPostFormInputs {
     content: string;
-    photo: FileList | null;
+    photos: FileList | null;
 }
 
 export const EditPostModal = ({post}) => {
@@ -29,7 +29,7 @@ export const EditPostModal = ({post}) => {
         watch,
         formState: { errors },
         setValue,
-    } = useForm<EditPostFormInputs>({defaultValues: {content: post?.content, photo: post?.photo}});
+    } = useForm<EditPostFormInputs>({defaultValues: {content: post?.content, photos: post?.photos}});
     const currentContent = watch("content") || ""; // Get current content value
 
     const handleCloseModal = () => {
@@ -72,7 +72,7 @@ export const EditPostModal = ({post}) => {
                 const result = await dispatch(updatePost({
                     postId: post._id,
                     content: data.content,
-                    photo: data.photo
+                    photos: data.photos
                 }));
                 if (createPost.fulfilled.match(result)) {
                     console.log("Post created");
@@ -129,7 +129,7 @@ export const EditPostModal = ({post}) => {
                                 </svg>
                             )}
                             <input type="file"
-                                   {...register("photo", {required: "Photo is required"})}
+                                   {...register("photos", {required: "Photos is required"})}
 
                                    onChange={handleFileChange}/>
                         </div>
@@ -140,7 +140,7 @@ export const EditPostModal = ({post}) => {
                             <div className={styles.personal_info}>
                                 <AvatarCircle user={post?.author}/>
                                 <p>{post?.author?.username}</p>
-                                {errors && errors.photo && <span>{errors.photo.message}</span>}
+                                {errors && errors.photos && <span>{errors.photos.message}</span>}
                                 {errors && errors.content && <span>{errors.content.message}</span>}
 
                             </div>

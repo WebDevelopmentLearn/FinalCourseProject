@@ -15,7 +15,7 @@ import {Slider} from "../../inputs/Slider/Slider.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
 
 type CreatePostFormInputs = {
-    photo: FileList | null;
+    photos: FileList | null;
     content: string;
 };
 
@@ -68,7 +68,7 @@ export const CreatePostModal = () => {
     }, [images]);
 
     useEffect((): void => {
-        setValue("photo", images.map((image) => image.blob)); // Сохраняем только Blob
+        setValue("photos", images.map((image) => image.blob)); // Сохраняем только Blob
     }, [images, setValue]);
 
     const handleOpenEmojiPicker = (e: MouseEvent<HTMLButtonElement>) => {
@@ -90,7 +90,7 @@ export const CreatePostModal = () => {
            if (data) {
                console.log("Create post data:", data);
 
-               const result = await dispatch(createPost({ photo: data.photo, content: data.content }));
+               const result = await dispatch(createPost({ photos: data.photos, content: data.content }));
                if (createPost.fulfilled.match(result)) {
                    console.log("Post created");
                    handleCloseModal();
@@ -170,7 +170,7 @@ export const CreatePostModal = () => {
                             <div className={styles.personal_info}>
                                 <AvatarCircle user={user}/>
                                 <p>{user?.username}</p>
-                                {errors && errors.photo && <span>{errors.photo.message}</span>}
+                                {errors && errors.photos && <span>{errors.photos.message}</span>}
                                 {errors && errors.content && <span>{errors.content.message}</span>}
 
                             </div>

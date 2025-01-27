@@ -70,16 +70,16 @@ export const getUserById = createAsyncThunk("auth/getUserById", async ({userId}:
 });
 
 export type CreatePost = {
-    photo: FileList,
+    photos: FileList,
     content: string,
 }
 
-export const createPost = createAsyncThunk("post/createPost", async ({photo, content}: CreatePost, {rejectWithValue}) => {
+export const createPost = createAsyncThunk("post/createPost", async ({photos, content}: CreatePost, {rejectWithValue}) => {
     try {
         const formData = new FormData();
-        const files = Array.from(photo);
+        const files = Array.from(photos);
         files.forEach((el) => {
-            formData.append("photo", el);
+            formData.append("photos", el);
         });
         formData.append('content', content);
         const response = await API.post(`/posts/create-post`, formData, {
@@ -99,10 +99,10 @@ export const createPost = createAsyncThunk("post/createPost", async ({photo, con
 
 });
 
-export const updatePost = createAsyncThunk("post/updatePost", async ({postId, photo, content}: {postId: string, photo: FileList, content: string}, {rejectWithValue}) => {
+export const updatePost = createAsyncThunk("post/updatePost", async ({postId, photos, content}: {postId: string, photos: FileList, content: string}, {rejectWithValue}) => {
     try {
         const formData = new FormData();
-        formData.append('photo', photo[0]);
+        formData.append('photos', photos[0]);
         formData.append('content', content);
         const response = await API.put(`/posts/update-post/${postId}`, formData);
         return response.data;
@@ -118,9 +118,12 @@ export const updatePost = createAsyncThunk("post/updatePost", async ({postId, ph
     }
 });
 
-export const getAllPosts = createAsyncThunk("post/getAllPosts", async () => {
+export const getAllPosts = createAsyncThunk("post/getAllPosts", async (page: number) => {
     try {
-        const response = await API.get(`/posts/all-posts`);
+        // const response = await API.get(`/posts/all-posts`);
+        const limit = 4; // Лимит постов на страницу
+        const response = await API.get(`/posts/all-posts`, { params: { page, limit } });
+        console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);

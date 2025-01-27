@@ -91,7 +91,7 @@ export const PostCard = ({post}: PostCardProps) => {
             </div>
 
             <div className={styles.post_card__image}>
-                <SimpleSlider maxWidth={size.width} postImages={post?.photo} sliderType="ViewPost"/>
+                <SimpleSlider maxWidth={size.width} postImages={post?.photos} sliderType="ViewPost"/>
             </div>
 
             <div className={styles.post_card__content}>

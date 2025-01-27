@@ -96,7 +96,7 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
                             <button className={styles.card__delete_btn} onClick={() => handleDelete(index)}>X</button>
                         </div>
                     ) : (
-                        <img className={styles.card} key={index} src={image} alt=""/>
+                        <img className={styles.card} key={index} src={image.url} alt=""/>
                     )
                 ))}
 

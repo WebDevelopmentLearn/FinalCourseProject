@@ -76,6 +76,8 @@ export const Profile = () => {
         fetchUserPosts();
     }, [dispatch]);
 
+    console.log("profileUser: ", profileUser);
+
     return (
         <div className={styles.profile}>
             <div className={styles.profile_main}>
@@ -130,7 +132,7 @@ export const Profile = () => {
             </div>
 
             <div className={styles.profile_posts}>
-                {(profileUser?.posts && profileUser?.posts?.length > 0) ? profileUser?.posts.map((post) => {
+                {(profileUser?.postsByUser?.posts && profileUser?.postsByUser?.posts?.length > 0) ? profileUser?.postsByUser?.posts.map((post) => {
                     console.log("Post: ", post);
                     return <PostCardInProfile key={post._id} post={post}/>
                 }) : <h1>No posts</h1>}

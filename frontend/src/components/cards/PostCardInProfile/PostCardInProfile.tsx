@@ -52,7 +52,8 @@ export const PostCardInProfile = ({post}: PostCardInProfileProps) => {
             navigate(`/profile/${post?.author._id}/post/${post?._id}`);
         }} className={styles.post_card_in_profile} >
             {/*<Slider inModal={false} postImages={post.photo} />*/}
-            <SimpleSlider maxWidth={size.width} postImages={post?.photo} sliderType="ViewPost"/>
+            {/*<SimpleSlider maxWidth={size.width} postImages={post?.photo} sliderType="ViewPost"/>*/}
+            <SimpleSlider maxWidth={size.width} postImages={post?.photos} sliderType="ViewPost"/>
         </div>
     );
 };

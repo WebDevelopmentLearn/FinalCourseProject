@@ -15,6 +15,13 @@ export interface IAuthState {
 
 export interface IPostState {
     posts: IPost[];
+    loading: boolean;
+    hasMore: boolean;
+    page: number;
+    limit: number;
+
+    postsByUser: IPost[];
+
     currentPost: IPost | null;
     postsStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     postsError: any;

@@ -195,11 +195,12 @@ export const PostModal = () => {
             <div className={styles.profile_post_modal} onClick={(event) => event.stopPropagation()}>
 
                 <div ref={elementRef} className={styles.profile_post_modal_image}>
-                    {post?.photo ? (
-                        <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} sliderType="ViewPostModal"/>
-                    ) : (
-                        <Loader />
-                    )}
+                    {/*{post?.photo ? (*/}
+                    {/*    <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} sliderType="ViewPostModal"/>*/}
+                    {/*) : (*/}
+                    {/*    <Loader />*/}
+                    {/*)}*/}
+                    <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photos} sliderType="ViewPostModal"/>
                 </div>
 
 

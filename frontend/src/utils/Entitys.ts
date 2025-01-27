@@ -93,7 +93,7 @@ export type InterlocutorCardProps = {
 export interface IPost {
     _id: string;
     author: IUser;
-    photo: string[];
+    photos: object[];
     content: string;
     likes: string[];
     comments: ICommentCard[];
