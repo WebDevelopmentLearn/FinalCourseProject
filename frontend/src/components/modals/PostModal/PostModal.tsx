@@ -205,8 +205,14 @@ export const PostModal = () => {
 
                 // await dispatch(getPostById(_id)); // Загружаем актуальные данные
                 reset();
+                toast.success("Comment added successfully", {
+                    autoClose: 2000
+                });
             } catch (error) {
                 console.error("Error: ", error);
+                toast.error("Failed to add comment", {
+                    autoClose: 2000
+                });
             }
         }
     }

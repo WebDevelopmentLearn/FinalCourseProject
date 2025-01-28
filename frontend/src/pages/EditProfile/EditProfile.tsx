@@ -12,7 +12,8 @@ import {AppDispatch} from "../../store/ichgramStore.ts";
 import {updateUserProfile} from "../../store/api/actionCreators.ts";
 import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
-import {SimpleAvatarCircle} from "../../components/other/SimpleAvatarCircle/SimpleAvatarCircle.tsx";
+import {SimpleAvatarCircle} from "../../components";
+import {toast} from "react-toastify";
 
 type EditProfileValues = {
     avatar_input: File;
@@ -45,17 +46,26 @@ export const EditProfile = () => {
                 if (data.website_input.length > 0) updateData.website = data.website_input;
                 await dispatch(updateUserProfile(updateData));
                 clearImages("all");
+                toast.success("Profile updated successfully", {
+                    autoClose: 2000
+                });
 
             } catch (error) {
                 console.error("Failed to edit profile: ", error);
+                toast.error("Failed to edit profile", {
+                    autoClose: 2000
+                });
             }
         }
     }
 
     const onButtonClick = useCallback(() => {
         theme === 'light' ? setTheme('dark') : setTheme('light');
-        console.log('theme', theme);
         document.documentElement.className = theme === 'light' ? 'dark-theme' : '';
+        toast.info(`Theme switched to ${theme === 'light' ? 'dark' : 'light'}`, {
+            autoClose: 2000,
+
+        });
     }, [theme, setTheme]);
 
     const handleOpenUploadAvatar = () => {

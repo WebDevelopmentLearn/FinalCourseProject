@@ -12,6 +12,7 @@ import {registerUser} from "../../../store/api/actionCreators.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IRegisterData} from "../../../utils/Entitys.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
+import {toast} from "react-toastify";
 
 type SignUpFormValues = {
     email: string;
@@ -48,10 +49,16 @@ export const SignUpForm: FC = () => {
             const result = await dispatch(registerUser(registerData));
             if (result.type !== "auth/registerUser/rejected") {
                 console.log("User registered successfully");
+                toast.success("User registered successfully", {
+                    autoClose: 2000
+                });
                 navigate('/signin');
             }
         } catch (error) {
             console.log(error);
+            toast.error("Error occurred while registering user", {
+                autoClose: 2000
+            });
         }
     };
 
