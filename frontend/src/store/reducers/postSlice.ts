@@ -2,7 +2,7 @@ import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
 
 import {
     createComment,
-    createPost,
+    createPost, deletePost,
     getAllPosts,
     getAllPostsByUser,
     getPostById,
@@ -27,7 +27,10 @@ const initialState: IPostState = {
     currentPostError: null,
 
     createCommentStatus: "IDLE",
-    createCommentError: null
+    createCommentError: null,
+
+    deletePostStatus: "IDLE",
+    deletePostError: null
 }
 
 
@@ -60,9 +63,9 @@ const postSlice = createSlice({
         }).addCase(createPost.pending, (state) => {
             state.postsStatus = "LOADING";
             state.postsError = null;
-        }).addCase(createPost.fulfilled, (state, action) => {
+        }).addCase(createPost.fulfilled, (state) => {
             state.postsStatus = "SUCCESS";
-            state.posts.push(action.payload?.newPost);
+            // state.posts.push(action.payload?.newPost);
         }).addCase(createPost.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.error.message;
@@ -77,6 +80,17 @@ const postSlice = createSlice({
         }).addCase(updatePost.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.error.message;
+        }).addCase(deletePost.pending, (state) => {
+            state.deletePostStatus = "LOADING";
+            state.deletePostError = null;
+        }).addCase(deletePost.fulfilled, (state) => {
+            state.deletePostStatus = "SUCCESS";
+            state.deletePostError = null;
+            // state.posts = state.posts.filter(post => post._id !== action.payload.deletedPostId);
+
+        }).addCase(deletePost.rejected, (state, action) => {
+            state.deletePostStatus = "FAILED";
+            state.deletePostError = action.error.message;
         }).addCase(getPostById.pending, (state) => {
             state.currentPostStatus = "LOADING";
             state.currentPostError = null;
@@ -117,7 +131,7 @@ const postSlice = createSlice({
 
 
             console.log("After update: ", state.currentPost);
-        }).addCase(createComment.rejected, (state, action) => {
+        }).addCase(createComment.rejected, (state) => {
             state.createCommentStatus = "LOADING";
             state.createCommentError = null;
         });

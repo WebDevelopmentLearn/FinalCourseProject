@@ -29,6 +29,10 @@ export interface IPostState {
     currentPostError: any;
     createCommentStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     createCommentError: any;
+
+    deletePostStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    deletePostError: any;
+
 }
 
 export interface IUserState {

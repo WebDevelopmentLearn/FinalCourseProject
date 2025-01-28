@@ -12,12 +12,13 @@ import {getEnumTheme, getTimeAgo} from "../../../utils/Utils.ts";
 
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IPost} from "../../../utils/Entitys.ts";
-import {createComment, getPostById} from "../../../store/api/actionCreators.ts";
+import {createComment, deletePost, getPostById} from "../../../store/api/actionCreators.ts";
 import {Loader} from "../../other/Loader/Loader.tsx";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
+import {toast} from "react-toastify";
 
 type PostModalInputValues = {
     content: string;
@@ -42,6 +43,7 @@ export const PostModal = () => {
 
     const dispatch = useDispatch<AppDispatch>();
     const {currentPost} = useSelector((state: RootState) => state.postReducer) || null;
+    const {user} = useSelector((state: RootState) => state.userReducer) || null;
     const {_id} = useParams() || "";
     const location = useLocation();
 
@@ -163,8 +165,27 @@ export const PostModal = () => {
     }, []);
     const handleCopyUrlPostToClipboard = useCallback(() => {
         setCopied(true);
-        alert("The link to the post is successfully copied");
+        // alert("The link to the post is successfully copied");
+        toast.success("The link to the post is successfully copied", {
+           autoClose: 2000
+        });
     }, []);
+    const handleDeletePost = useCallback(async() => {
+        console.log("handleDeletePost");
+        try {
+            const result = await dispatch(deletePost({postId: _id}));
+            console.log("Post deleted: ", result);
+            toast.success("Post deleted successfully", {
+                autoClose: 2000
+            });
+            handleClosePost();
+        } catch (error) {
+            console.error("Failed to delete post: ", error);
+            toast.error("Failed to delete post", {
+                autoClose: 2000
+            });
+        }
+    }, [dispatch]);
 
 
     const handleClosePost = () => {
@@ -187,6 +208,15 @@ export const PostModal = () => {
             } catch (error) {
                 console.error("Error: ", error);
             }
+        }
+    }
+
+    const checkIfPostIsMine = () => {
+        if (!user) return false;
+        if (post?.author?._id === user._id) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -329,11 +359,15 @@ export const PostModal = () => {
                 {moreOptionModalIsOpen && (
                     <div className={styles.post_more_modal_overlay} onClick={handleCloseMoreOptionModal}>
                         <div className={styles.post_more_modal} onClick={(event) => event.stopPropagation()}>
-                            <CustomButton title={"Delete"} className={`${styles.more_btn} ${styles.delete_btn}`}/>
-                            <CustomButton onClick={() => {
-                                setEditPostModalIsOpen(true);
-                                handleCloseMoreOptionModal();
-                            }} title={"Edit"} className={`${styles.more_btn} ${styles.edit_btn}`}/>
+                            {checkIfPostIsMine() && (
+                                <CustomButton onClick={handleDeletePost} title={"Delete"} className={`${styles.more_btn} ${styles.delete_btn}`}/>
+                            )}
+                            {checkIfPostIsMine() && (
+                                <CustomButton onClick={() => {
+                                    setEditPostModalIsOpen(true);
+                                    handleCloseMoreOptionModal();
+                                }} title={"Edit"} className={`${styles.more_btn} ${styles.edit_btn}`}/>
+                            )}
                             {/*<CustomButton title={"Go to Post"}*/}
                             {/*              className={`${styles.more_btn} ${styles.go_to_post_btn}`}/>*/}
                             <CopyToClipboard text={window.location.href} onCopy={handleCopyUrlPostToClipboard}>

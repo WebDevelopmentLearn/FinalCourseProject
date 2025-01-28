@@ -8,6 +8,7 @@ import {MainRoute} from "../route/MainRoute.tsx";
 import {CreatePostModal, Footer, Sidebar, Wrapper} from "../components";
 import {setupInterceptors} from "../api/API.ts";
 import {RootState} from "../store/ichgramStore.ts";
+import {ToastContainer} from "react-toastify";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
     return (
         <div className="app">
             <div className="sidebar_and_wrapper">
+                <ToastContainer />
                 {!routesWithoutNavbar.includes(location.pathname) && <Sidebar/>}
                 {!routesWithoutNavbar.includes(location.pathname) ? (<div className="wrapper_and_footer">
                     <Wrapper>

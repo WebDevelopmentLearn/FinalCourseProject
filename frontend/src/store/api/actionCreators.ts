@@ -118,6 +118,25 @@ export const updatePost = createAsyncThunk("post/updatePost", async ({postId, ph
     }
 });
 
+///delete-post/:postId
+
+export const deletePost = createAsyncThunk("post/deletePost", async ({postId}: {postId: string}, {rejectWithValue}) => {
+    try {
+        const response = await API.delete(`/posts/delete-post/${postId}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        if (error instanceof AxiosError) {
+            if (error.response && error.response.data.message) {
+                return rejectWithValue(error.response.data.message)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+});
+
+
 export const getAllPosts = createAsyncThunk("post/getAllPosts", async (page: number) => {
     try {
         // const response = await API.get(`/posts/all-posts`);
