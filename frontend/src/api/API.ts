@@ -19,7 +19,7 @@ export const setupInterceptors = (navigate: NavigateFunction): void => {
             const originalRequest = error.config;
 
             // Проверяем, что ошибка 401 и это не повторный запрос на обновление токена
-            if (error.response?.status === 401 && !originalRequest._retry) {
+            if (error.response?.status === 401 && (error.response.data.message === "Refresh token is required" || error.response.data.message === "Access token is required") && !originalRequest._retry) {
                 originalRequest._retry = true;
 
                 try {

@@ -2,6 +2,8 @@ import {MouseEvent, useState, useEffect, useRef} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Не забудьте подключить стили
 
 import styles from "./CreatePostModal.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
@@ -20,7 +22,7 @@ type CreatePostFormInputs = {
 };
 
 export const CreatePostModal = () => {
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [previews, setPreviews] = useState<string[]>([]);
     const dispatch = useDispatch<AppDispatch>();
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
@@ -87,17 +89,31 @@ export const CreatePostModal = () => {
 
     const handleSubmitCreatePost: SubmitHandler<CreatePostFormInputs> = async(data: CreatePostFormInputs) => {
         try {
-           if (data) {
+            setIsSubmitting(true); // Устанавливаем isSubmitting в true при отправке запроса
+
+            if (data) {
                console.log("Create post data:", data);
 
                const result = await dispatch(createPost({ photos: data.photos, content: data.content }));
                if (createPost.fulfilled.match(result)) {
                    console.log("Post created");
                    handleCloseModal();
+
+                   // Добавляем уведомление об успешном создании поста
+                   toast.success("Post created successfully!", {
+                       autoClose: 2000
+                   });
                }
            }
         } catch (error) {
             console.error("Error creating post:", error);
+
+            // Добавляем уведомление об ошибке
+            toast.error("Error creating post. Please try again.", {
+                autoClose: 2000
+            });
+        } finally {
+            setIsSubmitting(false); // Возвращаем isSubmitting в false после завершения процесса
         }
     }
 
@@ -153,7 +169,7 @@ export const CreatePostModal = () => {
                         <div className={styles.header}>
                             <h1>Create new post</h1>
                         </div>
-                        <CustomButton disabled={images.length > 0 && currentContent.length > 0 && images.length < 1 && currentContent.length < 1} className={styles.share_post_btn} title="Share" type="submit"/>
+                        <CustomButton disabled={isSubmitting || images.length > 0 && currentContent.length > 0 && images.length < 1 && currentContent.length < 1} className={styles.share_post_btn} title="Share" type="submit"/>
                     </header>
                     <main className={styles.create_post_modal_content}>
                         <div ref={elementRef} className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>

@@ -9,6 +9,7 @@ import {ComponentPreviews, useInitial} from "./dev";
 import {ThemeProvider} from "./context/ThemeContext.tsx";
 import ichgramStore from "./store/ichgramStore.ts";
 import {ImageProvider} from "./context/ImageContext.tsx";
+import {ToastContainer} from "react-toastify";
 
 createRoot(document.getElementById('root')!).render(
     <Provider store={ichgramStore}>

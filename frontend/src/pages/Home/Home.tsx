@@ -71,16 +71,15 @@ export const Home = () => {
                     {posts.length === 0 ? (
                         <p>No posts available.</p>
                     ) : (
-                        <ul>
-                            {posts.map((post) => (
-                                <LazyLoad key={post._id} height={200} offset={100}>
-                                    <PostCard post={post}/>
-                                </LazyLoad>
-                            ))}
-                        </ul>
+                        posts.map((post) => {
+                            console.log("Post: ", post);
+                            return <LazyLoad key={post._id} height={200} offset={100}>
+                                <PostCard post={post}/>
+                            </LazyLoad>
+                        })
                     )}
                     {loading && <p>Loading...</p>}
-                    {!hasMore && <p>No more posts to load.</p>}
+                    {/*{!hasMore && <p>No more posts to load.</p>}*/}
                 </div>
                 <div ref={observerTarget} className={styles.home_end}>
                     <img src={check} alt="check"/>
