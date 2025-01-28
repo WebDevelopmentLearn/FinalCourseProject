@@ -50,6 +50,15 @@ class PostService {
         }
     }
 
+    static async deletePostById(postId: string): Promise<void> {
+        try {
+            await PostRepository.deletePostById(postId);
+        } catch (error) {
+            console.error("Error in deleting post:", error);
+            throw new Error("Failed to delete post.");
+        }
+    }
+
 
 }
 

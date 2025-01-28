@@ -7,9 +7,11 @@ import {logError} from "../utils/Logger";
 import {cloudinary} from "../config/cloudinary";
 import Post from "../models/Post";
 import {Types} from "mongoose";
-import {MulterRequest} from "../middleware/uploadImage";
+import UploadImage, {MulterRequest} from "../middleware/uploadImage";
 import sharp from "sharp";
 import Photo from "../models/Photo";
+import Comment from "../models/Comment";
+import User from "../models/User";
 
 class PostController {
 
@@ -105,7 +107,7 @@ class PostController {
             // Заполнение данных о фото в ответе
             await post.populate("photos", "url public_id");
 
-            res.status(201).json({ message: "Post created successfully", post });
+            res.status(201).json({ message: "Post created successfully", newPost: post });
         } catch (error) {
             next(error);
         }
@@ -138,6 +140,13 @@ class PostController {
     }
 
     public static async deletePost(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const userId = getUserIdFromToken(req.cookies.accessToken);
+
+        if (!userId) {
+            res.status(401).json({message: "Unauthorized"});
+            return;
+        }
+
         try {
             const {postId} = req.params;
 
@@ -153,10 +162,21 @@ class PostController {
                 return;
             }
 
-            await post.deleteOne();
-            // await Photo.deleteMany({post: Types.ObjectId(postId)});
-            // await UserService.deletePostFromUser(post.author, postId);
-            // await cloudinary.api.delete_resources_by_prefix(`posts/${postId}`);
+            const photos = await Photo.find({ _id: { $in: post.photos } }); // Предполагается, что Photo — это модель для фотографий
+
+            const imagePublicIds = photos.map((img) => img.public_id); // Предполагается, что изображения хранятся в post.images
+
+            const deleteImagePromises = imagePublicIds.map((publicId) =>
+                UploadImage.deleteImage(publicId)
+            );
+            await Promise.all(deleteImagePromises);
+
+            await PostService.deletePostById(postId);
+            await User.findByIdAndUpdate(userId, { $pull: { posts: postId } });
+            //удалить комментарии к посту
+            await Comment.deleteMany({post: postId});
+            //удалить фотографии поста
+            await Photo.deleteMany({post: postId});
 
             res.status(200).json({message: "Post deleted successfully"});
         } catch (error) {

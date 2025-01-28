@@ -92,6 +92,15 @@ class PostRepository {
             throw new Error("Failed to fetch post by ID.");
         }
     }
+
+    public static async deletePostById(postId: string): Promise<void> {
+        try {
+            await Post.findByIdAndDelete(postId);
+        } catch (error) {
+            console.error("Failed to delete post by ID:", error);
+            throw new Error("Failed to delete post by ID.");
+        }
+    }
 }
 
 export default PostRepository;

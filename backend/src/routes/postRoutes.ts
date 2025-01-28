@@ -10,6 +10,8 @@ router.post("/create-post", UploadFiles.uploadMultiple("photos", 5), checkAccess
 
 router.put("/update-post/:postId", checkAccessToken, PostController.updatePost);
 
+router.delete("/delete-post/:postId", checkAccessToken, PostController.deletePost);
+
 router.get("/all-posts", checkAccessToken, PostController.getAllPosts);
 
 router.get("/posts-by-user/:userId", checkAccessToken, PostController.getPostsByUser)
