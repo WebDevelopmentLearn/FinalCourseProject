@@ -1,8 +1,8 @@
 import {CorsOptions} from "cors";
 
 export const configureCors = (): CorsOptions => {
-    const allowedIps = (process.env.ALLOWED_IPS || "localhost").split(","); // Получаем список IP из переменной окружения
-    const allowedPorts = ["3001", "5173"]; // Укажите разрешённые порты
+    const allowedIps = (process.env.ALLOWED_IPS || "localhost").split(",");
+    const allowedPorts = ["3001", "5173"]; // Разрешённые порты
 
     return {
         origin: (origin, callback) => {
@@ -13,17 +13,19 @@ export const configureCors = (): CorsOptions => {
             }
 
             try {
-                const url = new URL(origin); // Парсим origin
-                const ip = url.hostname;
-                const port = url.port;
+                const { hostname, port } = new URL(origin);
 
-                // Проверяем, разрешён ли IP и порт
-                if (allowedIps.includes(ip) && (port === "" || allowedPorts.includes(port))) {
+                console.log(`CORS check: origin=${origin}, hostname=${hostname}, port=${port}`);
+
+                // Разрешаем запросы, если IP/домен в списке и порт разрешён
+                if (allowedIps.includes(hostname) && (port === "" || allowedPorts.includes(port))) {
                     callback(null, true);
                 } else {
-                    throw new Error("Not allowed by CORS");
+                    console.warn(`CORS blocked: origin=${origin}, hostname=${hostname}, port=${port}`);
+                    callback(new Error("Not allowed by CORS"));
                 }
-            } catch {
+            } catch (error) {
+                console.error("CORS error parsing origin:", error);
                 callback(new Error("Invalid Origin"));
             }
         },
