@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 
 import {IUser} from "../entitys/interfaces";
-import {comparePasswords} from "../utils/utils";
+import {comparePasswords, parseTime} from "../utils/utils";
 import {Types} from "mongoose";
 import {generateAccessToken, generateRefreshToken} from "../config/jwt";
 import {validateRefreshToken} from "../middleware/authMiddleware";
@@ -108,7 +108,7 @@ class AuthController {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
-                maxAge: 1000 * 60 * maxAgeAccess  // 2 minutes
+                maxAge: parseTime(process.env.JWT_ACCESS_EXPIRES_IN as string)  // 2 minutes
             });
             await logInfo(`[AuthController.login] Access token saved in cookie`);
 
@@ -121,7 +121,7 @@ class AuthController {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === "production",
                     sameSite: "strict",
-                    maxAge: 1000 * 60 * 15  // 15 minutes
+                    maxAge: parseTime(process.env.JWT_REFRESH_EXPIRES_IN as string)  // 15 minutes
                 });
                 await logInfo(`[AuthController.login] Refresh token saved in cookie`);
             }
@@ -183,7 +183,7 @@ class AuthController {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict",
-                maxAge: 2 * 60 * 1000, // Access token действует 15 минут
+                maxAge: parseTime(process.env.JWT_ACCESS_EXPIRES_IN as string), // Access token действует 15 минут
             });
 
             // console.log("Access token refreshed successfully: ", accessToken);

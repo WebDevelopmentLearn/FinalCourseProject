@@ -56,7 +56,22 @@ export const getUserIdFromToken = (accessToken: string): string => {
     return "";
 }
 
-export const getPublicIdFromUrl = (url: string): string => {
-    const parts = url.split('/upload/');
-    return parts[1]?.split('.')[0]; // Извлекаем public_id из URL
-};
+
+export const parseTime = (time: string): number => {
+    const timeValue = parseInt(time);
+    if (isNaN(timeValue)) {
+        throw new Error('Invalid time value');
+    }
+
+    if (time.includes("d")) {
+        return timeValue * 24 * 60 * 60 * 1000;
+    } else if (time.includes("h")) {
+        return timeValue * 60 * 60 * 1000;
+    } else if (time.includes("m")) {
+        return timeValue * 60 * 1000;
+    } else if (time.includes("s")) {
+        return timeValue * 1000;
+    }
+
+    throw new Error('Invalid time format. Use "d", "h", "m", or "s".');
+}
