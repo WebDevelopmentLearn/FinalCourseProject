@@ -9,6 +9,7 @@ const router: Router = Router();
 router.get("/profile", checkAccessToken, UserController.getUserProfile);
 router.get("/profile/:userId", checkAccessToken, UserController.getUserProfileById);
 router.put("/update-profile", UploadFiles.uploadSingle("avatar"), checkAccessToken, UserController.editProfile);
+router.put("/follow/:userId", checkAccessToken, UserController.followUser);
 
 
 

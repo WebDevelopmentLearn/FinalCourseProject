@@ -10,9 +10,6 @@ import {IUser} from "../entitys/interfaces";
 class UserController {
     public static async getUserProfileById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            // const user = req.user;
-            // console.log(user);
-            console.log("Req.body: ", req.body);
             const userId: string = req.params.userId;
 
             if (!userId) {
@@ -92,14 +89,98 @@ class UserController {
 
             const updateUser = await UserService.updateProfile(targetUser, updatedData);
 
-            console.log("UpdateUser: ", updateUser);
-
-
             res.status(201).json({
                 message: "User has been updated",
                 updateUser
             });
 
+        } catch (error: unknown) {
+            next(error);
+        }
+    }
+
+
+    static async followUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const userId = getUserIdFromToken(req.cookies.accessToken);
+            const followId = req.params.userId;
+            if (!userId || !followId) {
+                res.status(400).json({message: "All fields are required"});
+                return;
+            }
+
+            const user: IUser | null = await UserService.getUserById(userId);
+            const followUser: IUser | null = await UserService.getUserById(followId);
+            if (!user || !followUser) {
+                res.status(404).json({message: "User not found"});
+                return;
+            }
+
+            if (user.id === followId) {
+                res.status(400).json({message: "You can't follow yourself"});
+                return;
+            }
+
+            // @ts-ignore
+            const isFollowing = user.following.includes(followId);
+            if (isFollowing) {
+                res.status(400).json({message: "You are already following this user"});
+                return;
+            }
+
+            // @ts-ignore
+            user.following.push(followId);
+
+            // @ts-ignore
+            followUser.followers.push(userId);
+
+            await user.save();
+            await followUser.save();
+
+            res.status(201).json({message: "User followed successfully"});
+
+        } catch (error: unknown) {
+            next(error);
+        }
+    }
+
+    static async unfollowUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            // const userId = getUserIdFromToken(req.cookies.accessToken);
+            // const {unfollowId} = req.body;
+            // if (!userId || !unfollowId) {
+            //     res.status(400).json({message: "All fields are required"});
+            //     return;
+            // }
+            //
+            // const user: IUser | null = await UserService.getUserById(userId);
+            // const unfollowUser: IUser | null = await UserService.getUserById(unfollowId);
+            // if (!user || !unfollowUser) {
+            //     res.status(404).json({message: "User not found"});
+            //     return;
+            // }
+            //
+            // if (user.id === unfollowId) {
+            //     res.status(400).json({message: "You can't unfollow yourself"});
+            //     return;
+            // }
+            //
+            // const isFollowing = user.following.includes(unfollowId);
+            // if (!isFollowing) {
+            //     res.status(400).json({message: "You are not following this user"});
+            //     return;
+            // }
+            //
+            // user.following = user.following.filter((id: string) => id !== unfollowId);
+            // // unfollowUser.followers = unfollowUser.followers.filter((id: string) => id !== userId);
+            // //push to followers array userId = string
+            // // @ts-ignore
+            // unfollowUser.followers = unfollowUser.followers.filter((id: string) => id !== userId);
+            //
+            // await user.save();
+            // await unfollowUser.save();
+            //
+            // res.status(201).json({message: "User unfollowed successfully"});
 
         } catch (error: unknown) {
             next(error);

@@ -49,7 +49,6 @@ const start = async () => {
         app.use("/api/comments", commentRoutes);
 
         app.listen(Number(PORT), URL, () => {
-            console.log("")
             logInfo(`Server is running at: http://${URL}:${PORT}`);
         });
     } catch (error) {

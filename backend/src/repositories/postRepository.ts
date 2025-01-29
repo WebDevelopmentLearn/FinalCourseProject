@@ -8,7 +8,7 @@ class PostRepository {
             .populate("author", "_id username avatar")
             .populate({
                 path: "comments",
-                select: "_id text author createdAt",
+                select: "_id text author createdAt, content",
                 populate: {
                     path: "author",
                     select: "_id username avatar",
