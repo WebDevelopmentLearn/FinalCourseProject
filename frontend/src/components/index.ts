@@ -48,6 +48,7 @@ import {SimpleAvatarCircle} from "./other/SimpleAvatarCircle/SimpleAvatarCircle.
 import {Phone} from "./other/Phone/Phone.tsx";
 import {ExpandableText} from "./other/ExpandableText/ExpandableText.tsx";
 import {Loader} from "./other/Loader/Loader.tsx";
+import {ProfileHeader} from "./other/ProfileHeader/ProfileHeader.tsx";
 //=====================[OTHER COMPONENTS END]=====================//
 
 
@@ -83,6 +84,6 @@ export {
 
     Phone,
     ExpandableText,
-
+    ProfileHeader,
 
     Loader};
