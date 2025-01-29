@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import LazyLoad from "react-lazyload";
 
@@ -7,8 +7,6 @@ import {PostCard} from "../../components";
 import check from "../../assets/home/check_in_circle.svg";
 import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {getAllPosts} from "../../store/api/actionCreators.ts";
-import {posts} from "../../store/selectors.ts";
-import {IPost} from "../../utils/Entitys.ts";
 
 export const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -71,12 +69,11 @@ export const Home = () => {
                     {posts.length === 0 ? (
                         <p>No posts available.</p>
                     ) : (
-                        posts.map((post) => {
-                            console.log("Post: ", post);
-                            return <LazyLoad key={post._id} height={200} offset={100}>
+                        posts.map((post) => (
+                            <LazyLoad key={post._id} height={200} offset={100}>
                                 <PostCard post={post}/>
                             </LazyLoad>
-                        })
+                        ))
                     )}
                     {loading && <p>Loading...</p>}
                     {/*{!hasMore && <p>No more posts to load.</p>}*/}

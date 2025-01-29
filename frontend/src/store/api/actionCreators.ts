@@ -137,7 +137,7 @@ export const deletePost = createAsyncThunk("post/deletePost", async ({postId}: {
 });
 
 
-export const getAllPosts = createAsyncThunk("post/getAllPosts", async (page: number) => {
+export const getAllPosts = createAsyncThunk("post/getAllPosts", async (page: number, { getState }) => {
     try {
         // const response = await API.get(`/posts/all-posts`);
         const limit = 4; // Лимит постов на страницу
@@ -208,6 +208,17 @@ export const createComment = createAsyncThunk("post/createComment", async ({post
         return response.data;
         // const response = await API.get(`/posts/create-comment/`);
 
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
+
+export const followUser = createAsyncThunk("user/followUser", async ({userId}: {userId: string}) => {
+    try {
+        const response = await API.put(`/user/follow/${userId}`);
+        return response.data;
     } catch (error) {
         console.log(error);
     }

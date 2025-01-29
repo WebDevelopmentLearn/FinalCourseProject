@@ -108,7 +108,8 @@ const postSlice = createSlice({
         }).addCase(getAllPostsByUser.fulfilled, (state, action) => {
             state.postsStatus = "SUCCESS";
             state.postsError = null;
-            state.postsByUser = action.payload;
+
+            state.postsByUser = action.payload.posts;
         }).addCase(getAllPostsByUser.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.payload;
@@ -118,19 +119,12 @@ const postSlice = createSlice({
         }).addCase(createComment.fulfilled, (state, action) => {
             state.createCommentStatus = "SUCCESS";
             state.createCommentError = null;
-            console.log("Action.payload: ", action.payload);
-            console.log("Before update: ", state.currentPost);
             if (state.currentPost) {
                 state.currentPost = {
                     ...state.currentPost,
                     comments: [...state.currentPost.comments, action.payload.newComment]
                 };
-            } else {
-                console.warn("currentPost отсутствует");
             }
-
-
-            console.log("After update: ", state.currentPost);
         }).addCase(createComment.rejected, (state) => {
             state.createCommentStatus = "LOADING";
             state.createCommentError = null;

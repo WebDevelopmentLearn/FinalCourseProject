@@ -46,4 +46,10 @@ export interface IUserState {
 
     updateProfileStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     updateProfileError: any;
+
+    followUserStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    followUserError: any;
+
+    unfollowUserStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    unfollowUserError: any;
 }

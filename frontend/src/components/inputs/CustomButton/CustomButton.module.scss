@@ -18,5 +18,7 @@
 
   &:disabled {
     color: var(--secondary-bgc);
+    background-color: #B2DFFC;
+    cursor: not-allowed;
   }
 }
