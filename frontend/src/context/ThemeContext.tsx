@@ -2,7 +2,7 @@ import React, {createContext, Dispatch, FC, SetStateAction, useContext, useState
 
 interface ThemeContextType {
     theme: string;
-    setTheme(theme: string): Dispatch<SetStateAction<string>>;
+    setTheme: Dispatch<SetStateAction<string>>;
 }
 
 type ThemeProviderProps = {
@@ -12,7 +12,7 @@ type ThemeProviderProps = {
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: FC<ThemeProviderProps> = ({ children  }) => {
-    const [theme, setTheme] = useState('light'); // Значение по умолчанию
+    const [theme, setTheme] = useState<string>(localStorage.getItem("theme") || 'light'); // Значение по умолчанию
 
     return (
         <ThemeContext.Provider value={{theme, setTheme}}>

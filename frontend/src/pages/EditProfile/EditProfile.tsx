@@ -62,11 +62,18 @@ export const EditProfile = () => {
     const onButtonClick = useCallback(() => {
         theme === 'light' ? setTheme('dark') : setTheme('light');
         document.documentElement.className = theme === 'light' ? 'dark-theme' : '';
+
+        //Save theme to local storage
+        localStorage.setItem("theme", theme === 'light' ? 'dark' : 'light');
+
         toast.info(`Theme switched to ${theme === 'light' ? 'dark' : 'light'}`, {
             autoClose: 2000,
-
         });
     }, [theme, setTheme]);
+
+    useEffect(() => {
+        document.documentElement.className = theme === 'light' ? '' : 'dark-theme';
+    }, [theme]);
 
     const handleOpenUploadAvatar = () => {
         setIsOpenUploadAvatarModal(true);
