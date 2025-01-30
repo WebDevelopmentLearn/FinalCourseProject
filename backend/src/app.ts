@@ -41,7 +41,6 @@ const start = async () => {
 
 
         //TODO: Fix the error handler
-        // @ts-ignore
         app.use(ErrorHandler);
         app.use("/api/auth", authRoutes);
         app.use("/api/user", userRoutes);

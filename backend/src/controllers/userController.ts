@@ -174,7 +174,7 @@ class UserController {
             // user.following = user.following.filter((id: string) => id !== unfollowId);
             // // unfollowUser.followers = unfollowUser.followers.filter((id: string) => id !== userId);
             // //push to followers array userId = string
-            // // @ts-ignore
+            //
             // unfollowUser.followers = unfollowUser.followers.filter((id: string) => id !== userId);
             //
             // await user.save();

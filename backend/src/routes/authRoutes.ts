@@ -14,7 +14,6 @@ router.post("/logout",  AuthController.logout);
 
 router.post("/refresh-access-token", AuthController.refreshAccessToken);
 
-// @ts-ignore
 router.get("/check-access-token", AuthController.checkAccessToken);
 
 
