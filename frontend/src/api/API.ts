@@ -1,4 +1,4 @@
-import axios, {AxiosError, AxiosInstance, AxiosResponse} from "axios";
+import axios, {AxiosInstance} from "axios";
 import {NavigateFunction} from "react-router-dom";
 
 

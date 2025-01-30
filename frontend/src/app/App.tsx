@@ -21,6 +21,10 @@ function App() {
     const {theme} = useTheme();
 
     useEffect(() => {
+        document.documentElement.className = theme === 'light' ? '' : 'dark-theme';
+    }, [theme]);
+
+    useEffect(() => {
         setupInterceptors(navigate);
     }, [navigate]);
 

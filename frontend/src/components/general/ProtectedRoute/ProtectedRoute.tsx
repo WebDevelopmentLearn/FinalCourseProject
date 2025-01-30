@@ -1,20 +1,15 @@
 import {FC, ReactNode, useEffect} from "react";
 import {useDispatch} from "react-redux";
-import {AxiosError} from "axios";
-import {useNavigate} from "react-router-dom";
 
-import API from "../../../api/API.ts";
 import {getUser} from "../../../store/api/actionCreators.ts";
 import {AppDispatch} from "../../../store/ichgramStore.ts";
-import {useAuth} from "../../../utils/CustomHooks.ts";
 
-type ProtectedRouteProps = {
+interface ProtectedRouteProps {
     children: ReactNode;
 }
 
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({children}: ProtectedRouteProps) => {
 
-    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {

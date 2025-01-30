@@ -25,7 +25,7 @@ export const useAuth = () => {
                 console.log("Checking access token...");
                 // Проверяем валидность accessToken через сервер
                 await API.get("/auth/check-access-token");
-            } catch (error) {
+            } catch (error: any) {
                 console.error("Access token is invalid or expired");
                 if (error.response?.status === 401) {
                     try {

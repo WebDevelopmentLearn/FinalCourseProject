@@ -1,6 +1,7 @@
 import {FC} from "react";
 
-type SimpleAvatarCircleProps = {
+
+interface SimpleAvatarCircleProps {
     url: string;
     avatarSize?:  "small" | "medium" | "big" | string,
     className?: string,

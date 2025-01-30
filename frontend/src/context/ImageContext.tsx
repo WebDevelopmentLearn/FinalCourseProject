@@ -1,27 +1,12 @@
-import {createContext, ReactNode, useContext, useState} from "react";
+import {createContext, useContext, useState} from "react";
+import {IImage} from "../utils/types.ts";
+import {ClearType, IImageProvider, ImageProviderProps} from "./types.ts";
 
-type ClearType = "currentImage" | "images" | "all";
 
-type IImageProvider = {
-    images: IImage[];
-    currentImage: IImage | null;
-    addImageForEditing: (blob: Blob) => void;
-    saveCroppedImage: (blob: Blob) => void;
-    addSingleImage: (blob: Blob) => void;
-    removeImage: (index: number) => void;
-    clearImages: (clearType: ClearType) => void;
-};
 
 const ImageContext = createContext<IImageProvider | undefined>(undefined);
 
-type IImage = {
-    blob: Blob;
-    url: string;
-};
 
-type ImageProviderProps = {
-    children: ReactNode;
-};
 
 export const useImages = () => {
     const context = useContext(ImageContext);

@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios, {AxiosError} from "axios";
 
-import {ILoginData, IRegisterData} from "../../utils/Entitys.ts";
+import {ILoginData, IRegisterData} from "../../utils/types.ts";
 import API from "../../api/API.ts";
 
 axios.defaults.withCredentials = true;
@@ -55,6 +55,7 @@ export const getUser = createAsyncThunk("auth/getUser", async () => {
         return response.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
@@ -66,6 +67,7 @@ export const getUserById = createAsyncThunk("auth/getUserById", async ({userId}:
         return response.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
@@ -99,10 +101,25 @@ export const createPost = createAsyncThunk("post/createPost", async ({photos, co
 
 });
 
-export const updatePost = createAsyncThunk("post/updatePost", async ({postId, photos, content}: {postId: string, photos: FileList, content: string}, {rejectWithValue}) => {
+type IImage = {
+    blob: Blob;
+    url: string;
+}
+
+export type IUpdatePost = {
+    postId: string,
+    photos: FileList | IImage[],
+    content: string,
+}
+
+export const updatePost = createAsyncThunk("post/updatePost", async ({postId, photos, content}: IUpdatePost, {rejectWithValue}) => {
     try {
         const formData = new FormData();
-        formData.append('photos', photos[0]);
+        // @ts-ignore
+        const files = Array.from(photos);
+        files.forEach((el) => {
+            formData.append("photos", el);
+        });
         formData.append('content', content);
         const response = await API.put(`/posts/update-post/${postId}`, formData);
         return response.data;
@@ -137,7 +154,7 @@ export const deletePost = createAsyncThunk("post/deletePost", async ({postId}: {
 });
 
 
-export const getAllPosts = createAsyncThunk("post/getAllPosts", async (page: number, { getState }) => {
+export const getAllPosts = createAsyncThunk("post/getAllPosts", async (page: number ) => {
     try {
         // const response = await API.get(`/posts/all-posts`);
         const limit = 4; // Лимит постов на страницу
@@ -146,6 +163,7 @@ export const getAllPosts = createAsyncThunk("post/getAllPosts", async (page: num
         return response.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 

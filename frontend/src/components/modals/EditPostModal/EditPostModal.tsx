@@ -6,18 +6,19 @@ import Picker, {EmojiClickData} from "emoji-picker-react";
 import {AppDispatch} from "../../../store/ichgramStore.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {closeCreatePostModal} from "../../../store/reducers/modalSlice.ts";
-import {createPost, updatePost} from "../../../store/api/actionCreators.ts";
+import {createPost, IUpdatePost, updatePost} from "../../../store/api/actionCreators.ts";
 import styles from "../CreatePostModal/CreatePostModal.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {getEnumTheme} from "../../../utils/Utils.ts";
+import {IImage, IPost} from "../../../utils/types.ts";
 
 interface EditPostFormInputs {
     content: string;
-    photos: FileList | null;
+    photos: IImage[] | FileList;
 }
 
-export const EditPostModal = ({post}) => {
+export const EditPostModal = ({post}: {post: IPost}) => {
     const [preview, setPreview] = useState<string | null>(null);
     const dispatch = useDispatch<AppDispatch>();
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
@@ -69,11 +70,13 @@ export const EditPostModal = ({post}) => {
             if (data) {
                 console.log("Create post data:", data);
 
-                const result = await dispatch(updatePost({
+                const updateData: IUpdatePost = {
                     postId: post._id,
-                    content: data.content,
-                    photos: data.photos
-                }));
+                    photos: data.photos,
+                    content: data.content
+                }
+
+                const result = await dispatch(updatePost(updateData));
                 if (createPost.fulfilled.match(result)) {
                     console.log("Post created");
                     handleCloseModal();

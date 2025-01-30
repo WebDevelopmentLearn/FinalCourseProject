@@ -15,11 +15,13 @@ import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {getEnumTheme} from "../../../utils/Utils.ts";
 import {Slider} from "../../inputs/Slider/Slider.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
+import {IImage} from "../../../utils/types.ts";
 
-type CreatePostFormInputs = {
-    photos: FileList | null;
+
+interface CreatePostFormInputs {
+    photos: FileList;
     content: string;
-};
+}
 
 export const CreatePostModal = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +39,7 @@ export const CreatePostModal = () => {
         watch,
         formState: { errors },
         setValue,
-    } = useForm<CreatePostFormInputs>({defaultValues: {content: "", photo: null}});
+    } = useForm<CreatePostFormInputs>({defaultValues: {content: ""}});
     const currentContent = watch("content") || ""; // Get current content value
 
     const handleCloseModal = () => {
@@ -69,8 +71,20 @@ export const CreatePostModal = () => {
         }
     }, [images]);
 
-    useEffect((): void => {
-        setValue("photos", images.map((image) => image.blob)); // Сохраняем только Blob
+    // useEffect((): void => {
+    //
+    //     return setValue("photos", images.map((image: IImage) => image.blob));
+    // }, [images, setValue]);
+
+    useEffect(() => {
+        const dataTransfer = new DataTransfer();
+
+        images.forEach((image: IImage) => {
+            const file = new File([image.blob], "image.jpg", { type: image.blob.type });
+            dataTransfer.items.add(file);
+        });
+
+        setValue("photos", dataTransfer.files); // ✅ Correctly sets a FileList
     }, [images, setValue]);
 
     const handleOpenEmojiPicker = (e: MouseEvent<HTMLButtonElement>) => {
@@ -84,22 +98,14 @@ export const CreatePostModal = () => {
         setValue("content", newContent); // Update content using setValue
     };
 
-    const allValues = watch();
-    console.log("All values:", allValues);
-
     const handleSubmitCreatePost: SubmitHandler<CreatePostFormInputs> = async(data: CreatePostFormInputs) => {
         try {
-            setIsSubmitting(true); // Устанавливаем isSubmitting в true при отправке запроса
-
+            setIsSubmitting(true);
             if (data) {
-               console.log("Create post data:", data);
-
                const result = await dispatch(createPost({ photos: data.photos, content: data.content }));
                if (createPost.fulfilled.match(result)) {
                    console.log("Post created");
                    handleCloseModal();
-
-                   // Добавляем уведомление об успешном создании поста
                    toast.success("Post created successfully!", {
                        autoClose: 2000
                    });
@@ -107,13 +113,11 @@ export const CreatePostModal = () => {
            }
         } catch (error) {
             console.error("Error creating post:", error);
-
-            // Добавляем уведомление об ошибке
             toast.error("Error creating post. Please try again.", {
                 autoClose: 2000
             });
         } finally {
-            setIsSubmitting(false); // Возвращаем isSubmitting в false после завершения процесса
+            setIsSubmitting(false);
         }
     }
 
@@ -125,12 +129,10 @@ export const CreatePostModal = () => {
             }
         };
 
-        // Используем MutationObserver для отслеживания изменений DOM
         const observer = new MutationObserver(() => {
             updateSize();
         });
 
-        // Следим за элементом, если он существует
         if (elementRef.current) {
             observer.observe(elementRef.current, {
                 attributes: true,
@@ -139,7 +141,6 @@ export const CreatePostModal = () => {
             });
         }
 
-        // Принудительно вызываем расчет размеров после полной загрузки страницы
         const handleLoad = () => updateSize();
         if (document.readyState === "complete") {
             handleLoad();
@@ -147,7 +148,6 @@ export const CreatePostModal = () => {
             window.addEventListener("load", handleLoad);
         }
 
-        // Подписка на изменения размера окна
         window.addEventListener("resize", updateSize);
 
         return () => {
@@ -173,11 +173,7 @@ export const CreatePostModal = () => {
                     </header>
                     <main className={styles.create_post_modal_content}>
                         <div ref={elementRef} className={`${styles.upload_photo} ${emojiPickerIsOpen ? styles.test : styles.test2} ${previews ? styles.test3 : styles.test4}`}>
-                            <Slider
-                            //     style={{
-                            //     height: emojiPickerIsOpen ? "70vh" : "50vh"
-                            // }}
-                                maxImages={5} maxWidth={size.width - 32}/>
+                            <Slider maxImages={5} maxWidth={size.width - 32}/>
                         </div>
 
                         <div className={styles.create_post_modal_form} style={{

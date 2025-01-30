@@ -1,4 +1,8 @@
-import {UploadImageIconProps} from "../../utils/Entitys.ts";
+
+
+interface UploadImageIconProps {
+    className: string;
+}
 
 export const UploadImageIcon = ({className}: UploadImageIconProps ) => {
     return (

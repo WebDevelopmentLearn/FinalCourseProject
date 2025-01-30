@@ -1,8 +1,12 @@
 import {FC, useMemo} from "react";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
-import {AvatarCircleProps} from "../../../utils/Entitys.ts";
-import {Loader} from "../Loader/Loader.tsx";
+interface AvatarCircleProps {
+    user: any;
+    avatarSize?:  "small" | "medium" | "big" | string,
+    className?: string,
+    hasLink?: boolean,
+}
 
 export const AvatarCircle: FC<AvatarCircleProps> = ({user, className, avatarSize = "small", hasLink = true}: AvatarCircleProps) => {
     const navigate: NavigateFunction = useNavigate();

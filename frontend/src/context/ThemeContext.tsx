@@ -1,13 +1,7 @@
-import React, {createContext, Dispatch, FC, SetStateAction, useContext, useState} from "react";
+import {createContext, FC, useContext, useState} from "react";
+import {ThemeContextType, ThemeProviderProps} from "./types.ts";
 
-interface ThemeContextType {
-    theme: string;
-    setTheme: Dispatch<SetStateAction<string>>;
-}
 
-type ThemeProviderProps = {
-    children: React.ReactNode
-}
 
 export const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 

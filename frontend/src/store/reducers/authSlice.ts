@@ -18,6 +18,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         clearStatus: (state, action) => {
+            // @ts-ignore
             state[action.payload] = "IDLE";
         }
     },

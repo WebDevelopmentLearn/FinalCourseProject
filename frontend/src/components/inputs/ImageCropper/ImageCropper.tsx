@@ -3,9 +3,17 @@ import Cropper from "react-easy-crop";
 
 import styles from "./ImageCropper.module.scss";
 import {getCroppedImg} from "../../../utils/Utils.ts";
-import {ImageCropperProps} from "../../../utils/Entitys.ts";
 import {useImages} from "../../../context/ImageContext.tsx";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
+
+interface ImageCropperProps  {
+    handleClose: () => void;
+    imageSrc: any;
+    shape: "round" | "rect";
+    permittedAspects: string[];
+    className?: string;
+    singleMode?: boolean;
+}
 
 export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAspects, singleMode = false}: ImageCropperProps) => {
     const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -14,13 +22,13 @@ export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAs
     const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const { saveCroppedImage, addSingleImage } = useImages();
 
-    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
         console.log("croppedArea: ", croppedArea);
         console.log("croppedAreaPixels: ", croppedAreaPixels);
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    const handleAspectChange = (e) => {
+    const handleAspectChange = (e: any) => {
         const value = e.target.value;
         switch (value) {
             case "1:1":

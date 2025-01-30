@@ -6,8 +6,10 @@ import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {Separator} from "../../other/Separator/Separator.tsx";
 import lock_icon from "../../../assets/forgot_password/lock_icon.svg";
-import {ForgotPasswordFormValues} from "../../../utils/Entitys.ts";
 
+interface ForgotPasswordFormValues {
+    emailOrUsername: string;
+}
 
 export const ForgotPasswordForm = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<ForgotPasswordFormValues>();

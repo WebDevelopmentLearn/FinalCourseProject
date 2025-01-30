@@ -3,10 +3,10 @@ import styles from "./UploadAvatarModal.module.scss";
 import {UploadImageIcon} from "../../../assets/icons/UploadImageIcon.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
 
-export const UploadAvatarModal = ({setIsOpenUploadAvatarModal}) => {
+export const UploadAvatarModal = ({setIsOpenUploadAvatarModal}: {setIsOpenUploadAvatarModal: any}) => {
     const {currentImage, addImageForEditing, clearImages } = useImages();
 
-    const handleFileChange = (event) => {
+    const handleFileChange = (event: any) => {
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             const blob = new Blob([file], { type: file.type });

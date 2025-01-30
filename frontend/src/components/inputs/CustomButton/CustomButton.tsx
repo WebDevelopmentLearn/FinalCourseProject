@@ -1,7 +1,15 @@
-import {FC} from "react";
+import {CSSProperties, FC} from "react";
 
 import styles from "./CustomButton.module.scss";
-import {CustomButtonProps} from "../../../utils/Entitys.ts";
+
+interface CustomButtonProps {
+    title?: string;
+    type?: "button" | "submit" | "reset";
+    styles?: CSSProperties;
+    onClick?: () => void;
+    className?: string;
+    disabled?: boolean;
+}
 
 export const CustomButton: FC<CustomButtonProps> = ({type = "button", onClick, className, title = "Sign up", disabled = false}) => {
     return (

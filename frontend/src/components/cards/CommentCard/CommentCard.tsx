@@ -1,9 +1,9 @@
 import styles from "./CommentCard.module.scss";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
-import {ICommentCard} from "../../../utils/Entitys.ts";
+import {ICommentCard} from "../../../utils/types.ts";
 import {getTimeAgo} from "../../../utils/Utils.ts";
 
-export const CommentCard = ({author, commentDesc, createdAt, likes}: ICommentCard) => {
+export const CommentCard = ({author, content, createdAt, likes}: ICommentCard) => {
 
     return (
         <li className={styles.post_comment}>
@@ -12,7 +12,7 @@ export const CommentCard = ({author, commentDesc, createdAt, likes}: ICommentCar
                 <div className={styles.comment_desc_and_stats}>
                     <div className={styles.comment_desc}>
                         <span>{author?.username}</span>
-                        <span>{commentDesc}</span>
+                        <span>{content}</span>
                     </div>
                     <div className={styles.comment_stats}>
                         <span>{getTimeAgo(createdAt)}</span>

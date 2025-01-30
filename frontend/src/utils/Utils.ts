@@ -11,6 +11,10 @@ const createImage = (url: string): Promise<CanvasImageSource> => {
 
 
 export const getTimeAgo = (date: string): string => {
+    if (!date) {
+        return "";
+    }
+
     const dateObj = new Date(date);
     const currentDate = new Date();
     const diff = currentDate.getTime() - dateObj.getTime();
@@ -50,7 +54,7 @@ export function getEnumTheme(userTheme: string): Theme | undefined {
 }
 
 
-export const getCroppedImg = async (imageSrc, pixelCrop): Promise<Blob> => {
+export const getCroppedImg = async (imageSrc: any, pixelCrop: any): Promise<Blob> => {
     console.log("ImageSrc: ", typeof imageSrc);
     console.log("pixelCrop: ", typeof pixelCrop);
     const image: CanvasImageSource = await createImage(imageSrc);

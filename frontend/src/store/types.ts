@@ -1,4 +1,4 @@
-import {IPost, IUser} from "../utils/Entitys.ts";
+import {IPost, IUser} from "../utils/types.ts";
 
 export interface IModalState {
     createPostModalIsOpen: boolean;

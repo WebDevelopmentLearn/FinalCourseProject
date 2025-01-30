@@ -7,7 +7,7 @@ import styles from "./EditProfile.module.scss";
 import {CustomButton, CustomInput, ThemeSwitcher} from "../../components";
 import {useTheme} from "../../context/ThemeContext.tsx";
 import {userData} from "../../store/selectors.ts";
-import {IUser} from "../../utils/Entitys.ts";
+import {IUser} from "../../utils/types.ts";
 import {AppDispatch} from "../../store/ichgramStore.ts";
 import {updateUserProfile} from "../../store/api/actionCreators.ts";
 import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
@@ -15,7 +15,7 @@ import {useImages} from "../../context/ImageContext.tsx";
 import {SimpleAvatarCircle} from "../../components";
 import {toast} from "react-toastify";
 
-type EditProfileValues = {
+interface EditProfileValues {
     avatar_input: File;
     username_input: string;
     about_input: string;
@@ -71,9 +71,6 @@ export const EditProfile = () => {
         });
     }, [theme, setTheme]);
 
-    useEffect(() => {
-        document.documentElement.className = theme === 'light' ? '' : 'dark-theme';
-    }, [theme]);
 
     const handleOpenUploadAvatar = () => {
         setIsOpenUploadAvatarModal(true);

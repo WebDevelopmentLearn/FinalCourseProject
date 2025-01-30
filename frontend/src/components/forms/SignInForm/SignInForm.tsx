@@ -9,10 +9,15 @@ import ichgramLogo from "../../../assets/logo.svg";
 import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
 import {Separator} from "../../other/Separator/Separator.tsx";
-import {ILoginData, SignInFormValues} from "../../../utils/Entitys.ts";
+import {ILoginData} from "../../../utils/types.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {loginUser} from "../../../store/api/actionCreators.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
+
+interface SignInFormValues {
+    usernameOrEmail: string;
+    password: string;
+}
 
 export const SignInForm: FC = () => {
     const {theme} = useTheme();

@@ -1,22 +1,22 @@
 import {CSSProperties, useCallback, useState} from "react";
-import {useDispatch} from "react-redux";
 
 import styles from "./SimpleSlider.module.scss";
 import {UploadImageIcon} from "../../../assets/icons/UploadImageIcon.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
-import {AppDispatch} from "../../../store/ichgramStore.ts";
 import {ImageCropperModal} from "../../modals/ImageCropperModal/ImageCropperModal.tsx";
+import {IImage} from "../../../utils/types.ts";
 
 type SliderTypes = "ViewPostModal" | "EditPostModal" | "CreatePostModal" | "ViewPost";
 
-type SimpleSliderProps = {
+
+interface SimpleSliderProps {
     sliderType: SliderTypes;
     style?: CSSProperties;
     className?: string;
     inModal?: boolean;
     maxWidth?: number;
     maxImages?: number;
-    postImages?: string[];
+    postImages?: IImage[];
 }
 
 export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, postImages = [], inModal = false, sliderType = "ViewPost"}: SimpleSliderProps) => {
@@ -24,14 +24,14 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const {currentImage, images, addImageForEditing, removeImage } = useImages();
 
-    const handlePrevious = useCallback((event) => {
+    const handlePrevious = useCallback((event: any) => {
         event.stopPropagation();
         setCurrentImg((prev) => {
             return prev === postImages.length - 1 ? 0 : prev - 1;
         });
     }, [postImages.length]);
 
-    const handleNext = useCallback((event) => {
+    const handleNext = useCallback((event: any) => {
         event.stopPropagation();
         setCurrentImg((prev) => {
             return prev === postImages.length - 1 ? 0 : prev + 1;
@@ -44,11 +44,10 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
         setIsOpen(false);
     }
 
-    const handleFileChange = (event) => {
+    const handleFileChange = (event: any) => {
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             const blob = new Blob([file], { type: file.type });
-            const fileUrl = URL.createObjectURL(file); // Создаем временный URL для отображения изображения
             // dispatch(addImageUrl(fileUrl));
             // dispatch(addImageBlob(blob));
             addImageForEditing(blob);
@@ -58,7 +57,7 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
         event.target.value = "";
     };
 
-    const handleDelete = (imageUrl) => {
+    const handleDelete = (imageUrl: any) => {
         removeImage(imageUrl)
     }
     //=======================[CREATE POST MODAL FUNCS END]=======================\\
@@ -85,20 +84,16 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
     return (
         <div style={style} className={`${styles.slider} ${className}`}>
             <div className={`${styles.cards} ${inModal ? styles.cards_height : ""}`} style={styleCards}>
-                {(sliderType === "CreatePostModal" ? images : postImages).map((image, index) => (
-                    // <div key={index} className={styles.card} style={{backgroundImage: `url(${image})`, maxWidth: `${maxWidth}px`,}}>
-                    //     {/*<button className={styles.card__delete_btn} onClick={() => handleDelete(image.url)}>X</button>*/}
-                    // </div>
-
-                    // <img className={styles.card} key={index} src={image} alt=""/>
-                    sliderType === "CreatePostModal" ? (
-                        <div key={index} className={styles.card} style={{backgroundImage: `url(${image.url})`, maxWidth: `${maxWidth}px`,}}>
+                {(sliderType === "CreatePostModal" ? images : postImages).map((image: IImage, index: number) => {
+                   return sliderType === "CreatePostModal" ? (
+                        <div key={index} className={styles.card}
+                             style={{backgroundImage: `url(${image?.url})`, maxWidth: `${maxWidth}px`,}}>
                             <button className={styles.card__delete_btn} onClick={() => handleDelete(index)}>X</button>
                         </div>
                     ) : (
-                        <img className={styles.card} key={index} src={image.url} alt=""/>
+                        <img className={styles.card} key={index} src={image?.url} alt=""/>
                     )
-                ))}
+                })}
 
                 {sliderType === "CreatePostModal" && (
                     <div  style={{maxWidth: `${maxWidth}px`}}
@@ -132,7 +127,7 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
                 </div>
             )}
             {isOpen && (
-                <ImageCropperModal handleClose={handleClose} imageSrc={currentImage.url}/>
+                <ImageCropperModal handleClose={handleClose} imageSrc={currentImage?.url}/>
             )}
         </div>
     );

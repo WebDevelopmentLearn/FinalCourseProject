@@ -1,10 +1,20 @@
-import {useCallback, useEffect, useState} from "react";
+import {CSSProperties, useCallback, useEffect, useState} from "react";
 
-import {SliderProps} from "../../../utils/Entitys.ts";
 import styles from "./Slider.module.scss";
 import {UploadImageIcon} from "../../../assets/icons/UploadImageIcon.tsx";
 import {ImageCropperModal} from "../../modals/ImageCropperModal/ImageCropperModal.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
+
+interface SliderProps {
+    style?: CSSProperties;
+    className?: string;
+    inModal?: boolean;
+    isEditModal?: boolean;
+    maxWidth?: number;
+    maxImages?: number;
+    postImages?: string[];
+    // onHandleFiles: () => void;
+}
 
 export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: SliderProps) => {
     const [currentImg, setCurrentImg] = useState<number>(0);
@@ -33,13 +43,13 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
         }
     }, [images.length, maxImages]);
 
-    const handleKeyDown = useCallback((event) => {
+    const handleKeyDown = useCallback((event: any) => {
         console.log("handleKeyDown")
         if (event.key === "ArrowLeft") handlePrevious();
         if (event.key === "ArrowRight") handleNext();
     }, [handleNext, handlePrevious]);
 
-    const handleFileChange = (event) => {
+    const handleFileChange = (event: any) => {
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             const blob = new Blob([file], { type: file.type });
@@ -50,7 +60,7 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
         event.target.value = "";
     };
 
-    const handleDelete = (imageUrl) => {
+    const handleDelete = (imageUrl: any) => {
         console.log("imageUrl: ", imageUrl);
         removeImage(imageUrl)
     }
@@ -103,7 +113,7 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
                 </div>
             )}
             {isOpen && (
-                <ImageCropperModal handleClose={handleClose} imageSrc={currentImage.url}/>
+                <ImageCropperModal handleClose={handleClose} imageSrc={currentImage?.url}/>
             )}
         </div>
     );

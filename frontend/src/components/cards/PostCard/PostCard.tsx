@@ -5,7 +5,12 @@ import styles from "./PostCard.module.scss";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {getTimeAgo} from "../../../utils/Utils.ts";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
-import {PostCardProps} from "../../../utils/Entitys.ts";
+import {IPost} from "../../../utils/types.ts";
+
+interface PostCardProps {
+    onClick?: () => void;
+    post: IPost;
+}
 
 export const PostCard = ({post}: PostCardProps) => {
     const elementRef = useRef<HTMLDivElement | null>(null);

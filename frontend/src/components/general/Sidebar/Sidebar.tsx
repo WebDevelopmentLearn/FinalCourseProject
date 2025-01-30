@@ -1,4 +1,4 @@
-import React, {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} from "react";
+import {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} from "react";
 import {NavigateFunction, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -6,7 +6,6 @@ import styles from "./Sidebar.module.scss";
 import logo from "../../../assets/logo.svg";
 import logo_dark from "../../../assets/logo_dark.svg";
 import {SearchModal} from "../../modals/SearchModal/SearchModal.tsx";
-import {NotificationModal} from "../../modals/NotificationModal/NotificationModal.tsx";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {openCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
@@ -49,7 +48,6 @@ export const Sidebar: FC = () => {
         if (sidebarRef.current) {
             sidebarRef.current.classList.add(styles.small);
             setIsModalOpen(true);
-            setModalContent(<NotificationModal />);
         }
         console.log("handleOpenNotifications");
     }, []);
@@ -60,7 +58,7 @@ export const Sidebar: FC = () => {
     }, [dispatch]);
 
 
-    const handleCloseModal = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    const handleCloseModal = useCallback(() => {
         if (sidebarRef.current) {
 
             sidebarRef.current.classList.remove(styles.small);

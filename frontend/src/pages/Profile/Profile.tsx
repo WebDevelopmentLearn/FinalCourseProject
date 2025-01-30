@@ -6,7 +6,9 @@ import styles from "./Profile.module.scss";
 import {PostCardInProfile, ProfileHeader} from "../../components";
 import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {getAllPostsByUser, getUserById} from "../../store/api/actionCreators.ts";
-import {IPost, IUser} from "../../utils/Entitys.ts";
+import {IPost, IUser} from "../../utils/types.ts";
+import {SkeletonProfile} from "../../skeletons/SkeletonProfile/SkeletonProfile.tsx";
+
 
 export const Profile = () => {
     const [currentUser, setCurrentUser] = useState<IUser | null>(null);
@@ -27,14 +29,6 @@ export const Profile = () => {
                     setCurrentUser(result.payload);
                 }
             }
-
-
-            // if (_id === user?._id) {
-            //     // Если это личный профиль, то мы уже имеем все данные в Redux
-            // } else {
-            //     const result = await dispatch(getUserById({userId: _id}));
-            //     // Если профиль другого пользователя, данные уже в Redux
-            // }
         };
         fetchUserData();
     }, [_id]);
@@ -45,6 +39,8 @@ export const Profile = () => {
             dispatch(getAllPostsByUser({userId: _id}));
         }
     }, [_id, dispatch]);
+
+    if (!currentUser || !user) return <SkeletonProfile />;
 
     return (
         <div className={styles.profile}>

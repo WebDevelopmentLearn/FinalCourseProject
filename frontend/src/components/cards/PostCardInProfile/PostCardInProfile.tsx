@@ -2,8 +2,13 @@ import {useEffect, useRef, useState} from "react";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
 import styles from "./PostCardInProfile.module.scss";
-import {PostCardInProfileProps} from "../../../utils/Entitys.ts";
+import {IPost} from "../../../utils/types.ts";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
+
+interface PostCardInProfileProps {
+    post: IPost,
+    onClick?: () => void;
+}
 
 export const PostCardInProfile = ({post}: PostCardInProfileProps) => {
     const elementRef = useRef<HTMLDivElement | null>(null);

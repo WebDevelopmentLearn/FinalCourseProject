@@ -7,9 +7,14 @@ import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../../store/ichgramStore.ts";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
-import {IUser} from "../../../utils/Entitys.ts";
+import {IUser} from "../../../utils/types.ts";
 
-export const ProfileHeader = ({user}: {user: IUser}) => {
+
+interface ProfileHeaderProps {
+    user: IUser;
+}
+
+export const ProfileHeader = ({user}: ProfileHeaderProps) => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate: NavigateFunction = useNavigate();
     const {_id} = useParams();
@@ -17,12 +22,15 @@ export const ProfileHeader = ({user}: {user: IUser}) => {
     const postsCount = user?.posts?.length ?? 0;
     const followers = user?.followers?.length ?? 0;
     const following = user?.following?.length ?? 0;
-    const isFollowing = user?.followers?.includes(user?._id) ?? false;
+
+    const isFollowing = user?.followers?.some(follower => follower._id === user?._id) ?? false;
 
     const handleRedirect = () => navigate("/edit_profile");
 
     const handleFollow = async () => {
         try {
+            if (!_id) return;
+
             await dispatch(followUser({userId: _id}));
             toast.success("You have successfully subscribed to the user", {autoClose: 2000});
         } catch (error) {

@@ -1,6 +1,10 @@
 import styles from "./ImageCropperModal.module.scss";
-import {ImageCropperModalProps} from "../../../utils/Entitys.ts";
 import {ImageCropper} from "../../inputs/ImageCropper/ImageCropper.tsx";
+
+interface ImageCropperModalProps {
+    handleClose: () => void;
+    imageSrc: any;
+}
 
 export const ImageCropperModal = ({imageSrc, handleClose}: ImageCropperModalProps) => {
 

@@ -1,7 +1,13 @@
 import styles from "./InterlocutorCard.module.scss";
-import {InterlocutorCardProps} from "../../../utils/Entitys.ts";
 
-export const InterlocutorCard = ({name, message = "", time, avatar}: InterlocutorCardProps) => {
+interface InterlocutorCardProps {
+    name: string;
+    message: string;
+    time: string;
+    avatar: string;
+}
+
+export const InterlocutorCard = ({name, time, avatar}: InterlocutorCardProps) => {
     return (
         <div className={styles.interlocutor}>
             <img src={avatar} alt="avatar"/>

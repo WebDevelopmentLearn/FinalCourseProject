@@ -10,11 +10,12 @@ import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
 import {registerUser} from "../../../store/api/actionCreators.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
-import {IRegisterData} from "../../../utils/Entitys.ts";
+import {IRegisterData} from "../../../utils/types.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {toast} from "react-toastify";
 
-type SignUpFormValues = {
+
+interface SignUpFormValues {
     email: string;
     full_name: string;
     username: string;
@@ -45,10 +46,10 @@ export const SignUpForm: FC = () => {
                 password: data.password
             }
 
-            console.log(registerData);
+            // console.log(registerData);
             const result = await dispatch(registerUser(registerData));
             if (result.type !== "auth/registerUser/rejected") {
-                console.log("User registered successfully");
+                // console.log("User registered successfully");
                 toast.success("User registered successfully", {
                     autoClose: 2000
                 });

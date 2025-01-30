@@ -14,7 +14,7 @@
 // import eighthImage from "../assets/explore/8.png";
 // import ninthImage from "../assets/explore/9.png";
 // import tenthImage from "../assets/explore/10.png";
-// import {IPost} from "./Entitys.ts";
+// import {IPost} from "./types.ts";
 
 
 // export const postsArr: IPost[] = [

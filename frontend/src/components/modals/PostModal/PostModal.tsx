@@ -11,7 +11,7 @@ import {useTheme} from "../../../context/ThemeContext.tsx";
 import {getEnumTheme, getTimeAgo} from "../../../utils/Utils.ts";
 
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
-import {IPost} from "../../../utils/Entitys.ts";
+import {ICommentCard, IPost} from "../../../utils/types.ts";
 import {createComment, deletePost, getPostById} from "../../../store/api/actionCreators.ts";
 import {Loader} from "../../other/Loader/Loader.tsx";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
@@ -20,7 +20,7 @@ import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
 import {toast} from "react-toastify";
 
-type PostModalInputValues = {
+interface PostModalInputValues {
     content: string;
 }
 
@@ -34,6 +34,8 @@ export const PostModal = () => {
     const [isAnimating, setIsAnimating] = useState(false);
     // const [text, setText] = useState('');
     const [post, setPost] = useState<IPost | null>(null);
+
+
     const [copied, setCopied] = useState(false);
     // const textareaRef = useRef<HTMLTextAreaElement>(null);
     const elementRef = useRef<HTMLDivElement>(null);
@@ -79,7 +81,7 @@ export const PostModal = () => {
     };
 
 
-    const handleOpenEmojiPicker = (e: MouseEvent) => {
+    const handleOpenEmojiPicker = (e: any) => {
         e.preventDefault();
         setEmojiPickerIsOpen(!emojiPickerIsOpen);
     };
@@ -166,6 +168,7 @@ export const PostModal = () => {
     const handleCopyUrlPostToClipboard = useCallback(() => {
         setCopied(true);
         // alert("The link to the post is successfully copied");
+        console.log("Copied: ", copied);
         toast.success("The link to the post is successfully copied", {
            autoClose: 2000
         });
@@ -173,6 +176,7 @@ export const PostModal = () => {
     const handleDeletePost = useCallback(async() => {
         console.log("handleDeletePost");
         try {
+            if (!_id) return;
             const result = await dispatch(deletePost({postId: _id}));
             console.log("Post deleted: ", result);
             toast.success("Post deleted successfully", {
@@ -282,15 +286,15 @@ export const PostModal = () => {
                                 </p>
 
                                 <div className={styles.post_date}>
-                                    <span>{getTimeAgo(post?.createdAt)}</span>
+                                    <span>{getTimeAgo(post?.createdAt ?? "")}</span>
                                 </div>
                             </div>
 
                         </div>
 
 
-                        {currentPost && currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment) => (
-                            <CommentCard key={comment._id} author={comment.author} commentDesc={comment.content}
+                        {currentPost && currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment: ICommentCard) => (
+                            <CommentCard key={comment._id} author={comment.author} content={comment.content}
                                          createdAt={comment.createdAt} likes={comment.likes}/>
 
                         )) : <h2 style={{textAlign: "center"}}>No comments</h2>}
@@ -323,7 +327,7 @@ export const PostModal = () => {
 
                         <div className={styles.likes_and_date_container}>
                             <span>{post?.likes.length} likes</span>
-                            <span>{getTimeAgo(post?.createdAt)}</span>
+                            <span>{getTimeAgo(post?.createdAt ?? "")}</span>
                         </div>
                     </div>
 
@@ -387,7 +391,7 @@ export const PostModal = () => {
                 )}
             </div>
 
-            {editPostModalIsOpen && <EditPostModal post={post} />}
+            {(editPostModalIsOpen && post) && <EditPostModal post={post} />}
 
         </div>
     );

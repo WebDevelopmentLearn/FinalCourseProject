@@ -39,6 +39,7 @@ const postSlice = createSlice({
     initialState,
     reducers: {
         clearStatus: (state, action) => {
+            // @ts-ignore
             state[action.payload] = "IDLE";
         }
     },
@@ -48,9 +49,10 @@ const postSlice = createSlice({
             state.postsError = null;
             state.loading = true;
         }).addCase(getAllPosts.fulfilled, (state, action) => {
+            if (!action.payload) return;
             // state.postsStatus = "SUCCESS";
             // state.posts = action.payload;
-            const { posts, total, totalPages } = action.payload;
+            const { posts, totalPages } = action.payload;
             state.postsStatus = "SUCCESS";
             state.posts = [...state.posts, ...posts]; // Добавляем новые посты к текущим
             state.hasMore = state.page < totalPages; // Проверяем, есть ли еще посты
