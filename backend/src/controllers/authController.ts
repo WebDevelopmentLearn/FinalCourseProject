@@ -159,7 +159,9 @@ class AuthController {
             const refreshToken: string = req.cookies.refreshToken;
 
             if (!refreshToken) {
+                res.clearCookie("accessToken");
                 res.status(401).json({message: "Refresh token is required"});
+
                 await logInfo("[AuthController.refreshAccessToken] Refresh token is required");
                 return;
             }
@@ -195,6 +197,8 @@ class AuthController {
             });
             await logInfo("[AuthController.refreshAccessToken] Access token refreshed successfully");
         } catch (error: unknown) {
+            res.clearCookie("refreshToken");
+            res.clearCookie("accessToken");
             next(error);
         }
     }
