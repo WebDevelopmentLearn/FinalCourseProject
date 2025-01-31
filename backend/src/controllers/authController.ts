@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import AuthService from "../services/authService";
 import AuthRepository from "../repositories/authRepository";
 import {body, validationResult} from "express-validator";
+import RefreshToken from "../models/RefreshToken";
 
 class AuthController {
 
@@ -145,6 +146,7 @@ class AuthController {
 
     public static async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            await RefreshToken.deleteOne({ token: req.cookies.refreshToken });
             res.clearCookie("accessToken");
             res.clearCookie("refreshToken");
             res.status(200).json({ message: "Logged out successfully" });
@@ -197,6 +199,7 @@ class AuthController {
             });
             await logInfo("[AuthController.refreshAccessToken] Access token refreshed successfully");
         } catch (error: unknown) {
+            await RefreshToken.deleteOne({ token: req.cookies.refreshToken });
             res.clearCookie("refreshToken");
             res.clearCookie("accessToken");
             next(error);
