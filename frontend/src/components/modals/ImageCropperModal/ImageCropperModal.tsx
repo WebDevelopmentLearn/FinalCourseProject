@@ -3,7 +3,7 @@ import {ImageCropper} from "../../inputs/ImageCropper/ImageCropper.tsx";
 
 interface ImageCropperModalProps {
     handleClose: () => void;
-    imageSrc: any;
+    imageSrc: string;
 }
 
 export const ImageCropperModal = ({imageSrc, handleClose}: ImageCropperModalProps) => {

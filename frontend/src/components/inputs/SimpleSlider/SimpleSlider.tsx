@@ -1,4 +1,4 @@
-import {CSSProperties, useCallback, useState} from "react";
+import React, {ChangeEvent, CSSProperties, useCallback, useState} from "react";
 
 import styles from "./SimpleSlider.module.scss";
 import {UploadImageIcon} from "../../../assets/icons/UploadImageIcon.tsx";
@@ -7,7 +7,6 @@ import {ImageCropperModal} from "../../modals/ImageCropperModal/ImageCropperModa
 import {IImage} from "../../../utils/types.ts";
 
 type SliderTypes = "ViewPostModal" | "EditPostModal" | "CreatePostModal" | "ViewPost";
-
 
 interface SimpleSliderProps {
     sliderType: SliderTypes;
@@ -24,14 +23,14 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const {currentImage, images, addImageForEditing, removeImage } = useImages();
 
-    const handlePrevious = useCallback((event: any) => {
+    const handlePrevious = useCallback((event: React.MouseEvent<HTMLButtonElement>): void => {
         event.stopPropagation();
         setCurrentImg((prev) => {
             return prev === postImages.length - 1 ? 0 : prev - 1;
         });
     }, [postImages.length]);
 
-    const handleNext = useCallback((event: any) => {
+    const handleNext = useCallback((event: React.MouseEvent<HTMLButtonElement>): void => {
         event.stopPropagation();
         setCurrentImg((prev) => {
             return prev === postImages.length - 1 ? 0 : prev + 1;
@@ -44,21 +43,18 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
         setIsOpen(false);
     }
 
-    const handleFileChange = (event: any) => {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>): void => {
         if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
+            const file: File = event.target.files[0];
             const blob = new Blob([file], { type: file.type });
-            // dispatch(addImageUrl(fileUrl));
-            // dispatch(addImageBlob(blob));
             addImageForEditing(blob);
-
             setIsOpen(true);
         }
         event.target.value = "";
     };
 
-    const handleDelete = (imageUrl: any) => {
-        removeImage(imageUrl)
+    const handleDelete = (imageIndex: number): void => {
+        removeImage(imageIndex)
     }
     //=======================[CREATE POST MODAL FUNCS END]=======================\\
 

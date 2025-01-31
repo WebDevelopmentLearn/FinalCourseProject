@@ -1,8 +1,9 @@
 import {FC, useMemo} from "react";
 import {NavigateFunction, useNavigate} from "react-router-dom";
+import {IUser} from "../../../utils/types.ts";
 
 interface AvatarCircleProps {
-    user: any;
+    user: IUser;
     avatarSize?:  "small" | "medium" | "big" | string,
     className?: string,
     hasLink?: boolean,

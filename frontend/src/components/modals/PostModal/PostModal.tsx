@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
@@ -75,29 +75,29 @@ export const PostModal = () => {
     const currentContent = watch("content") || ""; // Get current content value
 
 
-    const onEmojiClick = (emojiData: EmojiClickData) => {
+    const onEmojiClick = (emojiData: EmojiClickData): void => {
         const newContent = currentContent + emojiData.emoji; // Append emoji to content
         setValue("content", newContent); // Update content using setValue
     };
 
 
-    const handleOpenEmojiPicker = (e: any) => {
+    const handleOpenEmojiPicker = (e: React.MouseEvent<HTMLButtonElement>): void => {
         e.preventDefault();
         setEmojiPickerIsOpen(!emojiPickerIsOpen);
     };
 
 
-    const handleOpenMoreOptionModal = () => {
+    const handleOpenMoreOptionModal = (): void => {
         setMoreOptionModalIsOpen(true);
     }
 
-    const handleCloseMoreOptionModal = () => {
+    const handleCloseMoreOptionModal = (): void => {
         setMoreOptionModalIsOpen(false);
         console.log("handleCloseMoreOptionModal")
     }
 
 
-    const handleFollow = useCallback(() => {
+    const handleFollow = useCallback((): void => {
         isLiked ? setIsLiked(false) : setIsLiked(true);
         console.log("handleFollow");
         setIsAnimating(true);
@@ -165,15 +165,17 @@ export const PostModal = () => {
             window.removeEventListener("load", handleLoad);
         };
     }, []);
-    const handleCopyUrlPostToClipboard = useCallback(() => {
+
+    const handleCopyUrlPostToClipboard = useCallback((): void => {
         setCopied(true);
         // alert("The link to the post is successfully copied");
         console.log("Copied: ", copied);
         toast.success("The link to the post is successfully copied", {
            autoClose: 2000
         });
-    }, []);
-    const handleDeletePost = useCallback(async() => {
+    }, [copied]);
+
+    const handleDeletePost = useCallback(async(): Promise<void> => {
         console.log("handleDeletePost");
         try {
             if (!_id) return;
@@ -192,7 +194,7 @@ export const PostModal = () => {
     }, [dispatch]);
 
 
-    const handleClosePost = () => {
+    const handleClosePost = (): void => {
         if (location.pathname.includes("profile")) {
             navigate(`/profile/${location.pathname.split("/")[2]}`);
         } else {
@@ -200,7 +202,7 @@ export const PostModal = () => {
         }
     }
 
-    const handleSendComment: SubmitHandler<PostModalInputValues> = async (data) => {
+    const handleSendComment: SubmitHandler<PostModalInputValues> = async (data): Promise<void> => {
         if (data) {
             try {
                 await dispatch(createComment({
@@ -221,13 +223,17 @@ export const PostModal = () => {
         }
     }
 
-    const checkIfPostIsMine = () => {
+    const checkIfPostIsMine = (): boolean => {
         if (!user) return false;
         if (post?.author?._id === user._id) {
             return true;
         } else {
             return false;
         }
+    }
+
+    if (!post || !currentPost || !user) {
+        return <Loader />;
     }
 
     return (

@@ -6,7 +6,7 @@ export interface IUser {
     bio?: string;
     avatar?: string;//Base64
     website?: string;
-    notifications?: any[];
+    notifications?: any[];//TODO: Notification[]
     posts?: IPost[];
     followers?: IUser[];
     following?: IUser[];
@@ -61,5 +61,12 @@ export interface ILoginData {
     password: string;
 }
 
+
+export type PixelCrop = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+};
 
 

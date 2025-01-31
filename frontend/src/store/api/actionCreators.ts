@@ -173,6 +173,7 @@ export const getAllPostsByUser = createAsyncThunk("post/getAllPostsByUser", asyn
         return response.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
@@ -182,6 +183,7 @@ export const getPostById = createAsyncThunk("post/getPostById", async ({postId}:
         return response.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
@@ -228,6 +230,7 @@ export const createComment = createAsyncThunk("post/createComment", async ({post
 
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });
 
@@ -239,5 +242,6 @@ export const followUser = createAsyncThunk("user/followUser", async ({userId}: {
         return response.data;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 });

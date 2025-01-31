@@ -1,13 +1,13 @@
-import React, {FC, useEffect, useState} from "react";
+import {ChangeEvent, FC, useEffect, useState} from "react";
 
 import styles from "./ThemeSwitcher.module.scss";
 
 interface ThemeSwitcherProps {
-    onClick(event: React.MouseEvent<HTMLInputElement>): void;
+    onChange(event: ChangeEvent<HTMLInputElement>): void;
     currentTheme: string;
 }
 
-export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({onClick}) => {
+export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({onChange}) => {
     const initialTheme = localStorage.getItem("theme") ?? "light";
 
     const [theme, setTheme] = useState(initialTheme);
@@ -16,10 +16,10 @@ export const ThemeSwitcher: FC<ThemeSwitcherProps> = ({onClick}) => {
         localStorage.setItem("theme", theme);
     }, [theme]);
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
-        if (onClick) {
-            onClick(e);
+        if (onChange) {
+            onChange(e);
         }
     };
     return (

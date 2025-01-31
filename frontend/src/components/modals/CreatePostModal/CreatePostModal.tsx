@@ -157,6 +157,10 @@ export const CreatePostModal = () => {
         };
     }, []);
 
+    if (!user) {
+        return null;
+    }
+
     return (
         <div className={styles.create_post_modal_overlay} onClick={handleCloseModal}>
             <div

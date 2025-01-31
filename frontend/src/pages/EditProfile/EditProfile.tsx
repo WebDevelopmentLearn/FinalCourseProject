@@ -59,7 +59,7 @@ export const EditProfile = () => {
         }
     }
 
-    const onButtonClick = useCallback(() => {
+    const handleSwitchTheme = useCallback((): void => {
         theme === 'light' ? setTheme('dark') : setTheme('light');
         document.documentElement.className = theme === 'light' ? 'dark-theme' : '';
 
@@ -122,7 +122,7 @@ export const EditProfile = () => {
 
             <div>
                 <label htmlFor="theme_switcher">Switch theme</label>
-                <ThemeSwitcher onClick={onButtonClick} currentTheme={theme}/>
+                <ThemeSwitcher onChange={handleSwitchTheme} currentTheme={theme}/>
             </div>
 
             <form onSubmit={handleSubmit(handleEditProfile)} action="" className={styles.edit_profile_form}>

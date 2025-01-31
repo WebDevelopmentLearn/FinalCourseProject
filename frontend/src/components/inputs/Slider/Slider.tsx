@@ -1,4 +1,4 @@
-import {CSSProperties, useCallback, useEffect, useState} from "react";
+import {ChangeEvent, CSSProperties, useCallback, useState} from "react";
 
 import styles from "./Slider.module.scss";
 import {UploadImageIcon} from "../../../assets/icons/UploadImageIcon.tsx";
@@ -13,7 +13,6 @@ interface SliderProps {
     maxWidth?: number;
     maxImages?: number;
     postImages?: string[];
-    // onHandleFiles: () => void;
 }
 
 export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: SliderProps) => {
@@ -43,15 +42,10 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
         }
     }, [images.length, maxImages]);
 
-    const handleKeyDown = useCallback((event: any) => {
-        console.log("handleKeyDown")
-        if (event.key === "ArrowLeft") handlePrevious();
-        if (event.key === "ArrowRight") handleNext();
-    }, [handleNext, handlePrevious]);
 
-    const handleFileChange = (event: any) => {
+    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
+            const file: File = event.target.files[0];
             const blob = new Blob([file], { type: file.type });
             addImageForEditing(blob);
 
@@ -60,17 +54,9 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
         event.target.value = "";
     };
 
-    const handleDelete = (imageUrl: any) => {
-        console.log("imageUrl: ", imageUrl);
-        removeImage(imageUrl)
+    const handleDelete = (imageIndex: number): void => {
+        removeImage(imageIndex)
     }
-
-    useEffect(() => {
-        document.addEventListener("keydown", handleKeyDown);
-        return () => {
-            document.removeEventListener("keydown", handleKeyDown);
-        };
-    }, [handleKeyDown]);
 
     return (
         <div style={style} className={`${styles.slider} ${className}`}>
@@ -112,7 +98,7 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
                     </button>
                 </div>
             )}
-            {isOpen && (
+            {(isOpen && currentImage) && (
                 <ImageCropperModal handleClose={handleClose} imageSrc={currentImage?.url}/>
             )}
         </div>

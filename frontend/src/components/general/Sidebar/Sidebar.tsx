@@ -11,6 +11,7 @@ import {openCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {userData} from "../../../store/selectors.ts";
 import {RootState} from "../../../store/ichgramStore.ts";
+import {Loader} from "../../other/Loader/Loader.tsx";
 
 export const Sidebar: FC = () => {
     const navigate: NavigateFunction = useNavigate();
@@ -172,7 +173,11 @@ export const Sidebar: FC = () => {
                         //className={({isActive}: NavLinkRenderProps) => isActive ? `active activeLink ${styles.sidebar_profile}` : styles.sidebar_profile}
                         to={`/profile/${user?._id}`}>
                         {/*<img className={styles.sidebar_avatar} src={user?.user?.avatar} alt="profileAvatar"/>*/}
-                        <AvatarCircle user={user} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
+                        {user ? (
+                            <AvatarCircle user={user} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
+                        ) : (
+                            <Loader size="30px"/>
+                        )}
 
                     </NavLink>
                 </div>
@@ -187,7 +192,11 @@ export const Sidebar: FC = () => {
                     className={({isActive}: NavLinkRenderProps) => isActive ? `active activeLink ${styles.sidebar_profile}` : styles.sidebar_profile}
                     to={`/profile/${user?._id}`}>
                     {/*<img className={styles.sidebar_avatar} src={user?.user?.avatar} alt="profileAvatar"/>*/}
-                    <AvatarCircle user={user} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
+                    {user ? (
+                        <AvatarCircle user={user} className={styles.sidebar_avatar} avatarSize={"small"} hasLink={false}/>
+                    ) : (
+                        <Loader size="30px"/>
+                    )}
                     <span className={styles.text}>Profile</span>
                 </NavLink>
 

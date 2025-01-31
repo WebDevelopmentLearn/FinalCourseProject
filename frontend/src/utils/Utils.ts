@@ -1,4 +1,5 @@
 import {Theme} from "emoji-picker-react";
+import {PixelCrop} from "./types.ts";
 
 const createImage = (url: string): Promise<CanvasImageSource> => {
     return  new Promise((resolve, reject) => {
@@ -54,18 +55,13 @@ export function getEnumTheme(userTheme: string): Theme | undefined {
 }
 
 
-export const getCroppedImg = async (imageSrc: any, pixelCrop: any): Promise<Blob> => {
-    console.log("ImageSrc: ", typeof imageSrc);
-    console.log("pixelCrop: ", typeof pixelCrop);
+export const getCroppedImg = async (imageSrc: string, pixelCrop: PixelCrop): Promise<Blob> => {
     const image: CanvasImageSource = await createImage(imageSrc);
     const canvas: HTMLCanvasElement = document.createElement("canvas");
     const ctx: CanvasRenderingContext2D | null = canvas.getContext("2d");
 
     canvas.width = pixelCrop.width;
     canvas.height = pixelCrop.height;
-
-    console.log("ctx: ", typeof ctx);
-    console.log("image: ", typeof image);
 
     if (ctx && image) {
         ctx.drawImage(

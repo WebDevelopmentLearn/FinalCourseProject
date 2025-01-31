@@ -1,14 +1,16 @@
-import {useCallback, useState} from "react";
+import {ChangeEvent, useCallback, useState} from "react";
 import Cropper from "react-easy-crop";
 
 import styles from "./ImageCropper.module.scss";
 import {getCroppedImg} from "../../../utils/Utils.ts";
 import {useImages} from "../../../context/ImageContext.tsx";
 import {CustomButton} from "../CustomButton/CustomButton.tsx";
+import {PixelCrop} from "../../../utils/types.ts";
+import {toast} from "react-toastify";
 
 interface ImageCropperProps  {
     handleClose: () => void;
-    imageSrc: any;
+    imageSrc: string;
     shape: "round" | "rect";
     permittedAspects: string[];
     className?: string;
@@ -16,19 +18,19 @@ interface ImageCropperProps  {
 }
 
 export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAspects, singleMode = false}: ImageCropperProps) => {
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [crop, setCrop] = useState<{x: number, y: number}>({ x: 0, y: 0 });
     const [zoom, setZoom] = useState<number>(1);
     const [aspect, setAspect] = useState<number>(1); // Соотношение сторон по умолчанию 1:1
-    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState<PixelCrop | null>(null);
     const { saveCroppedImage, addSingleImage } = useImages();
 
-    const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
-        console.log("croppedArea: ", croppedArea);
-        console.log("croppedAreaPixels: ", croppedAreaPixels);
+    const onCropComplete = useCallback((croppedArea: PixelCrop, croppedAreaPixels: PixelCrop): void => {
+        console.log("croppedArea: ", croppedArea);//{x: 0, y: 0, width: 0.5, height: 0.5}
+        console.log("croppedAreaPixels: ", croppedAreaPixels);//{x: 0, y: 0, width: 200, height: 200}
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
-    const handleAspectChange = (e: any) => {
+    const handleAspectChange = (e: ChangeEvent<HTMLSelectElement>): void => {
         const value = e.target.value;
         switch (value) {
             case "1:1":
@@ -45,17 +47,27 @@ export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAs
         }
     };
 
-    const handleCrop = async () => {
+    const handleCrop = async (): Promise<void> => {
         try {
+            if (!croppedAreaPixels) {
+                console.error("CroppedAreaPixels is empty");
+                return;
+            }
             const croppedImage: Blob = await getCroppedImg(imageSrc, croppedAreaPixels);
             if (singleMode) {
                 addSingleImage(croppedImage);
             } else {
                 saveCroppedImage(croppedImage);
             }
+            toast.success("Image cropped successfully", {
+                autoClose: 2000,
+            });
             handleClose();
         } catch (error) {
             console.error("Error with handleCrop: ", error);
+            toast.error("Error with cropping image", {
+                autoClose: 2000,
+            });
         }
     };
 
