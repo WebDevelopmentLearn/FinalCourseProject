@@ -24,9 +24,7 @@ export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAs
     const [croppedAreaPixels, setCroppedAreaPixels] = useState<PixelCrop | null>(null);
     const { saveCroppedImage, addSingleImage } = useImages();
 
-    const onCropComplete = useCallback((croppedArea: PixelCrop, croppedAreaPixels: PixelCrop): void => {
-        console.log("croppedArea: ", croppedArea);//{x: 0, y: 0, width: 0.5, height: 0.5}
-        console.log("croppedAreaPixels: ", croppedAreaPixels);//{x: 0, y: 0, width: 200, height: 200}
+    const onCropComplete = useCallback((_: PixelCrop, croppedAreaPixels: PixelCrop): void => {
         setCroppedAreaPixels(croppedAreaPixels);
     }, []);
 
@@ -81,9 +79,6 @@ export const ImageCropper = ({handleClose, imageSrc, shape = "rect", permittedAs
                     aspect={aspect}
                     onCropChange={setCrop}
                     onZoomChange={setZoom}
-                    onMediaLoaded={({ width, height }) => {
-                        console.log(`Image width: ${width}, height: ${height}`);
-                    }}
                     cropShape={shape}
                     style={{
                         containerStyle: { height: "100%", width: "100%" },

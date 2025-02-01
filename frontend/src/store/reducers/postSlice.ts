@@ -1,14 +1,15 @@
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
 
+import {IPostState} from "../types.ts";
+import {createComment, getCommentsByPostId} from "../api/commentsActionCreators.ts";
 import {
-    createComment,
-    createPost, deletePost,
+    createPost,
+    deletePost,
     getAllPosts,
     getAllPostsByUser,
     getPostById,
     updatePost
-} from "../api/actionCreators.ts";
-import {IPostState} from "../types.ts";
+} from "../api/postsActionCreators.ts";
 
 const initialState: IPostState = {
     posts: [],
@@ -30,7 +31,11 @@ const initialState: IPostState = {
     createCommentError: null,
 
     deletePostStatus: "IDLE",
-    deletePostError: null
+    deletePostError: null,
+
+    currentPostComments: [],
+    currentPostCommentsStatus: "IDLE",
+    currentPostCommentsError: null
 }
 
 
@@ -65,9 +70,10 @@ const postSlice = createSlice({
         }).addCase(createPost.pending, (state) => {
             state.postsStatus = "LOADING";
             state.postsError = null;
-        }).addCase(createPost.fulfilled, (state) => {
+        }).addCase(createPost.fulfilled, (state, action) => {
+            if (!action.payload) return;
             state.postsStatus = "SUCCESS";
-            // state.posts.push(action.payload?.newPost);
+            state.posts.push(action.payload?.newPost);
         }).addCase(createPost.rejected, (state, action) => {
             state.postsStatus = "FAILED";
             state.postsError = action.error.message;
@@ -85,11 +91,10 @@ const postSlice = createSlice({
         }).addCase(deletePost.pending, (state) => {
             state.deletePostStatus = "LOADING";
             state.deletePostError = null;
-        }).addCase(deletePost.fulfilled, (state) => {
+        }).addCase(deletePost.fulfilled, (state, action) => {
             state.deletePostStatus = "SUCCESS";
             state.deletePostError = null;
-            // state.posts = state.posts.filter(post => post._id !== action.payload.deletedPostId);
-
+            state.posts = state.posts.filter(post => post._id !== action.payload.postId);
         }).addCase(deletePost.rejected, (state, action) => {
             state.deletePostStatus = "FAILED";
             state.deletePostError = action.error.message;
@@ -110,7 +115,6 @@ const postSlice = createSlice({
         }).addCase(getAllPostsByUser.fulfilled, (state, action) => {
             state.postsStatus = "SUCCESS";
             state.postsError = null;
-
             state.postsByUser = action.payload.posts;
         }).addCase(getAllPostsByUser.rejected, (state, action) => {
             state.postsStatus = "FAILED";
@@ -121,15 +125,20 @@ const postSlice = createSlice({
         }).addCase(createComment.fulfilled, (state, action) => {
             state.createCommentStatus = "SUCCESS";
             state.createCommentError = null;
-            if (state.currentPost) {
-                state.currentPost = {
-                    ...state.currentPost,
-                    comments: [...state.currentPost.comments, action.payload.newComment]
-                };
-            }
-        }).addCase(createComment.rejected, (state) => {
+            state.currentPostComments.push(action.payload.newComment);
+        }).addCase(createComment.rejected, (state, action) => {
             state.createCommentStatus = "LOADING";
-            state.createCommentError = null;
+            state.createCommentError = action.payload;
+        }).addCase(getCommentsByPostId.pending, (state) => {
+            state.currentPostCommentsStatus = "LOADING";
+            state.currentPostCommentsError = null;
+        }).addCase(getCommentsByPostId.fulfilled, (state, action) => {
+            state.currentPostCommentsStatus = "SUCCESS";
+            state.currentPostCommentsError = null;
+            state.currentPostComments = action.payload.comments;
+        }).addCase(getCommentsByPostId.rejected, (state, action) => {
+            state.currentPostCommentsStatus = "FAILED";
+            state.currentPostCommentsError = action.payload;
         });
     }
 });

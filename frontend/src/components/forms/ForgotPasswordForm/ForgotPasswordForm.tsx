@@ -14,7 +14,7 @@ interface ForgotPasswordFormValues {
 export const ForgotPasswordForm = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<ForgotPasswordFormValues>();
 
-    const onFormSubmit = (data: ForgotPasswordFormValues) => {
+    const onFormSubmit = (data: ForgotPasswordFormValues): void => {
         console.log("Form Data:", data);
     };
 

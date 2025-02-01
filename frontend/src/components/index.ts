@@ -49,6 +49,7 @@ import {Phone} from "./other/Phone/Phone.tsx";
 import {ExpandableText} from "./other/ExpandableText/ExpandableText.tsx";
 import {Loader} from "./other/Loader/Loader.tsx";
 import {ProfileHeader} from "./other/ProfileHeader/ProfileHeader.tsx";
+import {CommentsList} from "./other/CommentsList/CommentsList.tsx";
 //=====================[OTHER COMPONENTS END]=====================//
 
 
@@ -85,5 +86,5 @@ export {
     Phone,
     ExpandableText,
     ProfileHeader,
-
+    CommentsList,
     Loader};

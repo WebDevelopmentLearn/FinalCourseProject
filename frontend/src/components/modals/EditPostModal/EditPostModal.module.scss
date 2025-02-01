@@ -1,4 +1,4 @@
-.create_post_modal_overlay {
+.update_post_modal_overlay {
   position: fixed;
   top: 0;
   z-index: 10;
@@ -11,7 +11,7 @@
   align-items: center;
 }
 
-.create_post_modal {
+.update_post_modal {
   width: max-content;
   //max-width: 50%;
   //max-height: calc(100% - 40px);
@@ -22,7 +22,11 @@
   flex-direction: column;
   border-radius: 12px;
 
-  .create_post_modal_header {
+  &.isEmojiPickerOpen {
+    height: 80vh;
+  }
+
+  .update_post_modal_header {
     display: flex;
     align-items: center;
     //justify-content: center;
@@ -46,7 +50,7 @@
     }
   }
 
-  .create_post_modal_content {
+  .update_post_modal_content {
     display: flex;
     height: 100%;
 
@@ -81,7 +85,7 @@
       //}
     }
 
-    .create_post_modal_form {
+    .update_post_modal_form {
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -121,10 +125,10 @@
         padding: 16px;
 
         button {
-            background-color: transparent;
-            border: none;
-            outline: none;
-            cursor: pointer;
+          background-color: transparent;
+          border: none;
+          outline: none;
+          cursor: pointer;
         }
 
         span {
@@ -156,12 +160,12 @@
 
 @media screen and (max-width: 768px) {
 
-  .create_post_modal {
+  .update_post_modal {
     width: 90vw;
     height: 75vh;
     max-width: 90vw;
 
-    .create_post_modal_content {
+    .update_post_modal_content {
       flex-direction: column;
 
       .upload_photo {
@@ -173,7 +177,7 @@
         border-bottom: 1px solid var(--border-color);
       }
 
-      .create_post_modal_form {
+      .update_post_modal_form {
         min-width: 0;
 
         .comment_input {

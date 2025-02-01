@@ -11,6 +11,7 @@ export type IImageProvider = {
     addSingleImage: (blob: Blob) => void;
     removeImage: (index: number) => void;
     clearImages: (clearType: ClearType) => void;
+    addImageFromUrl: (image: { _id: string; url: string }) => Promise<void>;
 };
 
 export type ImageProviderProps = {

@@ -1,4 +1,4 @@
-import {IPost, IUser} from "../utils/types.ts";
+import {IComment, IPost, IUser} from "../utils/types.ts";
 
 export interface IModalState {
     createPostModalIsOpen: boolean;
@@ -32,6 +32,10 @@ export interface IPostState {
 
     deletePostStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
     deletePostError: any;
+
+    currentPostComments: IComment[];
+    currentPostCommentsStatus: "IDLE" | "LOADING" | "SUCCESS" | "FAILED";
+    currentPostCommentsError: any;
 
 }
 

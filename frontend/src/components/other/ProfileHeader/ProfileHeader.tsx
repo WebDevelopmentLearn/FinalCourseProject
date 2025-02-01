@@ -2,12 +2,13 @@ import styles from "../../../pages/Profile/Profile.module.scss";
 import {AvatarCircle} from "../AvatarCircle/AvatarCircle.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {ExpandableText} from "../ExpandableText/ExpandableText.tsx";
-import {followUser, logoutUser} from "../../../store/api/actionCreators.ts";
+import {followUser} from "../../../store/api/userActionCreators.ts";
 import {toast} from "react-toastify";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../../store/ichgramStore.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {IUser} from "../../../utils/types.ts";
+import {logoutUser} from "../../../store/api/authActionCreators.ts";
 
 
 interface ProfileHeaderProps {
@@ -18,7 +19,8 @@ export const ProfileHeader = ({user}: ProfileHeaderProps) => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate: NavigateFunction = useNavigate();
     const {_id} = useParams();
-    const isMyProfile = _id === user?._id;
+    const {user: primaryUser} = useSelector((state: RootState) => state.userReducer);
+    const isMyProfile = _id === primaryUser?._id;
     const postsCount = user?.posts?.length ?? 0;
     const followers = user?.followers?.length ?? 0;
     const following = user?.following?.length ?? 0;
@@ -47,6 +49,8 @@ export const ProfileHeader = ({user}: ProfileHeaderProps) => {
             console.error("Failed to logout: ", error);
         }
     };
+
+    if (!primaryUser || !user) return null;
 
     return (
         <div className={styles.profile_main}>
@@ -80,7 +84,7 @@ export const ProfileHeader = ({user}: ProfileHeaderProps) => {
                 <div className={styles.profile_about}>
                     <ExpandableText textClass={styles.profile_desc} text={user?.bio ?? ""} maxHeight={50}/>
                 </div>
-                <div>
+                <div className={styles.profile_website}>
                         <span>
                             <svg aria-label="Link-Symbol." className="" fill="currentColor" height="12" role="img"
                                  viewBox="0 0 24 24" width="12">

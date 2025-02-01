@@ -79,6 +79,34 @@ export const ImageProvider = ({ children }: ImageProviderProps) => {
         setImages((prev) => prev.filter((_, i) => i !== index));
     };
 
+    const urlToBlob = async (url: string): Promise<Blob | null> => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error("Failed to fetch image");
+            }
+            return await response.blob();
+        } catch (error) {
+            console.error("Error fetching image:", error);
+            return null;
+        }
+    };
+
+    const addImageFromUrl = async (image: { _id: string; url: string }): Promise<void> => {
+        const blob = await urlToBlob(image.url);
+
+        if (blob) {
+            const newImage = {
+                _id: image._id,
+                blob,
+                url: image.url, // оставляем оригинальный URL
+            };
+            setImages((prev) => [...prev, newImage]);
+        } else {
+            console.error("Failed to convert URL to Blob");
+        }
+    };
+
     return (
         <ImageContext.Provider
             value={{
@@ -89,6 +117,7 @@ export const ImageProvider = ({ children }: ImageProviderProps) => {
                 addSingleImage,
                 removeImage,
                 clearImages,
+                addImageFromUrl
             }}
         >
             {children}

@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
 import styles from "./PostCard.module.scss";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
@@ -14,15 +14,14 @@ interface PostCardProps {
 
 export const PostCard = ({post}: PostCardProps) => {
     const elementRef = useRef<HTMLDivElement | null>(null);
-    const [size, setSize] = useState({ width: 0, height: 0 });
+    const [size, setSize] = useState<{width: number, height: number}>({ width: 0, height: 0 });
 
-    const [isLiked, setIsLiked] = useState(false);
-    const [isAnimating, setIsAnimating] = useState(false);
-    const navigate = useNavigate();
+    const [isLiked, setIsLiked] = useState<boolean>(false);
+    const [isAnimating, setIsAnimating] = useState<boolean>(false);
+    const navigate: NavigateFunction = useNavigate();
 
-    const handleFollow = useCallback(() => {
+    const handleFollow = useCallback((): void => {
         isLiked ? setIsLiked(false) : setIsLiked(true);
-        console.log("handleFollow");
         setIsAnimating(true);
 
         // Убираем класс анимации после её завершения
@@ -37,7 +36,7 @@ export const PostCard = ({post}: PostCardProps) => {
 
 
     useEffect(() => {
-        const updateSize = () => {
+        const updateSize = (): void => {
             if (elementRef.current) {
                 const { width, height } = elementRef.current.getBoundingClientRect();
                 setSize({ width, height });
@@ -78,7 +77,6 @@ export const PostCard = ({post}: PostCardProps) => {
 
     return (
         <div  ref={elementRef} className={`${styles.post_card}`} onClick={() => {
-
             navigate(`/post/${post?._id}`);
         }}>
             <div className={styles.post_card__author}>
@@ -120,9 +118,9 @@ export const PostCard = ({post}: PostCardProps) => {
                     </div>
                 </div>
                 <div>
-                    <span>{post?.likes?.length}</span><span>likes</span>
+                    <span>{post?.likes?.length}</span><span> likes</span>
                 </div>
-                <div>
+                <div className={styles.post_card__content__description}>
                     <p>
                         {post?.content}
                     </p>

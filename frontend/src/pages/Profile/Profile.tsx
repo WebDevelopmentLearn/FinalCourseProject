@@ -5,9 +5,10 @@ import { useParams} from "react-router-dom";
 import styles from "./Profile.module.scss";
 import {PostCardInProfile, ProfileHeader} from "../../components";
 import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
-import {getAllPostsByUser, getUserById} from "../../store/api/actionCreators.ts";
+import {getUserById} from "../../store/api/userActionCreators.ts";
 import {IPost, IUser} from "../../utils/types.ts";
-import {SkeletonProfile} from "../../skeletons/SkeletonProfile/SkeletonProfile.tsx";
+import {SkeletonProfile} from "../../components/skeletons/SkeletonProfile/SkeletonProfile.tsx";
+import {getAllPostsByUser} from "../../store/api/postsActionCreators.ts";
 
 
 export const Profile = () => {

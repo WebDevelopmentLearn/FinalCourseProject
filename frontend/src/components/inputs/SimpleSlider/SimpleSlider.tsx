@@ -26,7 +26,7 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
     const handlePrevious = useCallback((event: React.MouseEvent<HTMLButtonElement>): void => {
         event.stopPropagation();
         setCurrentImg((prev) => {
-            return prev === postImages.length - 1 ? 0 : prev - 1;
+            return prev === postImages.length - 1 ? prev - 1 : 0;
         });
     }, [postImages.length]);
 
@@ -122,7 +122,7 @@ export const SimpleSlider = ({style, className, maxWidth = 200, maxImages = 5, p
 
                 </div>
             )}
-            {isOpen && (
+            {(isOpen && currentImage) && (
                 <ImageCropperModal handleClose={handleClose} imageSrc={currentImage?.url}/>
             )}
         </div>

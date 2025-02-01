@@ -24,15 +24,16 @@ export const AvatarCircle: FC<AvatarCircleProps> = ({user, className, avatarSize
         }
     }
 
-    const numArray = [
+    const numArray: (string | number)[] = [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 0,
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
     ]
 
-    const randId = useMemo(
-        () => Array.from({ length: 10 }, () => numArray[Math.floor(Math.random() * numArray.length)]).join(''),
+    const randId: string = useMemo(
+        (): string => Array.from({ length: 10 }, (): string | number => numArray[Math.floor(Math.random() * numArray.length)]).join(''),
         []
     );
+
     if (hasLink) {
         return (
             <div onClick={() => {

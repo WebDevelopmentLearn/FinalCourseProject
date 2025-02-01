@@ -22,6 +22,14 @@ export interface IPost {
     createdAt: string;
 }
 
+export interface IComment {
+    _id: string;
+    author: IUser;
+    content: string;
+    likes: IUser[];
+    createdAt: string;
+}
+
 export interface ICommentCard {
     _id?: string;
     author: IUser;
@@ -34,6 +42,7 @@ export interface ICommentCard {
 export interface IImage {
     blob: Blob;
     url: string;
+    _id?: string;
 }
 
 

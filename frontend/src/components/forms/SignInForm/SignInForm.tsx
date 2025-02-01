@@ -4,15 +4,15 @@ import {useDispatch, useSelector} from "react-redux";
 
 import styles from "./SignInForm.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate, Location, NavigateFunction} from "react-router-dom";
 import ichgramLogo from "../../../assets/logo.svg";
 import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
 import {Separator} from "../../other/Separator/Separator.tsx";
 import {ILoginData} from "../../../utils/types.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
-import {loginUser} from "../../../store/api/actionCreators.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
+import {loginUser} from "../../../store/api/authActionCreators.ts";
 
 interface SignInFormValues {
     usernameOrEmail: string;
@@ -21,10 +21,10 @@ interface SignInFormValues {
 
 export const SignInForm: FC = () => {
     const {theme} = useTheme();
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     const {loginError} = useSelector((state: RootState) => state.authReducer);
-    const location = useLocation();
+    const location: Location<any> = useLocation();
     const {register, handleSubmit, formState: {errors}} = useForm<SignInFormValues>({
         defaultValues: {
             usernameOrEmail: "",
@@ -32,7 +32,7 @@ export const SignInForm: FC = () => {
         }
     });
 
-    const onFormSubmit = async(data: SignInFormValues) => {
+    const onFormSubmit = async(data: SignInFormValues): Promise<void> => {
         try {
             const loginData: ILoginData = {password: ""}
             if (data.usernameOrEmail.includes("@")) {

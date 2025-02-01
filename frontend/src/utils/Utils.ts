@@ -24,17 +24,17 @@ export const getTimeAgo = (date: string): string => {
     const hours = minutes / 60;
 
     if (seconds < 2) {
-        return "только что";
+        return "Just now";
     } else if (minutes < 1) {
-        return `${Math.floor(seconds)} секунд назад`;
+        return `${Math.floor(seconds)} seconds ago`;
     } else if (minutes < 60) {
-        return `${Math.floor(minutes)} минут назад`;
+        return `${Math.floor(minutes)} minutes ago`;
     } else if (hours < 1) {
-        return `${Math.floor(minutes)} минут назад`;
+        return `${Math.floor(minutes)} minutes ago`;
     } else if (hours < 24) {
-        return `${Math.floor(hours)} часов назад`;
+        return `${Math.floor(hours)} hours ago`;
     } else {
-        return `${Math.floor(hours / 24)} дней назад`;
+        return `${Math.floor(hours / 24)} days ago`;
     }
 
 }

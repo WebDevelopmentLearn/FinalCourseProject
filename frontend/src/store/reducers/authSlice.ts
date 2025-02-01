@@ -1,6 +1,6 @@
 import {ActionReducerMapBuilder, createSlice} from "@reduxjs/toolkit";
 
-import {loginUser, logoutUser, registerUser} from "../api/actionCreators.ts";
+import {registerUser, loginUser, logoutUser} from "../api/authActionCreators.ts";
 import {IAuthState} from "../types.ts";
 
 const initialState: IAuthState = {

@@ -12,7 +12,6 @@ interface SliderProps {
     isEditModal?: boolean;
     maxWidth?: number;
     maxImages?: number;
-    postImages?: string[];
 }
 
 export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: SliderProps) => {
@@ -58,12 +57,15 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
         removeImage(imageIndex)
     }
 
+    console.log("Images: ", images);
+
     return (
         <div style={style} className={`${styles.slider} ${className}`}>
             <div className={styles.cards} style={{transform: `translateX(${-currentImg * maxWidth}px)`, width: (images.length > 0 ? maxWidth * images.length : maxWidth) + maxWidth}}>
                 {images.map((image, index) => (
                     <div key={index} className={styles.card} style={{backgroundImage: `url(${image.url})`, width: `${maxWidth}px`,}}>
                         <button className={styles.card__delete_btn} onClick={() => handleDelete(index)}>X</button>
+                        {/*<CustomButton title="X" onClick={() => handleDelete(index)} className={styles.card__delete_btn}/>*/}
                     </div>
                 ))}
 
@@ -74,13 +76,13 @@ export const Slider = ({style, className, maxWidth = 500, maxImages = 5}: Slider
                 </div>
             </div>
 
-            {(images.length > 1 && currentImg > 0) && (
+            {(images.length > 0 && currentImg > 0) && (
                 <button className={styles.previousImageBtn} onClick={handlePrevious}>
                     &lt;
                 </button>
             )}
 
-            {(images.length > 1) && (
+            {(images.length > 0 && currentImg !== images.length) && (
                 <button className={`${styles.nextImageBtn} `} onClick={handleNext}>
                     &gt;
                 </button>

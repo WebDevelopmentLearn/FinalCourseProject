@@ -9,7 +9,7 @@ import {useTheme} from "../../context/ThemeContext.tsx";
 import {userData} from "../../store/selectors.ts";
 import {IUser} from "../../utils/types.ts";
 import {AppDispatch} from "../../store/ichgramStore.ts";
-import {updateUserProfile} from "../../store/api/actionCreators.ts";
+import {updateUserProfile} from "../../store/api/userActionCreators.ts";
 import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
 import {SimpleAvatarCircle} from "../../components";
@@ -68,6 +68,7 @@ export const EditProfile = () => {
 
         toast.info(`Theme switched to ${theme === 'light' ? 'dark' : 'light'}`, {
             autoClose: 2000,
+            theme: theme === 'light' ? 'dark' : 'light'
         });
     }, [theme, setTheme]);
 

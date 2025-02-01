@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, NavigateFunction, useNavigate} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -8,7 +8,7 @@ import ichgramLogo from "../../../assets/logo.svg";
 import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
-import {registerUser} from "../../../store/api/actionCreators.ts";
+import {registerUser} from "../../../store/api/authActionCreators.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IRegisterData} from "../../../utils/types.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
@@ -33,11 +33,11 @@ export const SignUpForm: FC = () => {
         }
     });
     const dispatch = useDispatch<AppDispatch>();
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
     const {theme} = useTheme();
     const {registerError} = useSelector((state: RootState) => state.authReducer);
 
-    const onFormSubmit: SubmitHandler<SignUpFormValues> = async(data) => {
+    const onFormSubmit: SubmitHandler<SignUpFormValues> = async(data): Promise<void> => {
         try {
             const registerData: IRegisterData = {
                 email: data.email,

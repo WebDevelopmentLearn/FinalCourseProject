@@ -10,12 +10,12 @@ import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {closeCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
-import {createPost} from "../../../store/api/actionCreators.ts";
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {getEnumTheme} from "../../../utils/Utils.ts";
 import {Slider} from "../../inputs/Slider/Slider.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
 import {IImage} from "../../../utils/types.ts";
+import {createPost} from "../../../store/api/postsActionCreators.ts";
 
 
 interface CreatePostFormInputs {

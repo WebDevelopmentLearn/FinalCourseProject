@@ -2,6 +2,11 @@
 .post_card {
   border-bottom: 1px solid var(--border-color);
   max-width: 248px;
+  max-height: 700px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  //min-width: 248px;
 }
 
 .post_card__author {
@@ -107,7 +112,6 @@
 
 
   img {
-    border-radius: 3.45px;
     width: 100%;
     object-fit: cover;
   }
@@ -146,6 +150,16 @@
   color: #5f5f5f;
 }
 
+.post_card__content__description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+
+  //добавить многоточие
+
+
+}
 
 .post_card__comments {
   a {

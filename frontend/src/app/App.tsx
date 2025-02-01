@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {useSelector} from "react-redux";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, Location, NavigateFunction} from "react-router-dom";
 
 import './App.css'
 import {MainRoute} from "../route/MainRoute.tsx";
@@ -13,11 +13,11 @@ import {useTheme} from "../context/ThemeContext.tsx";
 
 function App() {
 
-    const routesWithoutNavbar = ["/signin", "/signup", "/forgot_password"];
+    const routesWithoutNavbar: string[] = ["/signin", "/signup", "/forgot_password"];
 
-    const location = useLocation();
+    const location: Location<any> = useLocation();
     const {createPostModalIsOpen} = useSelector((state: RootState) => state.modalReducer);
-    const navigate = useNavigate();
+    const navigate: NavigateFunction = useNavigate();
     const {theme} = useTheme();
 
     useEffect(() => {
@@ -31,7 +31,7 @@ function App() {
     return (
         <div className="app">
             <div className="sidebar_and_wrapper">
-                <ToastContainer theme={theme === "dark" ? "light" : "dark"} />
+                <ToastContainer theme={theme === "dark" ? "dark" : "light"} />
                 {!routesWithoutNavbar.includes(location.pathname) && <Sidebar/>}
                 {!routesWithoutNavbar.includes(location.pathname) ? (<div className="wrapper_and_footer">
                     <Wrapper>

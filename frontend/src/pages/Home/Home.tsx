@@ -6,7 +6,8 @@ import styles from "./Home.module.scss";
 import {PostCard} from "../../components";
 import check from "../../assets/home/check_in_circle.svg";
 import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
-import {getAllPosts} from "../../store/api/actionCreators.ts";
+import {SkeletonPost} from "../../components/skeletons/SkeletonPost/SkeletonPost.tsx";
+import {getAllPosts} from "../../store/api/postsActionCreators.ts";
 
 export const Home = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -61,22 +62,16 @@ export const Home = () => {
         <div>
             <div className={styles.home}>
                 <div className={styles.home_posts__list} >
-                    {/*{(posts.map((post: IPost, index) => (*/}
-                    {/*    <LazyLoad key={index} height={200} offset={100}>*/}
-                    {/*        <PostCard post={post}/>*/}
-                    {/*    </LazyLoad>*/}
-                    {/*)) : <h1>No posts</h1}*/}
-                    {posts.length === 0 ? (
-                        <p>No posts available.</p>
-                    ) : (
-                        posts.map((post) => (
-                            <LazyLoad key={post._id} height={200} offset={100}>
-                                <PostCard post={post}/>
-                            </LazyLoad>
-                        ))
+                    {posts.map((post) => (
+                        <LazyLoad key={post._id} height={200} offset={100}>
+                            <PostCard post={post}/>
+                        </LazyLoad>
+                    ))}
+                    {loading && (
+                        new Array(12).fill(0).map((_, i) => (
+                                <SkeletonPost key={i}/>
+                            ))
                     )}
-                    {loading && <p>Loading...</p>}
-                    {/*{!hasMore && <p>No more posts to load.</p>}*/}
                 </div>
                 <div ref={observerTarget} className={styles.home_end}>
                     <img src={check} alt="check"/>

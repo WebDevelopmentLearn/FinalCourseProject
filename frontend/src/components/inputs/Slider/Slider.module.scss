@@ -7,7 +7,6 @@
   overflow: hidden;
   background: #f0f0f0;
   //margin: 20px auto;
-  border-radius: 8px;
 }
 
 .cards {
@@ -29,8 +28,13 @@
 
   &__delete_btn {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 2px;
+    right: 2px;
+    background: var(--bgc);
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
   }
 
   input[type="file"] {

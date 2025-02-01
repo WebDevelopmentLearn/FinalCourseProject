@@ -11,14 +11,15 @@ import {useTheme} from "../../../context/ThemeContext.tsx";
 import {getEnumTheme, getTimeAgo} from "../../../utils/Utils.ts";
 
 import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
-import {ICommentCard, IPost} from "../../../utils/types.ts";
-import {createComment, deletePost, getPostById} from "../../../store/api/actionCreators.ts";
+import { followUser} from "../../../store/api/userActionCreators.ts";
 import {Loader} from "../../other/Loader/Loader.tsx";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
-import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
 import {EditPostModal} from "../EditPostModal/EditPostModal.tsx";
 import {toast} from "react-toastify";
+import {CommentsList} from "../../other/CommentsList/CommentsList.tsx";
+import {createComment} from "../../../store/api/commentsActionCreators.ts";
+import {deletePost, getPostById} from "../../../store/api/postsActionCreators.ts";
 
 interface PostModalInputValues {
     content: string;
@@ -30,10 +31,10 @@ export const PostModal = () => {
     const [moreOptionModalIsOpen, setMoreOptionModalIsOpen] = useState<boolean>(false);
     const [editPostModalIsOpen, setEditPostModalIsOpen] = useState<boolean>(false);
     const [size, setSize] = useState({ width: 0, height: 0 });
-    const [isLiked, setIsLiked] = useState(false);
-    const [isAnimating, setIsAnimating] = useState(false);
+    const [isLiked, _setIsLiked] = useState(false);
+    const [isAnimating, _setIsAnimating] = useState(false);
     // const [text, setText] = useState('');
-    const [post, setPost] = useState<IPost | null>(null);
+    // const [post, setPost] = useState<IPost | null>(null);
 
 
     const [copied, setCopied] = useState(false);
@@ -48,12 +49,13 @@ export const PostModal = () => {
     const {user} = useSelector((state: RootState) => state.userReducer) || null;
     const {_id} = useParams() || "";
     const location = useLocation();
+    const isFollowing = user?.followers?.some(follower => follower._id === user?._id) ?? false;
 
     useEffect(() => {
         const fetchCurrentPost = async () => {
             try {
                 const result = await dispatch(getPostById({postId: _id})).unwrap();
-                setPost(result)
+                console.log("Current post: ", result);
             } catch (error) {
                 console.error("Failed to get current post: ", error)
             }
@@ -96,19 +98,30 @@ export const PostModal = () => {
         console.log("handleCloseMoreOptionModal")
     }
 
+    const handleFollow = async () => {
+        try {
+            if (!_id) return;
 
-    const handleFollow = useCallback((): void => {
-        isLiked ? setIsLiked(false) : setIsLiked(true);
-        console.log("handleFollow");
-        setIsAnimating(true);
-
-        if (!isLiked) {
-            setTimeout(() => {
-                setIsAnimating(false);
-            }, 300);
+            await dispatch(followUser({userId: _id}));
+            toast.success("You have successfully subscribed to the user", {autoClose: 2000});
+        } catch (error) {
+            console.error("Failed to follow user: ", error);
+            toast.error("Failed to follow user", {autoClose: 2000});
         }
+    };
 
-    }, [isLiked]);
+    // const handleFollow = useCallback((): void => {
+    //     isLiked ? setIsLiked(false) : setIsLiked(true);
+    //     console.log("handleFollow");
+    //     setIsAnimating(true);
+    //
+    //     if (!isLiked) {
+    //         setTimeout(() => {
+    //             setIsAnimating(false);
+    //         }, 300);
+    //     }
+    //
+    // }, [isLiked]);
 
     // const handleChange = (e) => {
     //     setText(e.target.value);
@@ -135,6 +148,7 @@ export const PostModal = () => {
             if (elementRef.current) {
                 const { width, height } = elementRef.current.getBoundingClientRect();
                 setSize({ width, height });
+
             }
         };
 
@@ -164,7 +178,8 @@ export const PostModal = () => {
             window.removeEventListener("resize", updateSize);
             window.removeEventListener("load", handleLoad);
         };
-    }, []);
+    }, [currentPost]);
+
 
     const handleCopyUrlPostToClipboard = useCallback((): void => {
         setCopied(true);
@@ -225,14 +240,15 @@ export const PostModal = () => {
 
     const checkIfPostIsMine = (): boolean => {
         if (!user) return false;
-        if (post?.author?._id === user._id) {
+        if (currentPost?.author?._id === user._id) {
             return true;
         } else {
             return false;
         }
     }
 
-    if (!post || !currentPost || !user) {
+
+    if (!currentPost || !user || !_id) {
         return <Loader />;
     }
 
@@ -241,23 +257,18 @@ export const PostModal = () => {
             <div className={styles.profile_post_modal} onClick={(event) => event.stopPropagation()}>
 
                 <div ref={elementRef} className={styles.profile_post_modal_image}>
-                    {/*{post?.photo ? (*/}
-                    {/*    <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photo} sliderType="ViewPostModal"/>*/}
-                    {/*) : (*/}
-                    {/*    <Loader />*/}
-                    {/*)}*/}
-                    <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={post?.photos} sliderType="ViewPostModal"/>
+                    <SimpleSlider inModal={true} maxWidth={size.width} className={styles.profile_post_modal_image_slider} postImages={currentPost?.photos} sliderType="ViewPostModal"/>
                 </div>
 
 
                 <div className={styles.profile_post_modal_details}>
                     <div className={styles.author}>
-                        {post?.author ? (
+                        {currentPost?.author ? (
                             <div>
-                                <AvatarCircle user={post?.author} avatarSize="small"/>
-                                <span>{post.author.username}</span>
+                                <AvatarCircle user={currentPost?.author} avatarSize="small"/>
+                                <span>{currentPost.author.username}</span>
                                 <span>•</span>
-                                <CustomButton className={styles.subscribe_btn} title={"Subscribe"}/>
+                                <CustomButton onClick={handleFollow} className={styles.subscribe_btn} title={isFollowing ? "Unsubscribe" : "Subscribe"}/>
                             </div>
                         ) : (
                             <Loader size={"20px"} />
@@ -284,33 +295,34 @@ export const PostModal = () => {
                     <ul className={styles.post_comments}>
                         <div className={styles.post}>
                             <div>
-                                <AvatarCircle user={post?.author} avatarSize="small"/>
+                                <AvatarCircle user={currentPost?.author} avatarSize="small"/>
                             </div>
                             <div className={styles.post_details}>
-                                <p><Link to={`/profile/${post?.author?._id}`}>{post?.author?.username}</Link>
-                                    {post?.content}
+                                <p><Link to={`/profile/${currentPost?.author?._id}`}>{currentPost?.author?.username}</Link>
+                                    {currentPost?.content}
                                 </p>
 
                                 <div className={styles.post_date}>
-                                    <span>{getTimeAgo(post?.createdAt ?? "")}</span>
+                                    <span>{getTimeAgo(currentPost?.createdAt ?? "")}</span>
                                 </div>
                             </div>
 
                         </div>
 
+                        <CommentsList postID={_id} />
 
-                        {currentPost && currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment: ICommentCard) => (
-                            <CommentCard key={comment._id} author={comment.author} content={comment.content}
-                                         createdAt={comment.createdAt} likes={comment.likes}/>
+                        {/*{currentPost && currentPost?.comments?.length > 0 ? currentPost?.comments?.map((comment: ICommentCard) => (*/}
+                        {/*    <CommentCard key={comment._id} author={comment.author} content={comment.content}*/}
+                        {/*                 createdAt={comment.createdAt} likes={comment.likes}/>*/}
 
-                        )) : <h2 style={{textAlign: "center"}}>No comments</h2>}
+                        {/*)) : <h2 style={{textAlign: "center"}}>No comments</h2>}*/}
 
 
                     </ul>
 
                     <div className={styles.post_stats}>
                         <div className={styles.post_card_like_and_comment}>
-                            <div onClick={handleFollow}
+                            <div
                                  className={`${styles.hearth} ${(isAnimating && isLiked) ? styles.animate : ""}`}>
                                 <svg className={isLiked ? styles.post_card__like : ""} width="21"
                                      height="19"
@@ -332,8 +344,8 @@ export const PostModal = () => {
                         </div>
 
                         <div className={styles.likes_and_date_container}>
-                            <span>{post?.likes.length} likes</span>
-                            <span>{getTimeAgo(post?.createdAt ?? "")}</span>
+                            <span>{currentPost?.likes.length} likes</span>
+                            <span>{getTimeAgo(currentPost?.createdAt ?? "")}</span>
                         </div>
                     </div>
 
@@ -397,7 +409,7 @@ export const PostModal = () => {
                 )}
             </div>
 
-            {(editPostModalIsOpen && post) && <EditPostModal post={post} />}
+            {(editPostModalIsOpen && currentPost) && <EditPostModal post={currentPost} />}
 
         </div>
     );

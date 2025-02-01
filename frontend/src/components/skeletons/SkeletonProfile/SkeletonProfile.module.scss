@@ -7,6 +7,54 @@
   }
 }
 
+.skeletonBox {
+  background: linear-gradient(90deg, #cfcfcf 25%, #f8f8f8 50%, #e0e0e0 75%);
+  background-size: 400% 100%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.profile_container_skeleton {
+  display: flex;
+  flex-direction: column;
+  margin: 5% 10%;
+}
+
+.profile_main_skeleton {
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+
+  .profile_avatar_skeleton {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+
+  }
+
+  .profile_info_skeleton {
+    width: 312px;
+    height: 182px;
+
+    .profile_info__first_skeleton {
+
+    }
+  }
+}
+
+.profile_posts_skeleton {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 20px;
+
+  .post_card_skeleton {
+    width: 306px;
+    height: 306px;
+  }
+}
+
+
 .skeletonContainer {
   display: flex;
   flex-direction: column;
