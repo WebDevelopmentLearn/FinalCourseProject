@@ -18,8 +18,9 @@ class AuthController {
     static validateRegistration() {
         return [
             body('email').isEmail().withMessage('Invalid email format'),
+            body('full_name').notEmpty().withMessage('Full Name is required'),
             body('username').notEmpty().withMessage('Username is required'),
-            body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
+            body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
         ];
     }
 

@@ -1,0 +1,50 @@
+
+services:
+  ichgram_backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ichgram_backend
+    ports:
+      - 3400:3400
+    environment:
+      - MONGO_URI=mongodb+srv://cimfoniy83:<db_password>@cluster0.syf2h.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - CLOUDINARY_CLOUD_NAME=dcmhe8j9l
+      - CLOUDINARY_API_KEY=273995784761429
+      - CLOUDINARY_API_SECRET=0WThs8O_vun8xY7ZNR95q5Uv5Ic
+      - JWT_ACCESS_EXPIRES_IN=10m
+      - JWT_REFRESH_EXPIRES_IN=60m
+      - JWT_SECRET=72wgnA8+wRzzix5TDWeJeJHWVq5EpibuyG30sHTCG3o=
+    networks:
+        - ichgram_network
+    depends_on:
+      - mongo_db
+
+  ichgram_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ichgram_frontend
+    ports:
+      - 5173:5173
+    networks:
+        - ichgram_network
+  mongo_db:
+    container_name: mongo_db
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    command: mongod --auth --bind_ip 0.0.0.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: cimfoniy83
+      MONGO_INITDB_ROOT_PASSWORD: wGQ52UQfzLUp2NmD
+      MONGO_INITDB_DATABASE: dev_ichgram_db
+    volumes:
+        - C:/Program Files/MongoDB/Server/8.0/data:/app/data/db
+    networks:
+        - ichgram_network
+
+networks:
+  ichgram_network:
+    driver: bridge

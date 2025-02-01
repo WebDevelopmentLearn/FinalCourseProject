@@ -11,13 +11,22 @@ class CommentController {
 
     public static async createComment(req: Request, res: Response, next: NextFunction): Promise<void> {
         const {content}: {content: string} = req.body;
-        if (!content) res.status(400).json({ message: "Field content is required" });
+        if (!content) {
+            res.status(400).json({ message: "Field content is required" });
+            return
+        }
         const {postId} = req.params;
-        if (!postId) res.status(400).json({ message: "Param postId is required" });
+        if (!postId) {
+            res.status(400).json({ message: "Param postId is required" });
+            return;
+        }
 
         const userId = getUserIdFromToken(req.cookies.accessToken);
 
-        if (!userId) res.status(400).json({ message: "Userid is required" });
+        if (!userId) {
+            res.status(400).json({ message: "Userid is required" });
+            return;
+        }
 
         try {
 
@@ -31,6 +40,7 @@ class CommentController {
             }
 
             const commentData = {
+                post: postId,
                 author: {
                     _id: userId
                 },
@@ -50,6 +60,20 @@ class CommentController {
 
             res.status(201).json({message: "Comment created successfully", newComment});
 
+
+        } catch (error: unknown) {
+            next(error);
+        }
+    }
+
+    public static async getCommentsByPostId(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const {postId} = req.params;
+        if (!postId) res.status(400).json({ message: "Param postId is required" });
+
+        try {
+            const comments: ICommentDoc[] = await CommentService.getCommentsByPostId(postId);
+
+            res.status(200).json({comments});
 
         } catch (error: unknown) {
             next(error);

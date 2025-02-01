@@ -11,6 +11,12 @@ class CommentService {
         return newCommentDoc;
     }
 
+    static async getCommentsByPostId(postId: string): Promise<ICommentDoc[]> {
+        const comments: ICommentDoc[] = await CommentRepository.getCommentsByPostId(postId);
+
+        return comments;
+
+    }
 }
 
 export default CommentService;

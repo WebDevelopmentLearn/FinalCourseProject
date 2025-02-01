@@ -5,6 +5,7 @@ import CommentController from "../controllers/commentController";
 const router: Router = Router();
 
 router.post("/create-comment/:postId", checkAccessToken, CommentController.createComment);
+router.get("/get-comments/:postId", CommentController.getCommentsByPostId);
 
 
 
