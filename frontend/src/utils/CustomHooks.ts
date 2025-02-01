@@ -1,11 +1,12 @@
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 import {AppDispatch} from "../store/ichgramStore.ts";
-import {RootState} from "@reduxjs/toolkit/query";
+import {RootState} from "../store/ichgramStore.ts";
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 // Типизированный selector
-export const useAppSelector: TypedUseSelectorHook<RootState<any, any, any>> = useSelector;
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 
 export const useCheckMyAccess = (targetUserId: string | undefined, secondTargetUserId: string | undefined) => {

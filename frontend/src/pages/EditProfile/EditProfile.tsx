@@ -1,19 +1,18 @@
 import {useCallback, useEffect, useState} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 
 import styles from "./EditProfile.module.scss";
 import {CustomButton, CustomInput, ThemeSwitcher} from "../../components";
 import {useTheme} from "../../context/ThemeContext.tsx";
 import {userData} from "../../store/selectors.ts";
 import {IUser} from "../../utils/types.ts";
-import {AppDispatch} from "../../store/ichgramStore.ts";
 import {updateUserProfile} from "../../store/api/userActionCreators.ts";
 import {UploadAvatarModal} from "../../components/modals/UploadAvatarModal/UploadAvatarModal.tsx";
 import {useImages} from "../../context/ImageContext.tsx";
 import {SimpleAvatarCircle} from "../../components";
 import {toast} from "react-toastify";
+import {useAppDispatch, useAppSelector} from "../../utils/CustomHooks.ts";
 
 interface EditProfileValues {
     avatar_input: File;
@@ -25,8 +24,8 @@ interface EditProfileValues {
 export const EditProfile = () => {
     const [isOpenUploadAvatarModal, setIsOpenUploadAvatarModal] = useState<boolean>(false);
     const maxSymbols: number = 150;
-    const user: IUser | null = useSelector(userData);
-    const dispatch = useDispatch<AppDispatch>();
+    const user: IUser | null = useAppSelector(userData);
+    const dispatch = useAppDispatch();
     const {handleSubmit, register, watch, setValue} = useForm<EditProfileValues>({
         mode: "onChange"
     });

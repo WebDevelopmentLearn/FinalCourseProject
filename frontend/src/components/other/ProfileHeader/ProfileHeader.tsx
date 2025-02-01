@@ -4,11 +4,11 @@ import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {ExpandableText} from "../ExpandableText/ExpandableText.tsx";
 import {followUser} from "../../../store/api/userActionCreators.ts";
 import {toast} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
+
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {IUser} from "../../../utils/types.ts";
 import {logoutUser} from "../../../store/api/authActionCreators.ts";
+import {useAppDispatch, useAppSelector} from "../../../utils/CustomHooks.ts";
 
 
 interface ProfileHeaderProps {
@@ -16,10 +16,10 @@ interface ProfileHeaderProps {
 }
 
 export const ProfileHeader = ({user}: ProfileHeaderProps) => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate: NavigateFunction = useNavigate();
     const {_id} = useParams();
-    const {user: primaryUser} = useSelector((state: RootState) => state.userReducer);
+    const {user: primaryUser} = useAppSelector(state => state.userReducer);
     const isMyProfile = _id === primaryUser?._id;
     const postsCount = user?.posts?.length ?? 0;
     const followers = user?.followers?.length ?? 0;

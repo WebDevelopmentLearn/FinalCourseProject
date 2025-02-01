@@ -1,17 +1,16 @@
 import {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import LazyLoad from "react-lazyload";
 
 import styles from "./Home.module.scss";
 import {PostCard} from "../../components";
 import check from "../../assets/home/check_in_circle.svg";
-import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
 import {SkeletonPost} from "../../components/skeletons/SkeletonPost/SkeletonPost.tsx";
 import {getAllPosts} from "../../store/api/postsActionCreators.ts";
+import {useAppDispatch, useAppSelector} from "../../utils/CustomHooks.ts";
 
 export const Home = () => {
-    const dispatch = useDispatch<AppDispatch>();
-    const { posts, loading, hasMore, page } = useSelector((state: RootState) => state.postReducer);
+    const dispatch = useAppDispatch();
+    const { posts, loading, hasMore, page } = useAppSelector(state => state.postReducer);
 
     const [loadingMore, setLoadingMore] = useState(false);
 

@@ -1,6 +1,5 @@
 import {FC} from "react";
 import {useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
 
 import styles from "./SignInForm.module.scss";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
@@ -10,9 +9,9 @@ import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
 import {Separator} from "../../other/Separator/Separator.tsx";
 import {ILoginData} from "../../../utils/types.ts";
-import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {loginUser} from "../../../store/api/authActionCreators.ts";
+import {useAppDispatch, useAppSelector} from "../../../utils/CustomHooks.ts";
 
 interface SignInFormValues {
     usernameOrEmail: string;
@@ -22,8 +21,8 @@ interface SignInFormValues {
 export const SignInForm: FC = () => {
     const {theme} = useTheme();
     const navigate: NavigateFunction = useNavigate();
-    const dispatch = useDispatch<AppDispatch>();
-    const {loginError} = useSelector((state: RootState) => state.authReducer);
+    const dispatch = useAppDispatch();
+    const {loginError} = useAppSelector(state => state.authReducer);
     const location: Location<any> = useLocation();
     const {register, handleSubmit, formState: {errors}} = useForm<SignInFormValues>({
         defaultValues: {

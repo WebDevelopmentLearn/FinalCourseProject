@@ -1,21 +1,21 @@
 import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import { useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 
 import styles from "./Profile.module.scss";
 import {PostCardInProfile, ProfileHeader} from "../../components";
-import {AppDispatch, RootState} from "../../store/ichgramStore.ts";
+
 import {getUserById} from "../../store/api/userActionCreators.ts";
 import {IPost, IUser} from "../../utils/types.ts";
 import {SkeletonProfile} from "../../components/skeletons/SkeletonProfile/SkeletonProfile.tsx";
 import {getAllPostsByUser} from "../../store/api/postsActionCreators.ts";
+import {useAppDispatch, useAppSelector} from "../../utils/CustomHooks.ts";
 
 
 export const Profile = () => {
     const [currentUser, setCurrentUser] = useState<IUser | null>(null);
-    const user = useSelector((state: RootState) => state.userReducer.user); // Текущий пользователь
-    const posts = useSelector((state: RootState) => state.postReducer.postsByUser);
-    const dispatch = useDispatch<AppDispatch>();
+    const user = useAppSelector(state => state.userReducer.user); // Текущий пользователь
+    const posts = useAppSelector(state => state.postReducer.postsByUser);
+    const dispatch = useAppDispatch();
     const {_id} = useParams();
 
     useEffect(() => {

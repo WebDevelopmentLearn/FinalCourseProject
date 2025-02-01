@@ -3,9 +3,8 @@ import {ICommentCard} from "../../../utils/types.ts";
 import {Loader} from "../Loader/Loader.tsx";
 import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";
 import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {getCommentsByPostId} from "../../../store/api/commentsActionCreators.ts";
+import {useAppDispatch, useAppSelector} from "../../../utils/CustomHooks.ts";
 
 
 interface CommentsListProps {
@@ -13,8 +12,8 @@ interface CommentsListProps {
 }
 
 export const CommentsList = ({postID}: CommentsListProps) => {
-    const {currentPostComments: commentsList} = useSelector((state: RootState) => state.postReducer) || [];
-    const dispatch = useDispatch<AppDispatch>();
+    const {currentPostComments: commentsList} = useAppSelector(state => state.postReducer) || [];
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchPosts = async () => {

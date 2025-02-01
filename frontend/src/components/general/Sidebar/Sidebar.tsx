@@ -1,6 +1,5 @@
 import {FC, MutableRefObject, ReactNode, useCallback, useRef, useState} from "react";
 import {NavigateFunction, NavLink, NavLinkRenderProps, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 
 import styles from "./Sidebar.module.scss";
 import logo from "../../../assets/logo.svg";
@@ -10,17 +9,17 @@ import {useTheme} from "../../../context/ThemeContext.tsx";
 import {openCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {userData} from "../../../store/selectors.ts";
-import {RootState} from "../../../store/ichgramStore.ts";
 import {Loader} from "../../other/Loader/Loader.tsx";
+import {useAppDispatch, useAppSelector} from "../../../utils/CustomHooks.ts";
 
 export const Sidebar: FC = () => {
     const navigate: NavigateFunction = useNavigate();
     const sidebarRef: MutableRefObject<HTMLDivElement | null> = useRef<HTMLDivElement | null>(null);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const dispatch = useDispatch();
-    const {createPostModalIsOpen} = useSelector((state: RootState) => state.modalReducer);
+    const dispatch = useAppDispatch();
+    const {createPostModalIsOpen} = useAppSelector(state => state.modalReducer);
     const [modalContent, setModalContent] = useState<ReactNode>(null);
-    const user = useSelector(userData);
+    const user = useAppSelector(userData);
 
     const handleGoToHomeLink = useCallback(() => {
         navigate("/");

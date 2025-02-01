@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -10,7 +9,7 @@ import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {getEnumTheme, getTimeAgo} from "../../../utils/Utils.ts";
 
-import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
+
 import { followUser} from "../../../store/api/userActionCreators.ts";
 import {Loader} from "../../other/Loader/Loader.tsx";
 import {SimpleSlider} from "../../inputs/SimpleSlider/SimpleSlider.tsx";
@@ -20,6 +19,7 @@ import {toast} from "react-toastify";
 import {CommentsList} from "../../other/CommentsList/CommentsList.tsx";
 import {createComment} from "../../../store/api/commentsActionCreators.ts";
 import {deletePost, getPostById} from "../../../store/api/postsActionCreators.ts";
+import {useAppDispatch, useAppSelector} from "../../../utils/CustomHooks.ts";
 
 interface PostModalInputValues {
     content: string;
@@ -44,9 +44,9 @@ export const PostModal = () => {
     const {theme} = useTheme();
     const navigate = useNavigate();
 
-    const dispatch = useDispatch<AppDispatch>();
-    const {currentPost} = useSelector((state: RootState) => state.postReducer) || null;
-    const {user} = useSelector((state: RootState) => state.userReducer) || null;
+    const dispatch = useAppDispatch();
+    const {currentPost} = useAppSelector(state => state.postReducer) || null;
+    const {user} = useAppSelector(state => state.userReducer) || null;
     const {_id} = useParams() || "";
     const location = useLocation();
     const isFollowing = user?.followers?.some(follower => follower._id === user?._id) ?? false;

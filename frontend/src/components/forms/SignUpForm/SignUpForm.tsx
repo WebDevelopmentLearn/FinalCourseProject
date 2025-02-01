@@ -1,7 +1,6 @@
 import {FC} from "react";
 import {Link, NavigateFunction, useNavigate} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
 
 import styles from "./SignUpForm.module.scss";
 import ichgramLogo from "../../../assets/logo.svg";
@@ -9,10 +8,10 @@ import logo_dark from "../../../assets/logo_dark.svg";
 import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {CustomInput} from "../../inputs/CustomInput/CustomInput.tsx";
 import {registerUser} from "../../../store/api/authActionCreators.ts";
-import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {IRegisterData} from "../../../utils/types.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
 import {toast} from "react-toastify";
+import {useAppDispatch, useAppSelector} from "../../../utils/CustomHooks.ts";
 
 
 interface SignUpFormValues {
@@ -32,10 +31,10 @@ export const SignUpForm: FC = () => {
             password: ""
         }
     });
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate: NavigateFunction = useNavigate();
     const {theme} = useTheme();
-    const {registerError} = useSelector((state: RootState) => state.authReducer);
+    const {registerError} = useAppSelector(state => state.authReducer);
 
     const onFormSubmit: SubmitHandler<SignUpFormValues> = async(data): Promise<void> => {
         try {

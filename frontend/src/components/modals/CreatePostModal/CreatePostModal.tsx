@@ -1,7 +1,6 @@
 import {MouseEvent, useState, useEffect, useRef} from "react";
 import Picker, {EmojiClickData} from "emoji-picker-react";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useDispatch, useSelector} from "react-redux";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Не забудьте подключить стили
 
@@ -10,12 +9,12 @@ import {CustomButton} from "../../inputs/CustomButton/CustomButton.tsx";
 import {AvatarCircle} from "../../other/AvatarCircle/AvatarCircle.tsx";
 import {closeCreatePostModal} from "../../../store/reducers/modalSlice.ts";
 import {useTheme} from "../../../context/ThemeContext.tsx";
-import {AppDispatch, RootState} from "../../../store/ichgramStore.ts";
 import {getEnumTheme} from "../../../utils/Utils.ts";
 import {Slider} from "../../inputs/Slider/Slider.tsx";
 import {useImages} from "../../../context/ImageContext.tsx";
 import {IImage} from "../../../utils/types.ts";
 import {createPost} from "../../../store/api/postsActionCreators.ts";
+import {useAppDispatch, useAppSelector} from "../../../utils/CustomHooks.ts";
 
 
 interface CreatePostFormInputs {
@@ -26,13 +25,13 @@ interface CreatePostFormInputs {
 export const CreatePostModal = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [previews, setPreviews] = useState<string[]>([]);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
     const [size, setSize] = useState({ width: 0, height: 0 });
     const elementRef = useRef<HTMLDivElement | null>(null);
     const { images } = useImages();
     const {theme} = useTheme();
-    const {user} = useSelector((state: RootState) => state.userReducer);
+    const {user} = useAppSelector(state => state.userReducer);
     const {
         register,
         handleSubmit,
