@@ -1,4 +1,4 @@
-import styles from './CommentsList.module.scss';
+
 import {ICommentCard} from "../../../utils/types.ts";
 import {Loader} from "../Loader/Loader.tsx";
 import {CommentCard} from "../../cards/CommentCard/CommentCard.tsx";

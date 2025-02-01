@@ -1,4 +1,4 @@
-import {ChangeEvent, MouseEvent, useEffect, useRef, useState} from "react";
+import {MouseEvent, useEffect, useRef, useState} from "react";
 import {useDispatch} from "react-redux";
 import {SubmitHandler, useForm} from "react-hook-form";
 import Picker, {EmojiClickData} from "emoji-picker-react";
@@ -22,7 +22,7 @@ interface EditPostFormInputs {
 }
 
 export const EditPostModal = ({post}: {post: IPost}) => {
-    const [previews, setPreviews] = useState<string[]>([]);
+    const [previews, _setPreviews] = useState<string[]>([]);
     const dispatch = useDispatch<AppDispatch>();
     const [emojiPickerIsOpen, setEmojiPickerIsOpen] = useState(false);
     const [size, setSize] = useState({ width: 0, height: 0 });

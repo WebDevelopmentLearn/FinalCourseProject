@@ -49,6 +49,7 @@ export const updatePost = createAsyncThunk("post/updatePost", async ({postId, ph
         // @ts-ignore
         const files = Array.from(photos);
         files.forEach((el) => {
+            // @ts-ignore
             formData.append("photos", el);
         });
         formData.append('content', content);
